@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 
 public class XmlUtils {
 
-    public static ArrayList<Object> readMap(String fileName){
+    public static MapData readMap(String fileName){
         try {
             File file = new File(fileName);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -25,9 +25,9 @@ public class XmlUtils {
             Document document = db.parse(file);
             String[] listAttributeIntersection = {"id", "latitude", "longitude"};
             String[] listAttributeSegment = {"destination", "length", "name", "origin"};
-            ArrayList<Object> mapFormated=new ArrayList<Object>();
-            mapFormated.add(getSegment(document, listAttributeIntersection));
-            mapFormated.add(getIntersection(document, listAttributeSegment));
+            ArrayList<HashMap<String, String>> segments=getSegment(document, listAttributeIntersection);
+            HashMap<String,HashMap<String,String>> intersections=getIntersection(document, listAttributeSegment);
+            MapData mapFormated=new MapData(intersections,segments);
             return mapFormated;
         } catch (IOException | ParserConfigurationException | SAXException e) {
             System.out.println("Error while opening file" + e.toString());
