@@ -14,6 +14,11 @@ public class Main {
         System.out.println("hello World");
 
         Window myWind = new Window();
-        myWind.Display();
+
+        myWind.initLoaderSide();
+        myWind.initHeaderTour();
+        myWind.initMapSide(100, 100);
+
+        myWind.display();
     }
 }
