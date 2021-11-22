@@ -15,7 +15,8 @@ public class Main {
 
         Window myWind = new Window();
 
-        myWind.initLoaderSide();
+        //myWind.initLoaderSide();
+        myWind.initTourSide();
         myWind.initHeaderTour();
         myWind.initMapSide(100, 100);
 

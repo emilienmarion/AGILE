@@ -17,6 +17,7 @@ public class Window {
     protected JPanel splitPanel;
     protected JPanel map;
     protected JPanel headerInfo;
+    protected JScrollPane scrollPane;
 
     Window() {
         System.out.println("Window.constructor");
@@ -75,7 +76,7 @@ public class Window {
 
     protected void initMapSide(int mapWidth, int mapHeight)
     {
-        System.out.println("Window.init");
+        System.out.println("Window.initMapSide");
         mapPath = new JLabel("src/petiteMap.csv");
 
         leftPanel.setBackground(Color.GRAY);
@@ -90,8 +91,10 @@ public class Window {
 
 
         leftPanel.add(Box.createVerticalGlue());
+        leftPanel.add(Box.createHorizontalGlue());
         leftPanel.add(map);
         leftPanel.add(mapPath);
+        leftPanel.add(Box.createHorizontalGlue());
         leftPanel.add(Box.createVerticalGlue());
     }
 
@@ -102,7 +105,6 @@ public class Window {
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
         headerInfo.setBackground(Color.GREEN);
-
 
         //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
     }
@@ -125,6 +127,45 @@ public class Window {
         rightPanel.add(Box.createVerticalGlue());
     }
 
+    protected void initTourSide() {
+        System.out.println("Window.initTourSide");
+
+        loadTourButton = new JButton("Load Tour");
+        JButton loadTourButton1 = new JButton("Load Tour");
+        JButton loadTourButton2 = new JButton("Load Tour");
+
+        JPanel componentToScroll = new JPanel();
+        componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
+
+        for(int i = 0; i < 100; i++)
+        {
+            componentToScroll.add(createJPanelPoint(i));
+        }
+
+        scrollPane = new JScrollPane(componentToScroll);
+        scrollPane.setPreferredSize(new Dimension(400, 400));
+        scrollPane.setMaximumSize(new Dimension(400, 400));
+
+        rightPanel.add(Box.createVerticalGlue());
+        rightPanel.add(scrollPane);
+        rightPanel.add(Box.createVerticalGlue());
+    }
+
+    protected JPanel createJPanelPoint(int i)
+    {
+        JPanel row = new JPanel();
+        JLabel type = new JLabel(new ImageIcon("./Images/icons8-edit-150.png"));
+
+        JLabel place = new JLabel(i+"66 rue JCVD \n 69100 Villeurbanne");
+        JButton editButton = new JButton("I");
+        editButton.addActionListener();
+
+        row.add(type);
+        row.add(place);
+        row.add(editButton);
+
+        return row;
+    }
 
     public void display()
     {
