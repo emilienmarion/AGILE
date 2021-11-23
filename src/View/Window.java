@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 //the componenents are dispayed with coord basis of 1000*700 but the
 public class Window extends JFrame {
+
     private JPanel mapZone;
     private Map map;
     private final int mapSquare=500;
