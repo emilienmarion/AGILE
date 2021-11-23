@@ -27,10 +27,7 @@ public class Main {
         System.out.println(test);*/
 
         // Ouverture d'une fenêtre
-        WindowJu myWindow = new WindowJu();
-        myWindow.initHeaderTour();
-        myWindow.initMapSide(400, 400);
-        myWindow.initTourSide();
-        myWindow.display();
+        Frame myFrame = new Frame();
+        myFrame.display();
     }
 }

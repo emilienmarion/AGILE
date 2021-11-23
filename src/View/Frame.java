@@ -2,10 +2,11 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class WindowJu {
+public class Frame {
     protected JFrame frame;
-
     protected JButton loadMapButton;
     protected JButton loadTourButton;
     protected JLabel mapPath;
@@ -17,8 +18,10 @@ public class WindowJu {
     protected JPanel headerInfo;
     protected JScrollPane scrollPane;
 
-    public WindowJu() {
-        System.out.println("Window.constructor");
+    public Frame() {
+        System.out.println("Frame.constructor");
+
+        // Window design
         frame = new JFrame("UberIf");
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,12 +72,17 @@ public class WindowJu {
         mainPanel.add(headerInfo);
         mainPanel.add(splitPanel);
 
+        // Add the structure to the frame
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
+
+        // Setup the structure's content
+        initLoaderSide();
+        initMapSide(400,400);
     }
 
-    public void initMapSide(int mapWidth, int mapHeight)
+    private void initMapSide(int mapWidth, int mapHeight)
     {
-        System.out.println("Window.initMapSide");
+        System.out.println("Frame.initMapSide");
         mapPath = new JLabel("src/petiteMap.csv");
 
         leftPanel.setBackground(Color.GRAY);
@@ -86,7 +94,6 @@ public class WindowJu {
         map.setMaximumSize(new Dimension(mapWidth, mapHeight));
         map.setAlignmentX(Component.CENTER_ALIGNMENT);
         map.setBackground(Color.PINK);
-
 
         leftPanel.add(Box.createVerticalGlue());
         leftPanel.add(Box.createHorizontalGlue());
@@ -107,12 +114,17 @@ public class WindowJu {
         //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
     }
 
-    public void initLoaderSide() {
+    private void initLoaderSide() {
         loadMapButton = new JButton("Load map");
         loadMapButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loadTourButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                switchToTourView();
+            }
+        } );
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
         rightPanel.setBackground(Color.RED);
@@ -126,7 +138,7 @@ public class WindowJu {
     }
 
     public void initTourSide() {
-        System.out.println("Window.initTourSide");
+        System.out.println("Frame.initTourSide");
 
         loadTourButton = new JButton("Load Tour");
         JButton loadTourButton1 = new JButton("Load Tour");
@@ -156,7 +168,6 @@ public class WindowJu {
 
         JLabel place = new JLabel(i+"66 rue JCVD \n 69100 Villeurbanne");
         JButton editButton = new JButton("I");
-        //editButton.addActionListener();
 
         row.add(type);
         row.add(place);
@@ -167,8 +178,25 @@ public class WindowJu {
 
     public void display()
     {
-        System.out.println("Window.display");
+        System.out.println("Frame.display");
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void switchToTourView()
+    {
+        // Reset right panel
+        rightPanel.remove(Box.createVerticalGlue());
+        rightPanel.remove(loadMapButton);
+        rightPanel.remove(Box.createRigidArea(new Dimension(0,20)));
+        rightPanel.remove(loadTourButton);
+        rightPanel.remove(Box.createVerticalGlue());
+
+        // Setup with the new design
+        initHeaderTour();
+        initTourSide();
+
+        // Display again
+        frame.pack();
     }
 }
