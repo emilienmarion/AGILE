@@ -18,6 +18,5 @@ public class buttonListener extends JFrame implements ActionListener {
             case "Load map" : controller.loadMap();
             case "Load tour" : controller.loadTour();
         }
-
     }
 }

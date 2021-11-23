@@ -25,7 +25,7 @@ public class Frame {
     public Frame() {
         System.out.println("Frame.constructor");
 
-        controller = new Controller();
+        controller = new Controller(this);
         buttonListener = new buttonListener(controller);
 
         // Window design
@@ -128,12 +128,7 @@ public class Frame {
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loadTourButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switchToTourView();
-            }
-        });
+        loadTourButton.addActionListener(buttonListener);
 
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
