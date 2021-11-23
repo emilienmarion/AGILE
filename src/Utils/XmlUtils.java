@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import Model.Intersection;
 import Model.MapData;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,13 +25,11 @@ public class XmlUtils {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(file);
-            String[] listAttributeIntersection = {"latitude", "longitude"};
-            String[] listAttributeSegment = {"destination", "length", "name", "origin"};
-            ArrayList<HashMap<String, String>> segments = getSegment(document, listAttributeSegment);
-            HashMap<String, HashMap<String, Float>> intersections = getIntersection(document, listAttributeIntersection);
-            HashMap<String, Float> maxi = intersections.remove("maxi");
-            HashMap<String, Float> mini = intersections.remove("mini");
-            MapData mapFormated = new MapData(intersections, segments, mini.get("longitude"), maxi.get("longitude"), mini.get("latitude"), maxi.get("latitude"));
+            HashMap<String, Intersection> intersections = getIntersection(document);
+            getSegment(document, intersections);
+            Intersection maxi = intersections.remove("maxi");
+            Intersection mini = intersections.remove("mini");
+            MapData mapFormated = new MapData(intersections, mini.getLongitude(), maxi.getLongitude(), mini.getLatitude(), maxi.getLatitude());
             return mapFormated;
         } catch (IOException | ParserConfigurationException | SAXException e) {
             System.out.println("Error while opening file" + e.toString());
@@ -38,66 +37,67 @@ public class XmlUtils {
         }
     }
 
-    public static ArrayList<HashMap<String, String>> getSegment(Document document, String[] attributes) {
+    public static void getSegment(Document document, HashMap<String,Intersection> intersections) {
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("segment");
-        ArrayList<HashMap<String, String>> listeElement = new ArrayList<HashMap<String, String>>();
         for (int temp = 0; temp < nList.getLength(); temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
-                HashMap<String, String> attributeMap = new HashMap<String, String>();
-                for (String i : attributes) {
-                    attributeMap.put(i, eElement.getAttribute(i));
-                }
-                listeElement.add(attributeMap);
+                String origin=eElement.getAttribute("origin");
+                String destination=eElement.getAttribute("destination");
+                float length=Float.parseFloat(eElement.getAttribute("length"));
+                intersections.get(origin).addNeighbor(destination,length);
             }
         }
-        return listeElement;
     }
 
-    public static HashMap<String, HashMap<String, Float>> getIntersection(Document document, String[] attributes) {
+    public static HashMap<String, Intersection> getIntersection(Document document) {
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("intersection");
-        HashMap<String, HashMap<String, Float>> mapIntersection = new HashMap<String, HashMap<String, Float>>();
+        //HashMap<String, HashMap<String, Float>> mapIntersection = new HashMap<String, HashMap<String, Float>>();
+        HashMap<String, Intersection> inters=new HashMap<String,Intersection>();
         boolean flag = true;
         for (int temp = 0; temp < nList.getLength(); temp++) {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
-                HashMap<String, Float> currentIntersection = new HashMap<String, Float>();
-                for (String i : attributes) {
+                Intersection currentIntersection = new Intersection();
+                /*for (String i : attributes) {
                     currentIntersection.put(i, Float.parseFloat(eElement.getAttribute(i)));
-                }
+                }*/
+                currentIntersection.setId(eElement.getAttribute("id"));
+                currentIntersection.setLatitude(Float.parseFloat(eElement.getAttribute("latitude")));
+                currentIntersection.setLongitude(Float.parseFloat(eElement.getAttribute("longitude")));
                 if (flag) {
-                    HashMap<String,Float> maxi=new HashMap<String,Float>(currentIntersection);
-                    HashMap<String,Float> mini=new HashMap<String,Float>(currentIntersection);
-                    mapIntersection.put("maxi", maxi);
-                    mapIntersection.put("mini",mini);
+                    Intersection maxi=new Intersection(currentIntersection);
+                    Intersection mini=new Intersection(currentIntersection);
+                    inters.put("maxi", maxi);
+                    inters.put("mini",mini);
                     flag = false;
                 }else{
-                    HashMap<String,Float> maxi=mapIntersection.get("maxi");
-                    HashMap<String,Float> mini=mapIntersection.get("mini");
-                    Float currentY=currentIntersection.get("latitude");
-                    Float currentX=currentIntersection.get("longitude");
-                    if (maxi.get("latitude")<currentY) {
-                        maxi.replace("latitude", currentY);
+                    Intersection maxi=inters.get("maxi");
+                    Intersection mini=inters.get("mini");
+                    Float currentY=currentIntersection.getLatitude();
+                    Float currentX=currentIntersection.getLongitude();
+                    if (maxi.getLatitude()<currentY) {
+                        maxi.setLatitude(currentY);
                     }
-                    if (mini.get("latitude")>currentY) {
-                        mini.replace("latitude", currentY);
+                    if (mini.getLatitude()>currentY) {
+                        mini.setLatitude(currentY);
                     }
-                    if (maxi.get("longitude")<currentX) {
-                        maxi.replace("longitude", currentX);
+                    if (maxi.getLongitude()<currentX) {
+                        maxi.setLongitude(currentX);
                     }
-                    if (mini.get("longitude")>currentX) {
-                        mini.replace("longitude", currentX);
+                    if (mini.getLongitude()>currentX) {
+                        mini.setLongitude(currentX);
                     }
-                    mapIntersection.replace("mini",mini);
-                    mapIntersection.replace("maxi",maxi);
+                    inters.replace("mini",mini);
+                    inters.replace("maxi",maxi);
                 }
-                mapIntersection.put(eElement.getAttribute("id"), currentIntersection);
+                inters.put(eElement.getAttribute("id"), currentIntersection);
             }
         }
-        return mapIntersection;
+        return inters;
     }
 }
