@@ -11,16 +11,89 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import Model.Intersection;
 import Model.MapData;
+import Model.Point;
+import Model.Request;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class XmlUtils {
-    public static ReadRequestFtgPauline(){
 
+
+public class XmlUtils {
+    public static Request ReadRequest(String fileName,HashMap<String,Intersection> intersections){
+        Request req=null;
+        try {
+        File file = new File(fileName);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.parse(file);
+
+           req=getRequest(document,intersections);
+
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            System.out.println("Error while opening file" + e.toString());
+            return null;
+        }
+        return req;
     }
+
+    private static Request getRequest(Document document,HashMap<String,Intersection> intersections) {
+        document.getDocumentElement().normalize();
+        Point depot=null;
+        String departureTime="";
+        ArrayList<Point[]> listePoint=new ArrayList<>();
+
+        NodeList nListDep = document.getElementsByTagName("depot");
+        for (int temp = 0; temp < nListDep.getLength(); temp++) {
+            Node nNode = nListDep.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                String addressDepotS = eElement.getAttribute("address");
+
+                 departureTime = eElement.getAttribute("departureTime");
+                Intersection interdepot=intersections.get(addressDepotS);
+                 depot=new Point(interdepot,0,"depot");
+
+            }
+        }
+
+        NodeList nList = document.getElementsByTagName("request");
+
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                String pickUpS=eElement.getAttribute("pickupAddress");
+
+                String deliveryS=eElement.getAttribute("deliveryAddress");
+
+                int  pickupDuration= Integer.parseInt(eElement.getAttribute("pickupDuration"));
+                int  deliveryDuration= Integer.parseInt(eElement.getAttribute("deliveryDuration"));
+               Intersection interPickUp=intersections.get(pickUpS);
+               Point pickUp=new Point(interPickUp,pickupDuration,"pickUp");
+                Intersection interdelivery=intersections.get(deliveryS);
+
+                Point delivery=new Point(interdelivery,deliveryDuration,"delivery");
+
+                Point pair[ ] = new Point[2];
+                pair[0]=pickUp;
+                pair[1]=delivery;
+                listePoint.add(pair);
+
+            }
+
+
+
+        }
+        Request request=new Request(depot,departureTime,listePoint);
+
+
+
+        return request;
+    }
+
     public static MapData readMap(String fileName) {
         try {
             File file = new File(fileName);
