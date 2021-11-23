@@ -3,9 +3,7 @@ package Controller;
 
 import Model.MapData;
 import Utils.XmlUtils;
-import View.Window;
-
-import java.util.HashMap;
+import View.*;
 
 
 public class Main {
@@ -14,7 +12,7 @@ public class Main {
 	// write your code here
         MapData loadedMap = XmlUtils.readMap("xmlFiles/largeMap.xml");
         System.out.println("hello World");
-        Window frame=new Window(1000,700,loadedMap);
+        // Window frame=new Window(1000,700,loadedMap);
         /*HashMap<String,HashMap<String,Float>> test=new HashMap<String, HashMap<String, Float>>();
         HashMap <String,Float> current=new HashMap<String,Float>();
         current.put("latitude",new Float (50.2));
@@ -27,5 +25,12 @@ public class Main {
         System.out.println(test);
         test.get("maxi").replace("latitude",new Float(5.5));
         System.out.println(test);*/
+
+        // Ouverture d'une fenêtre
+        WindowJu myWindow = new WindowJu();
+        myWindow.initHeaderTour();
+        myWindow.initMapSide(400, 400);
+        myWindow.initTourSide();
+        myWindow.display();
     }
 }
