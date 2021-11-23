@@ -8,9 +8,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 //the componenents are dispayed with coord basis of 1000*700 but the
 public class Window extends JFrame {
+
     private JPanel mapZone;
     private Map map;
     private int mapSquare=500;
+
     public Window(int X,int Y,MapData md) {
         super("Uber IF");
         WindowListener l = new WindowAdapter() {

@@ -5,8 +5,6 @@ import java.awt.*;
 
 public class WindowJu {
     protected JFrame frame;
-    protected int frameWidth;
-    protected int frameHeight;
 
     protected JButton loadMapButton;
     protected JButton loadTourButton;
