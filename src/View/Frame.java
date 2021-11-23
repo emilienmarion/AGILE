@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import Controller.*;
 
 public class Frame {
+
     protected JFrame frame;
     protected JButton loadMapButton;
     protected JButton loadTourButton;
@@ -18,8 +20,13 @@ public class Frame {
     protected JPanel headerInfo;
     protected JScrollPane scrollPane;
 
+    protected Controller controller;
+    protected buttonListener buttonListener;
     public Frame() {
         System.out.println("Frame.constructor");
+
+        controller = new Controller();
+        buttonListener = new buttonListener(controller);
 
         // Window design
         frame = new JFrame("UberIf");
@@ -117,14 +124,17 @@ public class Frame {
     private void initLoaderSide() {
         loadMapButton = new JButton("Load map");
         loadMapButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loadMapButton.addActionListener(buttonListener);
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loadTourButton.addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 switchToTourView();
             }
-        } );
+        });
+
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
         rightPanel.setBackground(Color.RED);
