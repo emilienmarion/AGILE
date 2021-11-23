@@ -31,4 +31,9 @@ public class Controller {
             System.out.println(Firm);
         }
     }
+
+    public void loadEditMode() {
+        System.out.println("Controller.loadEditMode");
+
+    }
 }

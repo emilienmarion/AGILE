@@ -15,13 +15,9 @@ public class buttonListener extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e){
         switch (e.getActionCommand()){
-            case "Load map" :
-                controller.loadMap();
-                break;
-
-            case "Load Tour" :
-                controller.loadTour();
-                break;
+            case "Load map" : controller.loadMap(); break;
+            case "Load Tour" : controller.loadTour(); break;
+            case "I" : controller.loadEditMode(); break;
         }
     }
 }
