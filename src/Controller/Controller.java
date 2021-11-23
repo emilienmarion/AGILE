@@ -23,7 +23,7 @@ public class Controller {
         System.out.println("Controller.loadMap");
 
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
-        chooser.setApproveButtonText("Choix du fichier..."); //intitulé du bouton
+        chooser.setApproveButtonText("Select"); //intitulé du bouton
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
         {
             System.out.println("Vous avez choisis : "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
