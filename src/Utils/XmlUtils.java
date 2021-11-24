@@ -18,9 +18,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XmlUtils {
-    public static ReadRequestFtgPauline(){
-
-    }
     public static MapData readMap(String fileName) {
         try {
             File file = new File(fileName);
