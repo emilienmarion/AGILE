@@ -34,6 +34,17 @@ public class Controller {
 
     public void loadEditMode() {
         System.out.println("Controller.loadEditMode");
+    }
 
+    public void deleteRow(String i) {
+        System.out.println("Controller.deleteRow : "+i);
+        // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
+        //frame.deleteRow(Integer.valueOf(i));
+    }
+
+    public void editRow(String i) {
+        System.out.println("Controller.editRow : "+i);
+        // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
+        //frame.editRow(Integer.valueOf(i));
     }
 }
