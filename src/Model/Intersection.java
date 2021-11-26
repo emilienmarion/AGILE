@@ -55,7 +55,9 @@ public class Intersection {
     public HashMap<String, Float> getNeighbors() {
         return neighbors;
     }
-
+    public boolean equals(Intersection i){
+        return this.getId().equals(i.getId());
+    }
     @Override
     public String toString() {
         return "Intersection{" +

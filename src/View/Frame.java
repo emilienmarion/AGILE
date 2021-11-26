@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Controller.*;
+import Model.MapData;
 
 public class Frame {
 
@@ -17,13 +18,17 @@ public class Frame {
     protected JPanel rightPanel;
     protected JPanel mainPanel;
     protected JPanel splitPanel;
-    protected JPanel map;
+    //protected JPanel map;
     protected JPanel headerInfo;
     protected JScrollPane scrollPane;
+    private Map map;
+    private final int mapSquare=500;
 
     protected Controller controller;
     protected buttonListener buttonListener;
-    public Frame() {
+    public Frame(MapData md) {
+
+
         System.out.println("Frame.constructor");
 
         controller = new Controller(this);
@@ -86,29 +91,39 @@ public class Frame {
 
         // Setup the structure's content
         initLoaderSide();
-        initMapSide(400,400);
+
+        initMapSide(md);
     }
 
-    private void initMapSide(int mapWidth, int mapHeight)
+    public void initMapSide(MapData mdT)
     {
+        leftPanel.removeAll();
+
+        float diffX=mdT.getMaxX()-mdT.getMinX();
+        float diffY=mdT.getMaxY()-mdT.getMinY();
+        float scale=Math.min(mapSquare/diffX,mapSquare/diffY);
         System.out.println("Frame.initMapSide");
-        mapPath = new JLabel("src/petiteMap.csv");
+        mapPath = new JLabel("src/petiteMap.xml");
         mapPath.setForeground(Color.WHITE);
 
         leftPanel.setBackground(new Color(40,40,40));
         leftPanel.setPreferredSize(new Dimension(500, 500));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        map = new JPanel();
-        map.setPreferredSize(new Dimension(200, 200));
+
+
+        map=new Map(50,50,diffX,diffY,scale,mdT);
+
+        //map.setPreferredSize(new Dimension(200, 200));
         //map.setMaximumSize(new Dimension(200, 200));
         //map.setAlignmentX(Component.CENTER_ALIGNMENT);
-        map.setBackground(Color.PINK);
+        //map.setBackground(Color.PINK);
 
         leftPanel.add(Box.createVerticalGlue());
         leftPanel.add(map);
         leftPanel.add(mapPath);
         leftPanel.add(Box.createVerticalGlue());
+
     }
 
     public void initHeaderTour() {
