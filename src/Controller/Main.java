@@ -5,13 +5,36 @@ import Model.MapData;
 import Utils.XmlUtils;
 import View.*;
 
+import javax.swing.*;
+
 
 public class Main {
 
     public static void main(String[] args) {
+
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        }
+        catch (ClassNotFoundException e) {
+            // handle exception
+        }
+        catch (InstantiationException e) {
+            // handle exception
+        }
+        catch (IllegalAccessException e) {
+            // handle exception
+        }
+
+
 	// write your code here
         MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
         System.out.println(loadedMap);
+
         System.out.println("hello World");
         Window frame=new Window(1000,700,loadedMap);
 
