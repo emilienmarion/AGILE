@@ -32,11 +32,14 @@ public class Main {
 
 
 	// write your code here
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
+        MapData loadedMap = XmlUtils.readMap("../xmlFiles/smallMap.xml");
         System.out.println(loadedMap);
 
         System.out.println("hello World");
-        Window frame=new Window(1000,700,loadedMap);
+        //Window frame = new Window(1000,700,loadedMap);
+
+        Frame frame = new Frame();
+        frame.display();
 
         // Window frame=new Window(1000,700,loadedMap);
         /*HashMap<String,HashMap<String,Float>> test=new HashMap<String, HashMap<String, Float>>();

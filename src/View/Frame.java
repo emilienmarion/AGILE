@@ -176,10 +176,11 @@ public class Frame {
 
     protected JPanel createJPanelPoint(int i)
     {
+        ImageIcon pickupIcon = new ImageIcon("./Images/");
         JPanel row = new JPanel();
         JLabel type = new JLabel(new ImageIcon("./Images/icons8-edit-150.png"));
 
-        JLabel place = new JLabel(i+"66 rue JCVD \n 69100 Villeurbanne");
+        JLabel place = new JLabel(i+" rue JCVD \n 69100 Villeurbanne");
         // TODO : Identifier chaque bouton avec un id pour le buttonListener
         JButton editButton = new JButton("I");
         editButton.addActionListener(buttonListener);
