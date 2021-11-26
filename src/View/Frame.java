@@ -145,6 +145,11 @@ public class Frame {
     public void initTourSide() {
         System.out.println("Frame.initTourSide");
         rightPanel.setBackground(new Color(40,40,40));
+        JPanel test = new JPanel();
+        JLabel pathLabel = new JLabel("./uberIf/requests");
+        pathLabel.setForeground(Color.WHITE);
+        test.add(pathLabel);
+        test.setBackground(new Color(40,40,40));
 
         loadTourButton = new JButton("Load Tour");
         JButton loadTourButton1 = new JButton("Load Tour");
@@ -153,7 +158,7 @@ public class Frame {
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 50; i++)
         {
             componentToScroll.add(createJPanelPoint(i));
         }
@@ -165,6 +170,7 @@ public class Frame {
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(scrollPane);
+        rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
     }
 
@@ -177,7 +183,6 @@ public class Frame {
         // TODO : Identifier chaque bouton avec un id pour le buttonListener
         JButton editButton = new JButton("I");
         editButton.addActionListener(buttonListener);
-
 
         row.add(type);
         row.add(place);
