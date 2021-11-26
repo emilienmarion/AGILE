@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.ImageIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Controller.*;
@@ -160,6 +161,7 @@ public class Frame {
     public void initTourSide() {
         System.out.println("Frame.initTourSide");
         rightPanel.setBackground(new Color(40,40,40));
+
         JPanel test = new JPanel();
         JLabel pathLabel = new JLabel("./uberIf/requests");
         pathLabel.setForeground(Color.WHITE);
@@ -181,7 +183,9 @@ public class Frame {
         scrollPane = new JScrollPane(componentToScroll);
         scrollPane.setPreferredSize(new Dimension(400, 400));
         scrollPane.setMaximumSize(new Dimension(400, 400));
-        scrollPane.setBackground(new Color(61,61,61));
+        scrollPane.setOpaque(true);
+        //scrollPane.getViewport().setBackground(new Color(61,61,61));
+        scrollPane.getViewport().setBackground(Color.black);
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(scrollPane);
@@ -191,18 +195,32 @@ public class Frame {
 
     protected JPanel createJPanelPoint(int i)
     {
-        ImageIcon pickupIcon = new ImageIcon("./Images/");
+        // TODO : Faire marcher les logos
+        ImageIcon pickupIcon = new ImageIcon("../img/iconTestBlack.png");
+
         JPanel row = new JPanel();
-        JLabel type = new JLabel(new ImageIcon("./Images/icons8-edit-150.png"));
+        row.setName(String.valueOf(i));
+        row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+        JLabel type = new JLabel("pickup");
 
         JLabel place = new JLabel(i+" rue JCVD \n 69100 Villeurbanne");
-        // TODO : Identifier chaque bouton avec un id pour le buttonListener
-        JButton editButton = new JButton("I");
+
+        JPanel buttonBlock = new JPanel();
+        buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
+        JButton editButton = new JButton("E");
+        editButton.setActionCommand("editRow"+i);
+        JButton deleteButton = new JButton("D");
+        deleteButton.setActionCommand("deleteRow"+i);
+
+        buttonBlock.add(editButton);
+        buttonBlock.add(deleteButton);
         editButton.addActionListener(buttonListener);
+        deleteButton.addActionListener(buttonListener);
+
 
         row.add(type);
         row.add(place);
-        row.add(editButton);
+        row.add(buttonBlock);
 
         return row;
     }
@@ -211,6 +229,7 @@ public class Frame {
     {
         System.out.println("Frame.display");
         frame.pack();
+        //frame.validate();
         frame.setVisible(true);
     }
 
@@ -230,4 +249,5 @@ public class Frame {
         // Display again
         frame.pack();
     }
+
 }
