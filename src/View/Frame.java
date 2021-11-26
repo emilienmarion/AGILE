@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import Controller.*;
 import Model.MapData;
+import Model.Request;
 
 public class Frame {
 
@@ -23,15 +24,16 @@ public class Frame {
     protected JScrollPane scrollPane;
     private Map map;
     private final int mapSquare=500;
-
+    private MapData md;
     protected Controller controller;
     protected buttonListener buttonListener;
     public Frame(MapData md) {
-
+        this.md=md;
 
         System.out.println("Frame.constructor");
 
         controller = new Controller(this);
+        controller.setMd(md);
         buttonListener = new buttonListener(controller);
 
         // Window design
@@ -98,7 +100,7 @@ public class Frame {
     public void initMapSide(MapData mdT)
     {
         leftPanel.removeAll();
-
+        this.md=mdT;
         float diffX=mdT.getMaxX()-mdT.getMinX();
         float diffY=mdT.getMaxY()-mdT.getMinY();
         float scale=Math.min(mapSquare/diffX,mapSquare/diffY);
@@ -233,7 +235,14 @@ public class Frame {
         frame.setVisible(true);
     }
 
-    public void switchToTourView()
+    public void PlacerPoint()
+    {
+        //map.drawPickUp();
+
+    }
+
+
+    public void switchToTourView(Request req)
     {
         // Reset right panel
         rightPanel.remove(Box.createVerticalGlue());
@@ -241,6 +250,9 @@ public class Frame {
         rightPanel.remove(Box.createRigidArea(new Dimension(0,20)));
         rightPanel.remove(loadTourButton);
         rightPanel.remove(Box.createVerticalGlue());
+        map.setMapData(this.md);
+        map.setReq(req);
+        map.repaint();
 
         // Setup with the new design
         initHeaderTour();
