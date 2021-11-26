@@ -9,12 +9,12 @@ public class buttonListener extends JFrame implements ActionListener {
     private Controller controller;
     private String XMlMapPath;
 
-    public buttonListener(Controller controller){
+    public buttonListener(Controller controller) {
         this.controller = controller;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
 
         switch (e.getActionCommand()) {
             case "Load map":
@@ -26,9 +26,10 @@ public class buttonListener extends JFrame implements ActionListener {
             default:
                 if (e.getActionCommand().contains("deleteRow")) {
                     controller.deleteRow(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
-                }else if (e.getActionCommand().contains("editRow")) {
+                } else if (e.getActionCommand().contains("editRow")) {
                     controller.editRow(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());
                 }
                 ;
+        }
     }
 }
