@@ -11,6 +11,7 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
+
         try {
             // Set cross-platform Java L&F (also called "Metal")
             UIManager.setLookAndFeel(
@@ -29,9 +30,14 @@ public class Main {
             // handle exception
         }
 
-        // write your code here
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/largeMap.xml");
+
+	// write your code here
+        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
+        System.out.println(loadedMap);
+
         System.out.println("hello World");
+        Window frame=new Window(1000,700,loadedMap);
+
         // Window frame=new Window(1000,700,loadedMap);
         /*HashMap<String,HashMap<String,Float>> test=new HashMap<String, HashMap<String, Float>>();
         HashMap <String,Float> current=new HashMap<String,Float>();
@@ -46,8 +52,5 @@ public class Main {
         test.get("maxi").replace("latitude",new Float(5.5));
         System.out.println(test);*/
 
-        // Ouverture d'une fenêtre
-        Frame myFrame = new Frame();
-        myFrame.display();
     }
 }

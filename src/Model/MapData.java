@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapData {
-    private HashMap<String, HashMap<String, Float>> intersection;
-    private ArrayList<HashMap<String, String>> segment;
+    private HashMap<String,Intersection> intersections;
     private float minX;
     private float maxX;
     private float minY;
@@ -13,21 +12,16 @@ public class MapData {
     public MapData() {
     }
 
-    public MapData(HashMap<String, HashMap<String, Float>> intersection, ArrayList<HashMap<String, String>> segment, float minX, float maxX, float minY, float maxY) {
-        this.intersection = intersection;
-        this.segment = segment;
+    public MapData(HashMap<String,Intersection> intersections, float minX, float maxX, float minY, float maxY) {
+        this.intersections = intersections;
         this.minX = minX;
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
     }
 
-    public void setIntersection(HashMap<String, HashMap<String, Float>> intersection) {
-        this.intersection = intersection;
-    }
-
-    public void setSegment(ArrayList<HashMap<String, String>> segment) {
-        this.segment = segment;
+    public void setIntersections(HashMap<String,Intersection> intersections) {
+        this.intersections = intersections;
     }
 
     public void setMinX(float minX) {
@@ -46,12 +40,8 @@ public class MapData {
         this.maxY = maxY;
     }
 
-    public HashMap<String, HashMap<String, Float>> getIntersection() {
-        return intersection;
-    }
-
-    public ArrayList<HashMap<String, String>> getSegment() {
-        return segment;
+    public HashMap<String,Intersection> getIntersections() {
+        return intersections;
     }
 
     public float getMinX() {
@@ -72,13 +62,12 @@ public class MapData {
 
     @Override
     public String toString() {
-        return "MapData{\n" +
-                "intersection=" + intersection +
-                ",\nsegment=" + segment +
-                ",\nminX=" + minX +
-                ",\nmaxX=" + maxX +
-                ",\nminY=" + minY +
-                ",\nmaxY=" + maxY +
-                '}';
+        return "MapData{" +
+                "\nintersections=" + intersections +
+                "\n, minX=" + minX +
+                "\n, maxX=" + maxX +
+                "\n, minY=" + minY +
+                "\n, maxY=" + maxY +
+                "\n}";
     }
 }

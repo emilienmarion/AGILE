@@ -11,8 +11,7 @@ public class Window extends JFrame {
 
     private JPanel mapZone;
     private Map map;
-    private int mapSquare=500;
-
+    private final int mapSquare=500;
     public Window(int X,int Y,MapData md) {
         super("Uber IF");
         WindowListener l = new WindowAdapter() {
