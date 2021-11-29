@@ -21,10 +21,6 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
-
-
         try {
             // Set cross-platform Java L&F (also called "Metal")
             UIManager.setLookAndFeel(
@@ -44,9 +40,7 @@ public class Main {
         }
 
 
-	// write your code here
-        //MapData loadedMap = XmlUtils.readMap("../xmlFiles/smallMap.xml");
-
+	    MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
         System.out.println(loadedMap);
 
 

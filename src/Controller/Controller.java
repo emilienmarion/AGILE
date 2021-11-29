@@ -35,7 +35,7 @@ public class Controller {
 
         }
         MapData loadedMap = XmlUtils.readMap(Firm);
-        frame.initMapSide(loadedMap);
+        frame.loadMap(loadedMap);
     frame.display();
         //View.Window frameh = new View.Window(1000,700,loadedMap);
 
