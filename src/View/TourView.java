@@ -1,10 +1,13 @@
 package View;
 
+import Controller.Controller;
 import Model.Point;
 import Model.Request;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 public class TourView {
@@ -16,15 +19,17 @@ public class TourView {
     protected ButtonListener buttonListener;
     protected Request req;
     protected HashMap<Integer, JPanel> jpanelList;
+    protected Controller controller;
 
 
-    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req) {
+    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller) {
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
         this.mapView = mapView;
         this.req = req;
         this.jpanelList = new HashMap<>();
+        this.controller = controller;
 
         rightPanel.setBackground(new Color(40,40,40));
 
@@ -37,7 +42,6 @@ public class TourView {
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
 
-        // TODO: lier le modèle à la vue via Observer
         Point point ;
         HashMap<String, Point> listePoint = req.getListePoint();
         Point depot = req.getDepot();
@@ -69,6 +73,8 @@ public class TourView {
         JPanel row = new JPanel();
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+        row.setPreferredSize(new Dimension(100,30));
+        row.setMaximumSize(new Dimension(200,60));
 
         System.out.println("request : " + this.req);
         if(this.req!=null) {
@@ -125,15 +131,34 @@ public class TourView {
     public void editPoint(int id){
         JPanel point = jpanelList.get(id);
         point.setBackground(Color.MAGENTA);
+        int type;
+        String location = "location";
+        String hour = "33h33";
+
+        point.removeAll();
+        JTextField fieldLocation = new JTextField(location);
+        JTextField fieldHour = new JTextField(hour);
+
         JButton confirmEdit = new JButton("Confirm Edition");
-        confirmEdit.addActionListener(buttonListener);
+        // Ici on squiz le button listener car j'ai pas trouvé comment passer des variables en paramètre pour donner
+        // au controller les données à persister dans le modèle de donnée.
+        confirmEdit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.confirmPointEdition(id, 0, fieldLocation.getText(), fieldHour.getText());
+            }
+        });
+
+        point.add(fieldLocation);
+        point.add(fieldHour);
         point.add(confirmEdit);
     }
 
-    public void confirmEdit(int i, String s, String s1){
+    public void confirmEdit(int id){
         System.out.println("TourPanel.confirmEdit");
-        // TODO : lier avec le modèle de données
-
+        // TODO : changer aspect de la row
+        JPanel point = jpanelList.get(id);
     }
 
 }
+;

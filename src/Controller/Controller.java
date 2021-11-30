@@ -93,7 +93,11 @@ public class Controller {
 
     }
 
-    public void confirmPointEdition() {frame.confirmEdit(0, "77 rue Antoine labeuh", "22h");
+    public void confirmPointEdition(int id, int type, String location, String hour) {
+        System.out.println("Controller.confirmEdit");
+        System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
+        frame.confirmEdit(id);
+        // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
 }
 
