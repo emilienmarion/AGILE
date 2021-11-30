@@ -20,6 +20,7 @@ public class MapPanel {
         this.mapSquare = mapSquare;
         this.mapPath = mapPath;
         this.mdT = mdT;
+        System.out.println("map data : "+ mdT);
         loadMap(this.mdT);
     }
 
@@ -38,13 +39,22 @@ public class MapPanel {
         leftPanel.setPreferredSize(new Dimension(500, 500));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
-        map=new Map(50,50,diffX,diffY,scale,mdT);
+        this.map = new Map(50,50,diffX,diffY,scale,mdT);
+        System.out.println("Map initialized");
 
         leftPanel.add(Box.createVerticalGlue());
         leftPanel.add(map);
         leftPanel.add(mapPath);
         leftPanel.add(Box.createVerticalGlue());
 
+    }
+
+    public Map getMap() {
+        return this.map;
+    }
+
+    public MapData getMapData() {
+        return this.mdT;
     }
 
 }

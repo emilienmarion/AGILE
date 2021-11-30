@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Controller;
+import Model.Request;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +15,11 @@ public class TourPanel {
     protected ButtonListener buttonListener;
 
 
-    public TourPanel(JPanel rightPanel, ButtonListener buttonListener) {
+    public TourPanel(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapPanel mapPanel) {
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
-        initHeaderTour();
+        this.headerInfo = headerInfo;
+        this.mapPanel = mapPanel;
 
         rightPanel.setBackground(new Color(40,40,40));
 
@@ -46,6 +48,8 @@ public class TourPanel {
         rightPanel.add(scrollPane);
         rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
+
+        initHeaderTour();
     }
 
     protected JPanel createJPanelPoint(int i)
@@ -89,6 +93,14 @@ public class TourPanel {
         headerInfo.setBackground(new Color(86,86,86));
 
         //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
+    }
+
+    public void loadRequest(Request req) {
+        System.out.println("ToutPanel.loadRequest");
+        Map map = mapPanel.getMap();
+        map.setMapData(mapPanel.getMapData());
+        map.setReq(req);
+        map.repaint();
     }
 
 }

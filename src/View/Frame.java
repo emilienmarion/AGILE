@@ -17,20 +17,15 @@ public class Frame {
     protected JPanel rightPanel;
     protected JPanel mainPanel;
     protected JPanel splitPanel;
-    //protected JPanel map;
     protected JPanel headerInfo;
-    protected JScrollPane scrollPane;
-    private Map map;
     private final int mapSquare=500;
     protected MapPanel mapPanel;
-    private MapData md;
     protected Controller controller;
     protected ButtonListener buttonListener;
 
 
     public Frame(MapData md) {
         controller = new Controller(this);
-        this.md=md;
         controller.setMd(md);
         buttonListener = new ButtonListener(controller);
         initFrame();
@@ -124,7 +119,6 @@ public class Frame {
     {
         System.out.println("Frame.display");
         frame.pack();
-        //frame.validate();
         frame.setVisible(true);
     }
 
@@ -137,21 +131,12 @@ public class Frame {
 
     public void switchToTourView(Request req)
     {
+        System.out.println("Frame.switchToTourView");
         // Reset right panel
-        rightPanel.remove(Box.createVerticalGlue());
-        rightPanel.remove(loadMapButton);
-        rightPanel.remove(Box.createRigidArea(new Dimension(0,20)));
-        rightPanel.remove(loadTourButton);
-        rightPanel.remove(Box.createVerticalGlue());
-        map.setMapData(this.md);
-        map.setReq(req);
-        map.repaint();
-
+        rightPanel.removeAll();
         // Setup with the new design
-        TourPanel tourPanel = new TourPanel(rightPanel, buttonListener);
-
-        // Display again
-        frame.pack();
+        TourPanel tourPanel = new TourPanel(rightPanel, headerInfo, buttonListener, this.mapPanel);
+        tourPanel.loadRequest(req);
     }
 
     public void loadMap(MapData loadedMap) {

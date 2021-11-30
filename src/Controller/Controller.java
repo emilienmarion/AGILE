@@ -34,8 +34,9 @@ public class Controller {
         loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
         //placerPoint(loadRequest);
         //frame.initMapSide(loadedMap);
-        frame.display();
         frame.switchToTourView(loadRequest);
+        frame.display();
+
     }
 
     public MapData loadMap() {
