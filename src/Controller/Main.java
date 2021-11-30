@@ -56,7 +56,7 @@ public class Main {
         System.out.println(loadRequest);
 
 
-        Window frameh = new Window(1000,700,loadedMap);
+       // Window frameh = new Window(1000,700,loadedMap);
 
         Frame frame = new Frame(loadedMap);
         frame.display();
