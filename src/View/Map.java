@@ -42,7 +42,6 @@ public class Map extends JPanel {
 
     public void setMapData(MapData mapData) {
         this.mapData = mapData;
-        notifyObservers();
     }
 
     public Request getReq() {
