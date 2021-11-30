@@ -1,6 +1,5 @@
 package View;
 
-import Controller.Controller;
 import Model.Point;
 import Model.Request;
 
@@ -8,22 +7,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-public class TourPanel {
+public class TourView {
     protected JFrame frame;
     protected JPanel rightPanel;
     protected JPanel headerInfo;
     protected JScrollPane scrollPane;
-    protected MapPanel mapPanel;
+    protected MapView mapView;
     protected ButtonListener buttonListener;
     protected Request req;
     protected HashMap<Integer, JPanel> jpanelList;
 
 
-    public TourPanel(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapPanel mapPanel, Request req) {
+    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req) {
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
-        this.mapPanel = mapPanel;
+        this.mapView = mapView;
         this.req = req;
         this.jpanelList = new HashMap<>();
 
@@ -117,8 +116,8 @@ public class TourPanel {
 
     public void loadRequest(Request req) {
         System.out.println("ToutPanel.loadRequest");
-        Map map = mapPanel.getMap();
-        map.setMapData(mapPanel.getMapData());
+        Map map = mapView.getMap();
+        map.setMapData(mapView.getMapData());
         map.setReq(req);
         map.repaint();
     }

@@ -1,21 +1,20 @@
 package View;
 
-import Controller.Controller;
 import Model.MapData;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MapPanel {
+public class MapView {
     protected JFrame frame;
     protected JLabel mapPath;
     protected JPanel leftPanel;
     private Map map;
     private final int mapSquare;
     private MapData mdT;
-    protected MapPanel mapPanel;
+    protected MapView mapView;
 
-    public MapPanel(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT){
+    public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT){
         this.leftPanel = leftPanel;
         this.mapSquare = mapSquare;
         this.mapPath = mapPath;
