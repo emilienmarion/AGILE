@@ -1,9 +1,35 @@
 package Model;
+pckage Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapData {
+
+    private List<Observer> observer = new ArrayList<>();
+
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void deleteObserver(Observer o) {
+
+        observers.remove(o);
+
+    }
+
+    @Override
+    public void notifyObservers() {
+
+        for(Observer o: observers)
+        {
+            o.update(this);
+        }
+
+    }
+
     private HashMap<String,Intersection> intersections;
     private float minX;
     private float maxX;
@@ -22,6 +48,8 @@ public class MapData {
 
     public void setIntersections(HashMap<String,Intersection> intersections) {
         this.intersections = intersections;
+        notifyObservers();
+
     }
 
     public void setMinX(float minX) {

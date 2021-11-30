@@ -18,6 +18,9 @@ public class Controller {
         this.frame = frame;
     }
 
+    ObservableConcret md = new ObservableConcret;
+
+
 
     public void loadTour() {
         System.out.println("Controller.loadTour");
