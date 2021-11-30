@@ -1,7 +1,6 @@
 package View;
 
-import Model.Intersection;
-import Model.MapData;
+import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +13,7 @@ public class Map extends JPanel {
     private int sizeX;
     private int sizeY;
     private MapData mapData;
+    private Graph completeGraph;
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
         mapData=md;
@@ -26,10 +26,63 @@ public class Map extends JPanel {
         this.setBackground(Color.white);
         this.setLayout(new GridBagLayout());
     }
-    private int[] getCoords(float longitude,float latitude){
+
+    public Graph getCompleteGraph() {
+        return completeGraph;
+    }
+
+    public void setCompleteGraph(Graph completeGraph) {
+        this.completeGraph = completeGraph;
+    }
+
+    private int[] getCoords(float longitude, float latitude){
         int x=Math.round((longitude- mapData.getMinX())*scale);
         int y=Math.round((latitude- mapData.getMinY())*scale);
         return new int[]{x,y};
+    }
+    private void drawGraph(Graph completeGraph,Graphics g){
+        System.out.println("drawGraph");
+        ArrayList<Vertice> arrayArc=completeGraph.getContent();
+        int index=0;
+        ArrayList<Color> ac=new ArrayList<Color>();
+        ac.add(Color.blue);
+        ac.add(Color.red);
+        ac.add(Color.pink);
+        ac.add(Color.green);
+        ac.add(Color.yellow);
+        ac.add(Color.orange);
+        ac.add(Color.cyan);
+        g.setColor(ac.get(index));
+        //for (Vertice v:arrayArc){
+            Vertice v=arrayArc.get(6);
+            Path p=v.getAssociatedPath();
+            Node n=p.getPath().get(0);
+            Intersection start=n.getIntersection();
+            int[] coordA=getCoords(start.getLongitude(),start.getLatitude());
+            g.fillRect(coordA[0],coordA[1],10,10);
+            Node n2=n.getPredecessor();
+            while (n2!=null){
+                p.addToPath(n);
+                Intersection i1=n.getIntersection();
+                float latitude1=i1.getLatitude();
+                float longitude1=i1.getLongitude();
+                Intersection i2=n2.getIntersection();
+                float latitude2=i2.getLatitude();
+                float longitude2=i2.getLongitude();
+                int[] coord1=getCoords(longitude1,latitude1);
+                int[] coord2=getCoords(longitude2,latitude2);
+                g.drawLine(coord1[0],coord1[1],coord2[0],coord2[1]);
+                n=n.getPredecessor();
+                n2=n2.getPredecessor();
+            }
+            Intersection end=n.getIntersection();
+            int[] coordB=getCoords(end.getLongitude(),end.getLatitude());
+            g.fillRect(coordB[0],coordB[1],10,10);
+            g.setColor(ac.get(index));
+            if (index!=6)index++;
+        //}
+        System.out.println(arrayArc);
+        g.setColor(Color.black);
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -45,6 +98,9 @@ public class Map extends JPanel {
                 int originC[]=getCoords(originLongitude,originLatitude);
                 int destinationC[]=getCoords(destinationLongitude,destinationLatitude);
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
+            }
+            if (completeGraph!=null){
+                drawGraph(completeGraph,g);
             }
         }
     }

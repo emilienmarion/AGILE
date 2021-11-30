@@ -31,4 +31,7 @@ public class Window extends JFrame {
         this.setResizable(false);
     }
 
+    public Map getMap() {
+        return map;
+    }
 }
