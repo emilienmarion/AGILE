@@ -1,7 +1,6 @@
 package View;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import Controller.*;
 
@@ -25,11 +24,10 @@ public class ButtonListener extends JFrame implements ActionListener {
                 break;
             default:
                 if (e.getActionCommand().contains("deleteRow")) {
-                    controller.deleteRow(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
+                    controller.deletePoint(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
                 } else if (e.getActionCommand().contains("editRow")) {
-                    controller.editRow(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());
+                    controller.editPoint(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());
                 }
-                ;
         }
     }
 }

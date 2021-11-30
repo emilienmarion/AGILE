@@ -67,26 +67,22 @@ public class Controller {
         System.out.println("Controller.loadEditMode");
     }
 
-    public void deleteRow(String i) {
+    public void deletePoint(String i) {
         System.out.println("Controller.deleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         //frame.deleteRow(Integer.valueOf(i));
     }
 
-    public void editRow(String i) {
+    public void editPoint(String i) {
         System.out.println("Controller.editRow : "+i);
+        frame.editPoint(Integer.valueOf(i));
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         //frame.editRow(Integer.valueOf(i));
-    }
-
-    public MapData getMd() {
-        return md;
     }
 
     public void setMd(MapData md) {
         this.md = md;
     }
-
 
     public void placerPoint(Request req) {
 

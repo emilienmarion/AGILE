@@ -19,7 +19,8 @@ public class Frame {
     protected JPanel splitPanel;
     protected JPanel headerInfo;
     private final int mapSquare=500;
-    protected MapPanel mapPanel;
+    protected MapView mapView;
+    protected TourView tourView;
     protected Controller controller;
     protected ButtonListener buttonListener;
 
@@ -29,7 +30,7 @@ public class Frame {
         controller.setMd(md);
         buttonListener = new ButtonListener(controller);
         initFrame();
-        mapPanel = new MapPanel(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
+        mapView = new MapView(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
         initLoaderSide();
     }
 
@@ -135,11 +136,12 @@ public class Frame {
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        TourPanel tourPanel = new TourPanel(rightPanel, headerInfo, buttonListener, this.mapPanel);
-        tourPanel.loadRequest(req);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView);
+        tourView.loadRequest(req);
     }
 
     public void loadMap(MapData loadedMap) {
-        mapPanel.loadMap(loadedMap);
+        mapView.loadMap(loadedMap);
     }
+    public void editPoint(int i){tourView.editPoint(i);}
 }

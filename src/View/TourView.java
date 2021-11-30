@@ -1,25 +1,27 @@
 package View;
 
-import Controller.Controller;
 import Model.Request;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
-public class TourPanel {
+public class TourView {
     protected JFrame frame;
     protected JPanel rightPanel;
     protected JPanel headerInfo;
     protected JScrollPane scrollPane;
-    protected MapPanel mapPanel;
+    protected MapView mapPanel;
     protected ButtonListener buttonListener;
+    protected HashMap<Integer, JPanel> listPoints;
 
 
-    public TourPanel(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapPanel mapPanel) {
+    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView) {
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
-        this.mapPanel = mapPanel;
+        this.mapPanel = mapView;
+        this.listPoints = new HashMap<>();
 
         rightPanel.setBackground(new Color(40,40,40));
 
@@ -81,6 +83,8 @@ public class TourPanel {
         row.add(place);
         row.add(buttonBlock);
 
+        System.out.println("DBG : i, row --> "+ i+", "+row);
+        listPoints.put(i, row);
         return row;
     }
 
@@ -101,6 +105,11 @@ public class TourPanel {
         map.setMapData(mapPanel.getMapData());
         map.setReq(req);
         map.repaint();
+    }
+
+    public void editPoint(int id){
+        JPanel point = listPoints.get(id);
+        point.setBackground(Color.MAGENTA);
     }
 
 }
