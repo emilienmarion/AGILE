@@ -46,7 +46,7 @@ public class Controller {
         chooser.setApproveButtonText("Select"); //intitulé du bouton
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
         {
-            System.out.println("Vous avez choisis : "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
+            System.out.println("Vous avez choisis: "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
              Firm= chooser.getSelectedFile().getAbsolutePath();
             System.out.println(Firm);
 
