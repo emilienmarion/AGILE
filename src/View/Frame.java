@@ -2,9 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
-import javax.swing.ImageIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import Controller.*;
 import Model.MapData;
 import Model.Request;
@@ -24,18 +22,25 @@ public class Frame {
     protected JScrollPane scrollPane;
     private Map map;
     private final int mapSquare=500;
+    protected MapPanel mapPanel;
     private MapData md;
     protected Controller controller;
-    protected buttonListener buttonListener;
+    protected ButtonListener buttonListener;
+
+
     public Frame(MapData md) {
-        this.md=md;
-
-        System.out.println("Frame.constructor");
-
         controller = new Controller(this);
+        this.md=md;
         controller.setMd(md);
-        buttonListener = new buttonListener(controller);
+        buttonListener = new ButtonListener(controller);
+        initFrame();
+        mapPanel = new MapPanel(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
+        initLoaderSide();
+    }
 
+
+    private void initFrame()
+    {
         // Window design
         frame = new JFrame("UberIf");
         frame.setResizable(false);
@@ -46,24 +51,21 @@ public class Frame {
         //create menus
         JMenu fileMenu = new JMenu("File");
         //create menu items
-        JMenuItem newMenuItem = new JMenuItem("New");
-        newMenuItem.setActionCommand("New");
-        JMenuItem openMenuItem = new JMenuItem("Open");
-        openMenuItem.setActionCommand("Open");
+        JMenuItem loadTourMenuItem = new JMenuItem("Load tour");
+        loadTourMenuItem.setActionCommand("Load tour");
+        loadTourMenuItem.addActionListener(buttonListener);
+        JMenuItem loadMapMenuItem = new JMenuItem("Load map");
+        loadMapMenuItem.setActionCommand("Load map");
+        loadMapMenuItem.addActionListener(buttonListener);
         JMenuItem saveMenuItem = new JMenuItem("Save");
         saveMenuItem.setActionCommand("Save");
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.setActionCommand("Exit");
-        JMenuItem cutMenuItem = new JMenuItem("Cut");
-        cutMenuItem.setActionCommand("Cut");
-        JMenuItem copyMenuItem = new JMenuItem("Copy");
-        copyMenuItem.setActionCommand("Copy");
-        JMenuItem pasteMenuItem = new JMenuItem("Paste");
-        pasteMenuItem.setActionCommand("Paste");
+
 
         //add menu items to menus
-        fileMenu.add(newMenuItem);
-        fileMenu.add(openMenuItem);
+        fileMenu.add(loadTourMenuItem);
+        fileMenu.add(loadMapMenuItem);
         fileMenu.add(saveMenuItem);
         fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
@@ -77,67 +79,24 @@ public class Frame {
         // Panel for subPanel organization
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+
         headerInfo = new JPanel();
         headerInfo.setPreferredSize(new Dimension(0, 0));
+
         splitPanel = new JPanel();
         splitPanel.setLayout(new GridLayout(1, 2));
+
         leftPanel = new JPanel();
+
         rightPanel = new JPanel();
+
         splitPanel.add(leftPanel);
         splitPanel.add(rightPanel);
         mainPanel.add(headerInfo);
         mainPanel.add(splitPanel);
-
-        // Add the structure to the frame
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-
-        // Setup the structure's content
-        initLoaderSide();
-
-        initMapSide(md);
     }
 
-    public void initMapSide(MapData mdT)
-    {
-        leftPanel.removeAll();
-        this.md=mdT;
-        float diffX=mdT.getMaxX()-mdT.getMinX();
-        float diffY=mdT.getMaxY()-mdT.getMinY();
-        float scale=Math.min(mapSquare/diffX,mapSquare/diffY);
-        System.out.println("Frame.initMapSide");
-        mapPath = new JLabel("src/petiteMap.xml");
-        mapPath.setForeground(Color.WHITE);
-
-        leftPanel.setBackground(new Color(40,40,40));
-        leftPanel.setPreferredSize(new Dimension(500, 500));
-        leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
-
-
-
-        map=new Map(50,50,diffX,diffY,scale,mdT);
-
-        //map.setPreferredSize(new Dimension(200, 200));
-        //map.setMaximumSize(new Dimension(200, 200));
-        //map.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //map.setBackground(Color.PINK);
-
-        leftPanel.add(Box.createVerticalGlue());
-        leftPanel.add(map);
-        leftPanel.add(mapPath);
-        leftPanel.add(Box.createVerticalGlue());
-
-    }
-
-    public void initHeaderTour() {
-        //TODO : Déclarer panel de droite avec le scrollbar et les détails des tours
-
-        //TODO : Déclarer panel du haut avec indices d'aide à la tournée
-
-        headerInfo.setPreferredSize(new Dimension(100, 100));
-        headerInfo.setBackground(new Color(86,86,86));
-
-        //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
-    }
 
     private void initLoaderSide() {
         loadMapButton = new JButton("Load map");
@@ -160,72 +119,6 @@ public class Frame {
         rightPanel.add(Box.createVerticalGlue());
     }
 
-    public void initTourSide() {
-        System.out.println("Frame.initTourSide");
-        rightPanel.setBackground(new Color(40,40,40));
-
-        JPanel test = new JPanel();
-        JLabel pathLabel = new JLabel("./uberIf/requests");
-        pathLabel.setForeground(Color.WHITE);
-        test.add(pathLabel);
-        test.setBackground(new Color(40,40,40));
-
-        loadTourButton = new JButton("Load Tour");
-        JButton loadTourButton1 = new JButton("Load Tour");
-        JButton loadTourButton2 = new JButton("Load Tour");
-
-        JPanel componentToScroll = new JPanel();
-        componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
-
-        for(int i = 0; i < 50; i++)
-        {
-            componentToScroll.add(createJPanelPoint(i));
-        }
-
-        scrollPane = new JScrollPane(componentToScroll);
-        scrollPane.setPreferredSize(new Dimension(400, 400));
-        scrollPane.setMaximumSize(new Dimension(400, 400));
-        scrollPane.setOpaque(true);
-        //scrollPane.getViewport().setBackground(new Color(61,61,61));
-        scrollPane.getViewport().setBackground(Color.black);
-
-        rightPanel.add(Box.createVerticalGlue());
-        rightPanel.add(scrollPane);
-        rightPanel.add(test);
-        rightPanel.add(Box.createVerticalGlue());
-    }
-
-    protected JPanel createJPanelPoint(int i)
-    {
-        // TODO : Faire marcher les logos
-        ImageIcon pickupIcon = new ImageIcon("../img/iconTestBlack.png");
-
-        JPanel row = new JPanel();
-        row.setName(String.valueOf(i));
-        row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-        JLabel type = new JLabel("pickup");
-
-        JLabel place = new JLabel(i+" rue JCVD \n 69100 Villeurbanne");
-
-        JPanel buttonBlock = new JPanel();
-        buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
-        JButton editButton = new JButton("E");
-        editButton.setActionCommand("editRow"+i);
-        JButton deleteButton = new JButton("D");
-        deleteButton.setActionCommand("deleteRow"+i);
-
-        buttonBlock.add(editButton);
-        buttonBlock.add(deleteButton);
-        editButton.addActionListener(buttonListener);
-        deleteButton.addActionListener(buttonListener);
-
-
-        row.add(type);
-        row.add(place);
-        row.add(buttonBlock);
-
-        return row;
-    }
 
     public void display()
     {
@@ -255,11 +148,13 @@ public class Frame {
         map.repaint();
 
         // Setup with the new design
-        initHeaderTour();
-        initTourSide();
+        TourPanel tourPanel = new TourPanel(rightPanel, buttonListener);
 
         // Display again
         frame.pack();
     }
 
+    public void loadMap(MapData loadedMap) {
+        mapPanel.loadMap(loadedMap);
+    }
 }

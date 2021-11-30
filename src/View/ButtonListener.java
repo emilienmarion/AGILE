@@ -5,11 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 import Controller.*;
 
-public class buttonListener extends JFrame implements ActionListener {
+public class ButtonListener extends JFrame implements ActionListener {
     private Controller controller;
     private String XMlMapPath;
 
-    public buttonListener(Controller controller) {
+    public ButtonListener(Controller controller) {
         this.controller = controller;
     }
 
