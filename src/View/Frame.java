@@ -20,6 +20,7 @@ public class Frame {
     protected JPanel headerInfo;
     private final int mapSquare=500;
     protected MapPanel mapPanel;
+    protected TourPanel tourPanel;
     protected Controller controller;
     protected ButtonListener buttonListener;
 
@@ -135,11 +136,15 @@ public class Frame {
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        TourPanel tourPanel = new TourPanel(rightPanel, headerInfo, buttonListener, this.mapPanel, req);
+        tourPanel = new TourPanel(rightPanel, headerInfo, buttonListener, this.mapPanel, req);
         tourPanel.loadRequest(req);
     }
 
     public void loadMap(MapData loadedMap) {
         mapPanel.loadMap(loadedMap);
     }
+
+    public void editPoint(int id) {tourPanel.editPoint(id);}
+
+    public void confirmEdit(int i, String s, String s1) {tourPanel.confirmEdit(i, s, s1);}
 }

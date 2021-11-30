@@ -16,6 +16,7 @@ public class TourPanel {
     protected MapPanel mapPanel;
     protected ButtonListener buttonListener;
     protected Request req;
+    protected HashMap<Integer, JPanel> jpanelList;
 
 
     public TourPanel(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapPanel mapPanel, Request req) {
@@ -24,6 +25,7 @@ public class TourPanel {
         this.headerInfo = headerInfo;
         this.mapPanel = mapPanel;
         this.req = req;
+        this.jpanelList = new HashMap<>();
 
         rightPanel.setBackground(new Color(40,40,40));
 
@@ -82,9 +84,9 @@ public class TourPanel {
                 JPanel buttonBlock = new JPanel();
                 buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
                 JButton editButton = new JButton("E");
-                editButton.setActionCommand("editRow" + 1);
+                editButton.setActionCommand("editRow" + unId);
                 JButton deleteButton = new JButton("D");
-                deleteButton.setActionCommand("deleteRow" + 1);
+                deleteButton.setActionCommand("deleteRow" + unId);
 
                 buttonBlock.add(editButton);
                 buttonBlock.add(deleteButton);
@@ -96,15 +98,9 @@ public class TourPanel {
                 row.add(duration);
                 row.add(buttonBlock);
 
-
-
-
-           // }
-
-
         }
 
-
+        jpanelList.put(Integer.valueOf(unId), row);
         return row;
     }
 
@@ -125,6 +121,20 @@ public class TourPanel {
         map.setMapData(mapPanel.getMapData());
         map.setReq(req);
         map.repaint();
+    }
+
+    public void editPoint(int id){
+        JPanel point = jpanelList.get(id);
+        point.setBackground(Color.MAGENTA);
+        JButton confirmEdit = new JButton("Confirm Edition");
+        confirmEdit.addActionListener(buttonListener);
+        point.add(confirmEdit);
+    }
+
+    public void confirmEdit(int i, String s, String s1){
+        System.out.println("TourPanel.confirmEdit");
+        // TODO : lier avec le modèle de données
+
     }
 
 }

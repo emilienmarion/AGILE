@@ -73,10 +73,11 @@ public class Controller {
         //frame.deleteRow(Integer.valueOf(i));
     }
 
-    public void editRow(String i) {
+    public void editPoint(String i) {
         System.out.println("Controller.editRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
-        //frame.editRow(Integer.valueOf(i));
+        frame.editPoint(Integer.valueOf(i));
+        frame.display();
     }
 
     public MapData getMd() {
@@ -90,7 +91,9 @@ public class Controller {
 
     public void placerPoint(Request req) {
 
+    }
 
+    public void confirmPointEdition() {frame.confirmEdit(0, "77 rue Antoine labeuh", "22h");
     }
 }
 
