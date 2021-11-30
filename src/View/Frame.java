@@ -28,7 +28,7 @@ public class Frame {
     public Frame(MapData md) {
         controller = new Controller(this);
         controller.setMd(md);
-        buttonListener = new ButtonListener(controller);
+        buttonListener = new ButtonListener(controller, this);
         initFrame();
         mapView = new MapView(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
         initLoaderSide();
@@ -136,7 +136,7 @@ public class Frame {
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller);
         tourView.loadRequest(req);
     }
 
@@ -147,6 +147,5 @@ public class Frame {
     public void editPoint(int id) {
         tourView.editPoint(id);}
 
-    public void confirmEdit(int i, String s, String s1) {
-        tourView.confirmEdit(i, s, s1);}
+    public void confirmEdit(int i) {tourView.confirmEdit(i);}
 }
