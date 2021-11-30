@@ -5,6 +5,7 @@ import java.awt.*;
 
 import Controller.*;
 import Model.MapData;
+import Model.Request;
 
 public class Frame {
 
@@ -22,19 +23,21 @@ public class Frame {
     private Map map;
     private final int mapSquare=500;
     protected MapPanel mapPanel;
-
+    private MapData md;
     protected Controller controller;
     protected ButtonListener buttonListener;
 
 
-
     public Frame(MapData md) {
         controller = new Controller(this);
+        this.md=md;
+        controller.setMd(md);
         buttonListener = new ButtonListener(controller);
         initFrame();
         mapPanel = new MapPanel(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
         initLoaderSide();
     }
+
 
     private void initFrame()
     {
@@ -92,8 +95,8 @@ public class Frame {
         mainPanel.add(headerInfo);
         mainPanel.add(splitPanel);
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
-
     }
+
 
     private void initLoaderSide() {
         loadMapButton = new JButton("Load map");
@@ -125,7 +128,14 @@ public class Frame {
         frame.setVisible(true);
     }
 
-    public void switchToTourView()
+    public void PlacerPoint()
+    {
+        //map.drawPickUp();
+
+    }
+
+
+    public void switchToTourView(Request req)
     {
         // Reset right panel
         rightPanel.remove(Box.createVerticalGlue());
@@ -133,6 +143,9 @@ public class Frame {
         rightPanel.remove(Box.createRigidArea(new Dimension(0,20)));
         rightPanel.remove(loadTourButton);
         rightPanel.remove(Box.createVerticalGlue());
+        map.setMapData(this.md);
+        map.setReq(req);
+        map.repaint();
 
         // Setup with the new design
         TourPanel tourPanel = new TourPanel(rightPanel, buttonListener);
