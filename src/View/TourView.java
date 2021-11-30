@@ -109,7 +109,7 @@ public class TourView {
 
     public void editPoint(int id){
         JPanel point = listPoints.get(id);
-        point.setBackground(Color.MAGENTA);
+        point.setBackground(Color.GREEN);
     }
 
 }
