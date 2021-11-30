@@ -98,13 +98,8 @@ public class Map extends JPanel {
                             g.setColor(Color.blue);
                             g.fillOval(Coor[0],Coor[1],10,10);
                         }
-
-
                     }
-
                 }
-
-
             }
         }
 
