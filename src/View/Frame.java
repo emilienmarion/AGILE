@@ -135,7 +135,7 @@ public class Frame {
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        TourPanel tourPanel = new TourPanel(rightPanel, headerInfo, buttonListener, this.mapPanel);
+        TourPanel tourPanel = new TourPanel(rightPanel, headerInfo, buttonListener, this.mapPanel, req);
         tourPanel.loadRequest(req);
     }
 

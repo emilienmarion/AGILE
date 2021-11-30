@@ -1,10 +1,12 @@
 package View;
 
 import Controller.Controller;
+import Model.Point;
 import Model.Request;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class TourPanel {
     protected JFrame frame;
@@ -13,13 +15,15 @@ public class TourPanel {
     protected JScrollPane scrollPane;
     protected MapPanel mapPanel;
     protected ButtonListener buttonListener;
+    protected Request req;
 
 
-    public TourPanel(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapPanel mapPanel) {
+    public TourPanel(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapPanel mapPanel, Request req) {
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
         this.mapPanel = mapPanel;
+        this.req = req;
 
         rightPanel.setBackground(new Color(40,40,40));
 
@@ -33,9 +37,13 @@ public class TourPanel {
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
 
         // TODO: lier le modèle à la vue via Observer
-        for(int i = 0; i < 50; i++)
-        {
-            componentToScroll.add(createJPanelPoint(i));
+        Point point ;
+        HashMap<String, Point> listePoint = req.getListePoint();
+        Point depot = req.getDepot();
+        componentToScroll.add(createJPanelPoint(depot.getId(), depot.getType(), depot.getDuration()));
+        for(String s : listePoint.keySet()){
+            point = listePoint.get(s);
+            componentToScroll.add(createJPanelPoint(point.getId(), point.getType(), point.getDuration()));
         }
 
         scrollPane = new JScrollPane(componentToScroll);
@@ -52,34 +60,50 @@ public class TourPanel {
         initHeaderTour();
     }
 
-    protected JPanel createJPanelPoint(int i)
+    protected JPanel createJPanelPoint(String unId, String unType, int uneDuration)
     {
         // TODO : Faire marcher les logos
         ImageIcon pickupIcon = new ImageIcon("../img/iconTestBlack.png");
 
         JPanel row = new JPanel();
-        row.setName(String.valueOf(i));
+        row.setName(String.valueOf(1)); //jsp à quoi ça sert
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-        JLabel type = new JLabel("pickup");
 
-        JLabel place = new JLabel(i+" rue JCVD \n 69100 Villeurbanne");
+        System.out.println("request : " + this.req);
+        if(this.req!=null) {
+            HashMap<String, Point> listePoint = req.getListePoint();
+            System.out.println("point : " +unId);
 
-        JPanel buttonBlock = new JPanel();
-        buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
-        JButton editButton = new JButton("E");
-        editButton.setActionCommand("editRow"+i);
-        JButton deleteButton = new JButton("D");
-        deleteButton.setActionCommand("deleteRow"+i);
-
-        buttonBlock.add(editButton);
-        buttonBlock.add(deleteButton);
-        editButton.addActionListener(buttonListener);
-        deleteButton.addActionListener(buttonListener);
+                JLabel id = new JLabel(unId+ " ");
+                JLabel type = new JLabel(unType + " ");
+                JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
 
 
-        row.add(type);
-        row.add(place);
-        row.add(buttonBlock);
+                JPanel buttonBlock = new JPanel();
+                buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
+                JButton editButton = new JButton("E");
+                editButton.setActionCommand("editRow" + 1);
+                JButton deleteButton = new JButton("D");
+                deleteButton.setActionCommand("deleteRow" + 1);
+
+                buttonBlock.add(editButton);
+                buttonBlock.add(deleteButton);
+                editButton.addActionListener(buttonListener);
+                deleteButton.addActionListener(buttonListener);
+
+                row.add(id);
+                row.add(type);
+                row.add(duration);
+                row.add(buttonBlock);
+
+
+
+
+           // }
+
+
+        }
+
 
         return row;
     }
