@@ -34,7 +34,7 @@ public class PointLocater extends MouseAdapter {
             HashMap<String, Model.Point> listePoint = map.getReq().getListePoint();
 
 
-            //Parcourir les point de la requete et comparer less coordonées du point cliqué pour voir si elle corespond
+            //Parcourir les point de la requete et comparer les coordonées du point cliqué pour voir si elle corespond
             for (String s : listePoint.keySet()) {
                 float latitude=listePoint.get(s).getLatitudeSurPanel();
                 float longitude= listePoint.get(s).getLongitudeSurPanel();

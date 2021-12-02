@@ -18,7 +18,7 @@ public class TourView {
     protected MapView mapView;
     protected ButtonListener buttonListener;
     protected Request req;
-    protected HashMap<Integer, JPanel> jpanelList;
+    protected HashMap<String, JPanel> jpanelList;
     protected Controller controller;
 
 
@@ -105,7 +105,7 @@ public class TourView {
 
         }
 
-        jpanelList.put(Integer.valueOf(unId), row);
+        jpanelList.put(unId, row);
         return row;
     }
 
