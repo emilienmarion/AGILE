@@ -146,6 +146,10 @@ public class TourView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.confirmPointEdition(id, 0, fieldLocation.getText(), fieldHour.getText());
+                String idToChange = String.valueOf(id); //recupere l'id du point à changer
+                Point pointToChange = req.getListePoint().get(idToChange); //viens recuperer le point correspondant dans la liste des requetes
+                int durationToChange = Integer.valueOf(fieldHour.getText()); //ici j'ai changé que la duration parce que les points n'ont pas encore d'heure de passage mais on changera ça quand on aura l'algo
+                pointToChange.setDuration(durationToChange); //idem que ligne precedente
             }
         });
 
