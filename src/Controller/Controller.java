@@ -76,7 +76,7 @@ public class Controller {
     public void editPoint(String i) {
         System.out.println("Controller.editRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
-        frame.editPoint(Integer.valueOf(i));
+        frame.editPoint(i);
         frame.display();
     }
 
@@ -93,7 +93,7 @@ public class Controller {
 
     }
 
-    public void confirmPointEdition(int id, int type, String location, String hour) {
+    public void confirmPointEdition(String id, int type, String location, String hour) {
         System.out.println("Controller.confirmEdit");
         System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
         frame.confirmEdit(id);

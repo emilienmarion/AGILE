@@ -128,7 +128,7 @@ public class TourView {
         map.repaint();
     }
 
-    public void editPoint(int id){
+    public void editPoint(String id){
         JPanel point = jpanelList.get(id);
         point.setBackground(Color.MAGENTA);
         int type;
@@ -158,7 +158,7 @@ public class TourView {
         point.add(confirmEdit);
     }
 
-    public void confirmEdit(int id){
+    public void confirmEdit(String id){
         System.out.println("TourPanel.confirmEdit");
         // TODO : changer aspect de la row
         JPanel point = jpanelList.get(id);

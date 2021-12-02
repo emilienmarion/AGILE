@@ -144,8 +144,8 @@ public class Frame {
         mapView.loadMap(loadedMap);
     }
 
-    public void editPoint(int id) {
+    public void editPoint(String id) {
         tourView.editPoint(id);}
 
-    public void confirmEdit(int i) {tourView.confirmEdit(i);}
+    public void confirmEdit(String i) {tourView.confirmEdit(i);}
 }
