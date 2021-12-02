@@ -25,7 +25,7 @@ public class Frame {
     public Frame() {
         System.out.println("Frame.constructor");
 
-        controller = new Controller();
+        controller = new Controller(this);
         buttonListener = new buttonListener(controller);
 
         // Window design
@@ -70,6 +70,7 @@ public class Frame {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         headerInfo = new JPanel();
+        headerInfo.setPreferredSize(new Dimension(0, 0));
         splitPanel = new JPanel();
         splitPanel.setLayout(new GridLayout(1, 2));
         leftPanel = new JPanel();
@@ -91,22 +92,21 @@ public class Frame {
     {
         System.out.println("Frame.initMapSide");
         mapPath = new JLabel("src/petiteMap.csv");
+        mapPath.setForeground(Color.WHITE);
 
-        leftPanel.setBackground(Color.GRAY);
+        leftPanel.setBackground(new Color(40,40,40));
         leftPanel.setPreferredSize(new Dimension(500, 500));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         map = new JPanel();
-        map.setPreferredSize(new Dimension(mapWidth, mapHeight));
-        map.setMaximumSize(new Dimension(mapWidth, mapHeight));
-        map.setAlignmentX(Component.CENTER_ALIGNMENT);
+        map.setPreferredSize(new Dimension(200, 200));
+        //map.setMaximumSize(new Dimension(200, 200));
+        //map.setAlignmentX(Component.CENTER_ALIGNMENT);
         map.setBackground(Color.PINK);
 
         leftPanel.add(Box.createVerticalGlue());
-        leftPanel.add(Box.createHorizontalGlue());
         leftPanel.add(map);
         leftPanel.add(mapPath);
-        leftPanel.add(Box.createHorizontalGlue());
         leftPanel.add(Box.createVerticalGlue());
     }
 
@@ -116,7 +116,7 @@ public class Frame {
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
-        headerInfo.setBackground(Color.GREEN);
+        headerInfo.setBackground(new Color(86,86,86));
 
         //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
     }
@@ -128,16 +128,11 @@ public class Frame {
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        loadTourButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switchToTourView();
-            }
-        });
+        loadTourButton.addActionListener(buttonListener);
 
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
-        rightPanel.setBackground(Color.RED);
+        rightPanel.setBackground(new Color(40,40,40));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         rightPanel.add(Box.createVerticalGlue());
@@ -149,6 +144,12 @@ public class Frame {
 
     public void initTourSide() {
         System.out.println("Frame.initTourSide");
+        rightPanel.setBackground(new Color(40,40,40));
+        JPanel test = new JPanel();
+        JLabel pathLabel = new JLabel("./uberIf/requests");
+        pathLabel.setForeground(Color.WHITE);
+        test.add(pathLabel);
+        test.setBackground(new Color(40,40,40));
 
         loadTourButton = new JButton("Load Tour");
         JButton loadTourButton1 = new JButton("Load Tour");
@@ -157,7 +158,7 @@ public class Frame {
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
 
-        for(int i = 0; i < 100; i++)
+        for(int i = 0; i < 50; i++)
         {
             componentToScroll.add(createJPanelPoint(i));
         }
@@ -165,19 +166,24 @@ public class Frame {
         scrollPane = new JScrollPane(componentToScroll);
         scrollPane.setPreferredSize(new Dimension(400, 400));
         scrollPane.setMaximumSize(new Dimension(400, 400));
+        scrollPane.setBackground(new Color(61,61,61));
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(scrollPane);
+        rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
     }
 
     protected JPanel createJPanelPoint(int i)
     {
+        ImageIcon pickupIcon = new ImageIcon("./Images/");
         JPanel row = new JPanel();
         JLabel type = new JLabel(new ImageIcon("./Images/icons8-edit-150.png"));
 
-        JLabel place = new JLabel(i+"66 rue JCVD \n 69100 Villeurbanne");
+        JLabel place = new JLabel(i+" rue JCVD \n 69100 Villeurbanne");
+        // TODO : Identifier chaque bouton avec un id pour le buttonListener
         JButton editButton = new JButton("I");
+        editButton.addActionListener(buttonListener);
 
         row.add(type);
         row.add(place);
