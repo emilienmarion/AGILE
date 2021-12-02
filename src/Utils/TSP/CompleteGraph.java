@@ -4,7 +4,7 @@ public class CompleteGraph implements TSPGraph{
     private static final int MAX_COST = 40;
     private static final int MIN_COST = 10;
     int nbVertices;
-    int[][] cost;
+    float[][] cost;
     /**
      * Create a complete directed graph such that each edge has a weight within [MIN_COST,MAX_COST]
      * @param nbVertices
@@ -12,7 +12,7 @@ public class CompleteGraph implements TSPGraph{
     public CompleteGraph(int nbVertices){
         this.nbVertices = nbVertices;
         int iseed = 1;
-        cost = new int[nbVertices][nbVertices];
+        cost = new float[nbVertices][nbVertices];
         for (int i=0; i<nbVertices; i++){
             for (int j=0; j<nbVertices; j++){
                 if (i == j) cost[i][j] = -1;
@@ -24,8 +24,20 @@ public class CompleteGraph implements TSPGraph{
                 }
             }
         }
-        for(int[] i:cost){
-            for (int k:i){
+        for(float[] i:cost){
+            for (float k:i){
+                System.out.print(k);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+    }
+    public CompleteGraph(int nbVertices,float[][] cost){
+        System.out.println("Complete Graph");
+        this.nbVertices = nbVertices;
+        this.cost=cost;
+        for(float[] i:cost){
+            for (float k:i){
                 System.out.print(k);
                 System.out.print(" ");
             }
@@ -39,7 +51,7 @@ public class CompleteGraph implements TSPGraph{
     }
 
     @Override
-    public int getCost(int i, int j) {
+    public float getCost(int i, int j) {
         if (i<0 || i>=nbVertices || j<0 || j>=nbVertices)
             return -1;
         return cost[i][j];

@@ -43,9 +43,9 @@ public class Node {
         String msg=new String();
         if (predecessor!=null) msg=Float.toString(predecessor.getCost());
         else msg="null";
-        return "Path{" +
-                "cost=" + cost +" intersection="+intersection.toString()+
-                ", predecessor=" +msg +
+        return "Node{" +
+                "cost=" + cost +
+                ", id="+intersection.getId()+
                 '}';
     }
 }

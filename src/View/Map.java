@@ -4,6 +4,7 @@ import Model.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -13,7 +14,7 @@ public class Map extends JPanel {
     private int sizeX;
     private int sizeY;
     private MapData mapData;
-    private Graph completeGraph;
+    private ArrayList<Path> way;
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
         mapData=md;
@@ -27,12 +28,12 @@ public class Map extends JPanel {
         this.setLayout(new GridBagLayout());
     }
 
-    public Graph getCompleteGraph() {
-        return completeGraph;
+    public ArrayList<Path> getWay() {
+        return way;
     }
 
-    public void setCompleteGraph(Graph completeGraph) {
-        this.completeGraph = completeGraph;
+    public void setWay(ArrayList<Path> w) {
+        this.way = w;
     }
 
     private int[] getCoords(float longitude, float latitude){
@@ -40,9 +41,9 @@ public class Map extends JPanel {
         int y=Math.round((latitude- mapData.getMinY())*scale);
         return new int[]{x,y};
     }
-    private void drawGraph(Graph completeGraph,Graphics g){
+    private void drawGraph(ArrayList<Path> way,Graphics g){
         System.out.println("drawGraph");
-        ArrayList<Vertice> arrayArc=completeGraph.getContent();
+        System.out.println(way);
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
         ac.add(Color.blue);
@@ -53,9 +54,7 @@ public class Map extends JPanel {
         ac.add(Color.orange);
         ac.add(Color.cyan);
         g.setColor(ac.get(index));
-        //for (Vertice v:arrayArc){
-            Vertice v=arrayArc.get(6);
-            Path p=v.getAssociatedPath();
+        for (Path p:way){
             Node n=p.getPath().get(0);
             Intersection start=n.getIntersection();
             int[] coordA=getCoords(start.getLongitude(),start.getLatitude());
@@ -80,8 +79,8 @@ public class Map extends JPanel {
             g.fillRect(coordB[0],coordB[1],10,10);
             g.setColor(ac.get(index));
             if (index!=6)index++;
-        //}
-        System.out.println(arrayArc);
+        }
+        System.out.println(way);
         g.setColor(Color.black);
     }
     public void paintComponent(Graphics g){
@@ -99,8 +98,8 @@ public class Map extends JPanel {
                 int destinationC[]=getCoords(destinationLongitude,destinationLatitude);
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
             }
-            if (completeGraph!=null){
-                drawGraph(completeGraph,g);
+            if (way!=null){
+                drawGraph(way,g);
             }
         }
     }

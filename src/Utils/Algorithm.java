@@ -1,6 +1,9 @@
 package Utils;
 
 import Model.*;
+import Utils.TSP.TSP;
+import Utils.TSP.TSP1;
+import Utils.TSP.TSPGraph;
 
 import java.util.*;
 
@@ -48,7 +51,7 @@ public class Algorithm {
                     float newWay=paths.get(current.getId()).getCost();
                     float newCost=newWay+voisins.get(id);
                     String ide=current.getId();
-                    Node p=new Node(newCost,current,paths.get(ide));
+                    Node p=new Node(newCost,intersections.get(id),paths.get(ide));
                     paths.put(id,p);
                     queueKeys.add(newCost);
                     queueIntersection.add(intersections.get(id));
@@ -58,7 +61,7 @@ public class Algorithm {
                     float oldCost=p.getCost();
                     float newWay=paths.get(current.getId()).getCost();
                     float newCost=newWay+voisins.get(id);
-                    if (p.getCost()>newCost){
+                    if (oldCost>newCost){
                         p.setCost(newCost);
                         p.setPredecessor(paths.get(current.getId()));
                     }
@@ -83,14 +86,42 @@ public class Algorithm {
         return p;
     }
     public static Graph createGraph(HashMap<String,Point> pointList,MapData loadedMap){
-        Graph g=new Graph();
-        for (String pointId:pointList.keySet()) {
+        System.out.println("createGraph");
+        Set<String> pointListKeySet=pointList.keySet();
+        int length=pointListKeySet.size();
+        System.out.println(length);
+        Graph g=new Graph(length);
+        for (String pointId:pointListKeySet) {
             Point p=pointList.get(pointId);
             HashMap<String, Node> result = dijkstra(loadedMap.getIntersections(), p);
-            for (String s : pointList.keySet()) {
+            for (String s : pointListKeySet) {
                 g.addVertice(Algorithm.getPath(result.get(s)).toVertice());
             }
         }
         return g;
+    }
+    public static ArrayList<Path> TSP(Graph g){
+        TSPGraph cg= GraphConverter.toTSPGraph(g);
+        TSP tsp=new TSP1();
+        long startTime = System.currentTimeMillis();
+        tsp.searchSolution(20000, cg);
+        System.out.println("Solution of cost "+tsp.getSolutionCost()+" found in "
+                +(System.currentTimeMillis() - startTime)+"ms : ");
+        ArrayList<ArrayList<Vertice>> tv=g.getContent();
+        int dim=g.getDimension();
+        ArrayList<Path> result=new ArrayList<Path>();
+        for (int i=0; i<dim-1; i++) {
+            Vertice v = tv.get(tsp.getSolution(i)).get(tsp.getSolution(i + 1));
+            System.out.print(v);
+            System.out.print("-->");
+            System.out.println(v.getAssociatedPath());
+            result.add(v.getAssociatedPath());
+        }
+        Vertice v=tv.get(tsp.getSolution(dim-1)).get(0);
+        System.out.print(v);
+        System.out.print("-->");
+        System.out.println(v.getAssociatedPath());
+        result.add(v.getAssociatedPath());
+        return result;
     }
 }

@@ -42,7 +42,6 @@ public class Path {
     public String toString() {
         return "Path{" +
                 "id=" + id +
-                ", length="+path.get(0).getCost()+
                 '}';
     }
 }
