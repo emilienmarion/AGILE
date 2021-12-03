@@ -1,6 +1,8 @@
 package View;
 
+
 import Model.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +16,15 @@ public class Map extends JPanel {
     private int sizeX;
     private int sizeY;
     private MapData mapData;
+
     private ArrayList<Path> way;
+
+    private Request req;
+
+
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
+        addMouseListener(new PointLocater(this));
         mapData=md;
         sizeX=(int)Math.round(diffX*echelon);
         sizeY=(int)Math.round(diffY*echelon);
@@ -41,6 +49,7 @@ public class Map extends JPanel {
         int y=Math.round((latitude- mapData.getMinY())*scale);
         return new int[]{x,y};
     }
+
     private void drawGraph(ArrayList<Path> way,Graphics g){
         System.out.println("drawGraph");
         System.out.println(way);
@@ -83,6 +92,25 @@ public class Map extends JPanel {
         System.out.println(way);
         g.setColor(Color.black);
     }
+
+
+    public MapData getMapData() {
+        return mapData;
+    }
+
+    public void setMapData(MapData mapData) {
+        this.mapData = mapData;
+    }
+
+    public Request getReq() {
+        return req;
+    }
+
+    public void setReq(Request req) {
+        this.req = req;
+    }
+
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         HashMap<String, Intersection> intersections=new HashMap<String,Intersection>(mapData.getIntersections());
@@ -96,11 +124,53 @@ public class Map extends JPanel {
                 float destinationLongitude=intersections.get(neighborId).getLongitude();
                 int originC[]=getCoords(originLongitude,originLatitude);
                 int destinationC[]=getCoords(destinationLongitude,destinationLatitude);
+                g.setColor(Color.black);
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
+
+                if(req!=null){
+                    HashMap<String,Point> listePoint=req.getListePoint();
+
+                    float LatitudeDep =req.getDepot().getLatitude();
+                    float LongitudeDep=req.getDepot().getLongitude();
+                    int CoorDep[]=getCoords(LongitudeDep,LatitudeDep);
+                    req.getDepot().setLongitudeSurPanel(CoorDep[1]);
+                    req.getDepot().setLatitudeSurPanel(CoorDep[0]);
+
+                    g.setColor(Color.green);
+                    g.fillRect(CoorDep[0],CoorDep[1],10,10);
+
+
+                    for(String s:listePoint.keySet()){
+                        float Latitude=listePoint.get(s).getLatitude();
+                        float Longitude= listePoint.get(s).getLongitude();
+
+                        int Coor[]=getCoords(Longitude,Latitude);
+                        listePoint.get(s).setLatitudeSurPanel(Coor[0]);
+                        listePoint.get(s).setLongitudeSurPanel(Coor[1]);
+
+                        if(listePoint.get(s).getType().equals("pickUp")){
+                            g.setColor(Color.red);
+                            g.fillRect(Coor[0],Coor[1],10,10);
+                        }
+                        if(listePoint.get(s).getType().equals("delivery")){
+                            g.setColor(Color.blue);
+                            g.fillOval(Coor[0],Coor[1],10,10);
+                        }
+                    }
+                }
             }
             if (way!=null){
                 drawGraph(way,g);
             }
         }
+
+
+
+
+
     }
+
+
+
+
 }
