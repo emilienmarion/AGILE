@@ -1,6 +1,7 @@
 package View;
 
 
+import Controller.Controller;
 import Model.*;
 import Model.Point;
 
@@ -21,10 +22,12 @@ public class Map extends JPanel {
     private ArrayList<Path> way;
 
     private Request req;
+    protected Controller controller;
 
 
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
+
         addMouseListener(new PointLocater(this));
         mapData=md;
         sizeX=(int)Math.round(diffX*echelon);
@@ -56,6 +59,8 @@ public class Map extends JPanel {
         //System.out.println(way);
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
+
+
         ac.add(Color.blue);
         ac.add(Color.red);
         ac.add(Color.pink);
@@ -63,6 +68,18 @@ public class Map extends JPanel {
         ac.add(Color.yellow);
         ac.add(Color.orange);
         ac.add(Color.cyan);
+        ac.add(Color.magenta);
+        ac.add(new Color(169, 109, 54));
+        ac.add(new Color(6, 238, 173));
+       // ac.add(Color.magenta);
+        ac.add(new Color(229, 47, 245));
+        ac.add(new Color(246, 115, 135));
+        ac.add(new Color(234, 239, 163));
+        ac.add(new Color(241, 115, 115));
+        ac.add(new Color(136, 159, 255));
+        ac.add(new Color(76, 177, 255));
+        ac.add(new Color(122, 3, 101));
+        ac.add(new Color(255, 131, 77));
         g.setColor(ac.get(index));
         for (Path p:way){
             Node n=p.getPath().get(0);
@@ -88,9 +105,10 @@ public class Map extends JPanel {
             int[] coordB=getCoords(end.getLongitude(),end.getLatitude());
             g.fillRect(coordB[0],coordB[1],10,10);
             g.setColor(ac.get(index));
-            if (index!=6)index++;
+            if (index!=17)index++;
         }
         //System.out.println(way);
+
         g.setColor(Color.black);
     }
 
@@ -170,8 +188,6 @@ public class Map extends JPanel {
 
 
     }
-
-
 
 
 }
