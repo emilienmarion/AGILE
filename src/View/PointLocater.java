@@ -1,6 +1,8 @@
 package View;
 
 
+import Controller.Controller;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
@@ -11,10 +13,11 @@ import java.util.HashMap;
 
 public class PointLocater extends MouseAdapter {
 
-    Map map;
+    private Map map;
+    private Controller controller;
 
-
-    public PointLocater(Map map1) {
+    public PointLocater(Map map1, Controller controller) {
+       this.controller=controller;
         map = map1;
     }
 
@@ -28,7 +31,8 @@ public class PointLocater extends MouseAdapter {
            // System.out.println("Latitude "+latitudeDep);
             //System.out.println("Longitude : "+longiteDep);
             if (p.getX()<latitudeDep+15 && p.getX()>latitudeDep-15 &&  p.getY()<longiteDep+20 && p.getY()>longiteDep-20){
-                System.out.println("je suis dans ce coordonée");
+               // System.out.println("je suis dans ce coordonée");
+                controller.highLight(map.getReq().getDepot().getId());
             }
 
             HashMap<String, Model.Point> listePoint = map.getReq().getListePoint();
@@ -45,7 +49,9 @@ public class PointLocater extends MouseAdapter {
 
                    //ici on rajoute les infos du point
 
-                    System.out.println("je suis dans ce coordonée");
+                  // map.
+                    //System.out.println("je suis dans ce coordonée");
+                    controller.highLight(s);
                 }
 
 

@@ -48,7 +48,7 @@ public class Frame {
         JMenu fileMenu = new JMenu("File");
         //create menu items
         JMenuItem loadTourMenuItem = new JMenuItem("Load tour");
-        loadTourMenuItem.setActionCommand("Load tour");
+        loadTourMenuItem.setActionCommand("Load Tour");
         loadTourMenuItem.addActionListener(buttonListener);
         JMenuItem loadMapMenuItem = new JMenuItem("Load map");
         loadMapMenuItem.setActionCommand("Load map");
@@ -129,6 +129,13 @@ public class Frame {
 
     }
 
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    public void setMapView(MapView mapView) {
+        this.mapView = mapView;
+    }
 
     public void switchToTourView(Request req)
     {
@@ -140,6 +147,8 @@ public class Frame {
         tourView.loadRequest(req);
     }
 
+    public void loadTour(Request req){tourView.loadRequest(req);}
+
     public void loadMap(MapData loadedMap) {
         mapView.loadMap(loadedMap);
     }
@@ -147,5 +156,10 @@ public class Frame {
     public void editPoint(String id) {
         tourView.editPoint(id);}
 
+    public void highlight(String id) {
+        tourView.highlight(id);}
+
     public void confirmEdit(String i) {tourView.confirmEdit(i);}
 }
+
+

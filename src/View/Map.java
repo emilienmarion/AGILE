@@ -1,6 +1,7 @@
 package View;
 
 
+import Controller.Controller;
 import Model.*;
 import Model.Point;
 
@@ -20,9 +21,15 @@ public class Map extends JPanel {
     private Graph graph;
 
     private Request req;
+
+    protected Controller controller;
+
+
+
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
-        addMouseListener(new PointLocater(this));
+
+        //addMouseListener(new PointLocater(this));
         mapData=md;
         sizeX=(int)Math.round(diffX*echelon);
         sizeY=(int)Math.round(diffY*echelon);
@@ -47,10 +54,16 @@ public class Map extends JPanel {
         int y=Math.round((latitude- mapData.getMinY())*scale);
         return new int[]{x,y};
     }
+
     private void drawGraph(Graph graph,Graphics g){
         ArrayList<Path> way=graph.getSolution();
+
+
+    
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
+
+
         ac.add(Color.blue);
         ac.add(Color.red);
         ac.add(Color.pink);
@@ -58,6 +71,18 @@ public class Map extends JPanel {
         ac.add(Color.yellow);
         ac.add(Color.orange);
         ac.add(Color.cyan);
+        ac.add(Color.magenta);
+        ac.add(new Color(169, 109, 54));
+        ac.add(new Color(6, 238, 173));
+       // ac.add(Color.magenta);
+        ac.add(new Color(229, 47, 245));
+        ac.add(new Color(246, 115, 135));
+        ac.add(new Color(234, 239, 163));
+        ac.add(new Color(241, 115, 115));
+        ac.add(new Color(136, 159, 255));
+        ac.add(new Color(76, 177, 255));
+        ac.add(new Color(122, 3, 101));
+        ac.add(new Color(255, 131, 77));
         g.setColor(ac.get(index));
         for (Path p:way){
             Node n=p.getPath();
@@ -84,8 +109,9 @@ public class Map extends JPanel {
             if (end.getType().equals("delivery")) g.fillRect(coordB[0],coordB[1],10,10);
             else g.fillOval(coordB[0],coordB[1],10,10);
             g.setColor(ac.get(index));
-            if (index!=6)index++;
+            if (index!=17)index++;
         }
+
         g.setColor(Color.black);
     }
 
@@ -124,7 +150,7 @@ public class Map extends JPanel {
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
 
                 if(req!=null){
-                    HashMap<String,Point> listePoint=req.getListePoint();
+                    HashMap<String, Point> listePoint=req.getListePoint();
 
                     float LatitudeDep =req.getDepot().getLatitude();
                     float LongitudeDep=req.getDepot().getLongitude();
@@ -165,8 +191,6 @@ public class Map extends JPanel {
 
 
     }
-
-
 
 
 }
