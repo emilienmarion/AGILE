@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MapData {
+
     private HashMap<String,Intersection> intersections;
     private float minX;
     private float maxX;

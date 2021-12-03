@@ -1,33 +1,82 @@
 package Controller;
 
 
-import Model.MapData;
+import Model.*;
+import Utils.Algorithm;
+import Utils.GraphConverter;
+import Utils.TSP.CompleteGraph;
+import Utils.TSP.TSP;
+import Utils.TSP.TSP1;
+import Utils.TSP.TSPGraph;
 import Utils.XmlUtils;
 import View.*;
+import View.Map;
+
+
+import java.util.*;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
+import javax.swing.*;
+
 
 
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
-        System.out.println(loadedMap);
-        System.out.println("hello World");
-        Window frame=new Window(1000,700,loadedMap);
 
-        // Window frame=new Window(1000,700,loadedMap);
-        /*HashMap<String,HashMap<String,Float>> test=new HashMap<String, HashMap<String, Float>>();
-        HashMap <String,Float> current=new HashMap<String,Float>();
-        current.put("latitude",new Float (50.2));
-        current.put("longitude",new Float(40.3));
-        HashMap <String,Float> current2=new HashMap<String,Float>();
-        current2.put("latitude",new Float (110.2));
-        current2.put("longitude",new Float(450.3));
-        test.put("maxi",current2);
-        test.put("mini",current);
-        System.out.println(test);
-        test.get("maxi").replace("latitude",new Float(5.5));
-        System.out.println(test);*/
+
+        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
+
+       // System.out.println(loadedMap);
+
+       // System.out.println("hello World");
+        Frame frame = new Frame(loadedMap);
+       // Window frame=new Window(1000,700,loadedMap);
+       // Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
+        //System.out.println(loadRequest);
+
+/*
+       HashMap<String,Point> pointList=loadRequest.getListePoint();
+        Graph g=Algorithm.createGraph(pointList,loadedMap);
+        System.out.println(g);
+        ArrayList<Path> ap=Algorithm.TSP(g);
+        System.out.println(ap);
+        Map m=frame.getMapView().getMap();
+        m.setWay(ap);
+        m.repaint();
+*/
+
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        }
+        catch (ClassNotFoundException e) {
+            // handle exception
+        }
+        catch (InstantiationException e) {
+            // handle exception
+        }
+        catch (IllegalAccessException e) {
+            // handle exception
+        }
+
+
+	   // MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
+        //System.out.println(loadedMap);
+
+        //Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
+        //System.out.println(loadRequest);
+
+
+        frame.display();
 
     }
 }

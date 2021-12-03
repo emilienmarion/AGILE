@@ -1,6 +1,7 @@
 
 /.idea
 PLD-AGILE.iml
+PLD_AGILE.iml
 *.class
 *.jar
 /out

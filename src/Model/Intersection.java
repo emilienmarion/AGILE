@@ -7,6 +7,9 @@ public class Intersection {
     protected float latitude;
     protected float longitude;
     protected HashMap<String,Float> neighbors; //Id des voisins avec un cout associé
+    protected float latitudeSurPanel;
+    protected float longitudeSurPanel;
+
     public Intersection() {
         this.neighbors=new HashMap<String,Float>();
     }
@@ -55,7 +58,9 @@ public class Intersection {
     public HashMap<String, Float> getNeighbors() {
         return neighbors;
     }
-
+    public boolean equals(Intersection i){
+        return this.getId().equals(i.getId());
+    }
     @Override
     public String toString() {
         return "Intersection{" +
@@ -64,5 +69,21 @@ public class Intersection {
                 "\n, longitude=" + longitude +
                 "\n, neighbors=" + neighbors +
                 "\n}";
+    }
+
+    public float getLatitudeSurPanel() {
+        return latitudeSurPanel;
+    }
+
+    public void setLatitudeSurPanel(float latitudeSurPanel) {
+        this.latitudeSurPanel = latitudeSurPanel;
+    }
+
+    public float getLongitudeSurPanel() {
+        return longitudeSurPanel;
+    }
+
+    public void setLongitudeSurPanel(float longitudeSurPanel) {
+        this.longitudeSurPanel = longitudeSurPanel;
     }
 }
