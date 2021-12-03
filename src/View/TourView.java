@@ -127,13 +127,13 @@ public class TourView {
 
     public void loadRequest(Request req) {
         System.out.println("ToutPanel.loadRequest");
-       // Map map = mapView.getMap();
+        Map map = mapView.getMap();
        // map.setMapData(mapView.getMapData());
-        //map.setReq(req);
+        map.setReq(req);
         //map.repaint();
 
         HashMap<String,Point> pointList=req.getListePoint();
-        Graph g= Algorithm.createGraph(pointList,mapView.getMap().getMapData());
+        Graph g= Algorithm.createGraph(pointList,map.getMapData());
         System.out.println(g);
         ArrayList<Path> ap=Algorithm.TSP(g);
         System.out.println(ap);
