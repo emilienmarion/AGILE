@@ -5,11 +5,19 @@ import Model.Point;
 import Model.Request;
 import Utils.Algorithm;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import Model.*;
 import Utils.Algorithm;
@@ -19,12 +27,20 @@ public class TourView {
     protected JFrame frame;
     protected JPanel rightPanel;
     protected JPanel headerInfo;
+    protected HeadInfo headDate;
+    protected HeadInfo headDeparture;
+    protected HeadInfo headETA;
+    protected HeadInfo headDuration;
     protected JScrollPane scrollPane;
     protected MapView mapView;
     protected ButtonListener buttonListener;
     protected Request req;
     protected HashMap<String, JPanel> jpanelList;
     protected Controller controller;
+    protected String filename;
+    protected ImageIcon icon;
+
+
 
 
     public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller) {
@@ -36,31 +52,33 @@ public class TourView {
         this.jpanelList = new HashMap<>();
         this.controller = controller;
 
-        rightPanel.setBackground(new Color(40,40,40));
+        rightPanel.setBackground(new Color(40, 40, 40));
 
         JPanel test = new JPanel();
         JLabel pathLabel = new JLabel("./uberIf/requests");
         pathLabel.setForeground(Color.WHITE);
         test.add(pathLabel);
-        test.setBackground(new Color(40,40,40));
+        test.setBackground(new Color(40, 40, 40));
 
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
+        componentToScroll.setBackground(new Color(80,80,80));
 
-        Point point ;
+        Point point;
         HashMap<String, Point> listePoint = req.getListePoint();
         Point depot = req.getDepot();
         componentToScroll.add(createJPanelPoint(depot.getId(), depot.getType(), depot.getDuration()));
-        for(String s : listePoint.keySet()){
+        for (String s : listePoint.keySet()) {
             point = listePoint.get(s);
             componentToScroll.add(createJPanelPoint(point.getId(), point.getType(), point.getDuration()));
         }
 
         scrollPane = new JScrollPane(componentToScroll);
+        scrollPane.setBackground(new Color(80,80,80));
         scrollPane.setPreferredSize(new Dimension(400, 400));
         scrollPane.setMaximumSize(new Dimension(400, 400));
-        scrollPane.setOpaque(true);
-        scrollPane.getViewport().setBackground(Color.black);
+        scrollPane.setOpaque(false);
+        //scrollPane.getViewport().setBackground(Color.black);
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(scrollPane);
@@ -70,81 +88,157 @@ public class TourView {
         initHeaderTour();
     }
 
-    protected JPanel createJPanelPoint(String unId, String unType, int uneDuration)
-    {
+    protected JPanel createJPanelPoint(String unId, String unType, int uneDuration) {
         // TODO : Faire marcher les logos
-        ImageIcon pickupIcon = new ImageIcon("../img/iconTestBlack.png");
+
+        ImageIcon iconEdit = new ImageIcon (new ImageIcon("./img/icons8-edit-150.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        ImageIcon iconDelete = new ImageIcon (new ImageIcon("./img/icons8-trash-240.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+
+        JLabel imageEdit = new JLabel(iconEdit);
+        JLabel imageDelete = new JLabel(iconDelete);
+
 
         JPanel row = new JPanel();
+        row.setBackground(new Color(86,86,86));
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-        row.setPreferredSize(new Dimension(100,30));
-        row.setMaximumSize(new Dimension(200,60));
+        row.setPreferredSize(new Dimension(100, 30));
+        row.setMaximumSize(new Dimension(380, 60));
 
         System.out.println("request : " + this.req);
-        if(this.req!=null) {
+        if (this.req != null) {
             HashMap<String, Point> listePoint = req.getListePoint();
-            System.out.println("point : " +unId);
+
+            //System.out.println("point : " +unId);
 
                 JLabel id = new JLabel(unId+ " ");
                 JLabel type = new JLabel(unType + " ");
                 JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
 
+            JLabel id = new JLabel(unId + " ");
+            JLabel type = new JLabel(unType + " ");
+            JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+            if (unType == "depot") {
+                icon = new ImageIcon (new ImageIcon("./img/icons8-garage-ouvert-24.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+            }
+            else if (unType == "pickUp") {
+                icon = new ImageIcon (new ImageIcon("./img/icons8-give-96.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+            }
+            else {
+                icon = new ImageIcon (new ImageIcon("./img/icons8-location-pin-100.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+            }
 
-                JPanel buttonBlock = new JPanel();
-                buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
-                JButton editButton = new JButton("E");
-                editButton.setActionCommand("editRow" + unId);
-                JButton deleteButton = new JButton("D");
-                deleteButton.setActionCommand("deleteRow" + unId);
+            JLabel image = new JLabel(icon);
 
-                buttonBlock.add(editButton);
-                buttonBlock.add(deleteButton);
-                editButton.addActionListener(buttonListener);
-                deleteButton.addActionListener(buttonListener);
 
-                row.add(id);
-                row.add(type);
-                row.add(duration);
-                row.add(buttonBlock);
+            JPanel buttonBlock = new JPanel();
+            buttonBlock.setBackground(new Color(86,86,86));
+            buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
+            JButton editButton = new JButton();
+            editButton.setBackground(new Color(70,70,70));
+            editButton.add(imageEdit);
+            editButton.setActionCommand("editRow" + unId);
+            JButton deleteButton = new JButton();
+            deleteButton.setBackground(new Color(140,40,40));
+            deleteButton.add(imageDelete);
+            deleteButton.setActionCommand("deleteRow" + unId);
+
+            buttonBlock.add(editButton);
+            buttonBlock.add(deleteButton);
+            editButton.addActionListener(buttonListener);
+            deleteButton.addActionListener(buttonListener);
+
+            row.add(Box.createHorizontalGlue());
+            row.add(image);
+            row.add(id);
+            row.add(type);
+            row.add(duration);
+            row.add(buttonBlock);
+            row.add(Box.createHorizontalGlue());
+            image.setVisible(true);
+            imageDelete.setVisible(true);
+            imageEdit.setVisible(true);
 
         }
-
         jpanelList.put(unId, row);
         return row;
     }
 
     private void initHeaderTour() {
-        //TODO : Déclarer panel de droite avec le scrollbar et les détails des tours
-
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
-        headerInfo.setBackground(new Color(86,86,86));
 
-        //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
+        headerInfo.setBackground(new Color(86,86,86));
+        headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
+        headerInfo.setPreferredSize(new Dimension(1000, 100));
+        headerInfo.setMaximumSize(new Dimension(1000, 100));
+        headDate = new HeadInfo("Date", "-- -- --");
+        headDeparture = new HeadInfo("Depature", "__:__");
+        headETA = new HeadInfo("ETA", "__:__");
+        headDuration = new HeadInfo("Duration", "__:__");
+
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDate);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDeparture);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headETA);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDuration);
+        headerInfo.add(Box.createHorizontalGlue());
+
     }
 
     public void loadRequest(Request req) {
         System.out.println("ToutPanel.loadRequest");
+
         Map map = mapView.getMap();
        // map.setMapData(mapView.getMapData());
         map.setReq(req);
         //map.repaint();
 
+
         map.addMouseListener(new PointLocater(map,controller));
+
         HashMap<String,Point> pointList=req.getListePoint();
         Graph g= Algorithm.createGraph(pointList,map.getMapData());
-        System.out.println(g);
+        //System.out.println(g);
+
         ArrayList<Path> ap=Algorithm.TSP(g);
-        System.out.println(ap);
+        //System.out.println(ap);
         Map m=mapView.getMap();
         m.setWay(ap);
         m.repaint();
 
+        // TODO : Donner les infos de tournée
+        // Changer les variables ci dessous avec les données récupérées
+        String date1 = "21-45-3838";
+        String departure1 = "22:01";
+        String ETA1 = "22:03";
+        String duration1 = "00:02";
 
+        // Change la barre d'information de l'IHM avec les nouvelles données
+        this.setHeadDate(date1);
+        this.setHeadDeparture(departure1);
+        this.setHeadETA(ETA1);
+        this.setHeadDuration(duration1);
 
+        // Mise à jour dans le JPanel
+        headerInfo.removeAll();
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDate);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDeparture);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headETA);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDuration);
+        headerInfo.add(Box.createHorizontalGlue());
+
+        // TODO : Trouver pk ça met pas à jour sur l'IHM
     }
+
 
     public void highlight(String id){
 
@@ -156,7 +250,9 @@ public class TourView {
         point.setBackground(new Color(116, 69, 206));
     }
 
-    public void editPoint(String id){
+    
+    public void editPoint(String id) {
+
         JPanel point = jpanelList.get(id);
         point.setBackground(Color.MAGENTA);
         int type;
@@ -186,11 +282,16 @@ public class TourView {
         point.add(confirmEdit);
     }
 
-    public void confirmEdit(String id){
+    public void confirmEdit(String id) {
         System.out.println("TourPanel.confirmEdit");
         // TODO : changer aspect de la row
         JPanel point = jpanelList.get(id);
     }
 
+
+    public void setHeadDate(String date){this.headDate.setValue(date);}
+    public void setHeadDeparture(String hour){this.headDate.setValue(hour);}
+    public void setHeadETA(String hour){this.headDate.setValue(hour);}
+    public void setHeadDuration(String duration){this.headDate.setValue(duration);}
+
 }
-;

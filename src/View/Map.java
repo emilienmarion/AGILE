@@ -55,8 +55,8 @@ public class Map extends JPanel {
     }
 
     private void drawGraph(ArrayList<Path> way,Graphics g){
-        System.out.println("drawGraph");
-        System.out.println(way);
+        //System.out.println("Map.drawGraph");
+        //System.out.println(way);
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
 
@@ -107,7 +107,8 @@ public class Map extends JPanel {
             g.setColor(ac.get(index));
             if (index!=17)index++;
         }
-       // System.out.println(way);
+        //System.out.println(way);
+
         g.setColor(Color.black);
     }
 
