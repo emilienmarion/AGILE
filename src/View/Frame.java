@@ -129,6 +129,13 @@ public class Frame {
 
     }
 
+    public MapView getMapView() {
+        return mapView;
+    }
+
+    public void setMapView(MapView mapView) {
+        this.mapView = mapView;
+    }
 
     public void switchToTourView(Request req)
     {
@@ -149,3 +156,5 @@ public class Frame {
 
     public void confirmEdit(String i) {tourView.confirmEdit(i);}
 }
+
+

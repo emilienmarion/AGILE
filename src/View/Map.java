@@ -2,6 +2,7 @@ package View;
 
 
 import Model.*;
+import Model.Point;
 
 
 import javax.swing.*;
@@ -128,7 +129,7 @@ public class Map extends JPanel {
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
 
                 if(req!=null){
-                    HashMap<String,Point> listePoint=req.getListePoint();
+                    HashMap<String, Point> listePoint=req.getListePoint();
 
                     float LatitudeDep =req.getDepot().getLatitude();
                     float LongitudeDep=req.getDepot().getLongitude();
