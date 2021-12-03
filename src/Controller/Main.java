@@ -36,9 +36,11 @@ public class Main {
        // System.out.println("hello World");
         Frame frame = new Frame(loadedMap);
        // Window frame=new Window(1000,700,loadedMap);
-        Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
+       // Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
         //System.out.println(loadRequest);
-        HashMap<String,Point> pointList=loadRequest.getListePoint();
+
+/*
+       HashMap<String,Point> pointList=loadRequest.getListePoint();
         Graph g=Algorithm.createGraph(pointList,loadedMap);
         System.out.println(g);
         ArrayList<Path> ap=Algorithm.TSP(g);
@@ -46,7 +48,7 @@ public class Main {
         Map m=frame.getMapView().getMap();
         m.setWay(ap);
         m.repaint();
-
+*/
 
         try {
             // Set cross-platform Java L&F (also called "Metal")

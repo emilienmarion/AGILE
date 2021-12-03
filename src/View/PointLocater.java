@@ -45,6 +45,7 @@ public class PointLocater extends MouseAdapter {
 
                    //ici on rajoute les infos du point
 
+                  // map.
                     System.out.println("je suis dans ce coordonée");
                 }
 

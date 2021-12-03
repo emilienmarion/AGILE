@@ -14,6 +14,10 @@ public class Controller {
     private Frame frame;
     private MapData md;
     private Request loadRequest;
+    private boolean firstLoadTour = false;
+
+
+
     public Controller(Frame frame) {
         this.frame = frame;
     }
@@ -24,18 +28,24 @@ public class Controller {
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
         chooser.setApproveButtonText("Select"); //intitulé du bouton
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-            System.out.println("Vous avez choisis : "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
-            Firm= chooser.getSelectedFile().getAbsolutePath();
-            System.out.println(Firm);
-
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
+            Firm = chooser.getSelectedFile().getAbsolutePath();
         }
         loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
-        //placerPoint(loadRequest);
-        //frame.initMapSide(loadedMap);
-        frame.switchToTourView(loadRequest);
+
+        if(!firstLoadTour){
+            frame.switchToTourView(loadRequest);
+        }else{
+            frame.loadTour(loadRequest);
+        }
         frame.display();
+
+    }
+
+
+    public void highLight(String i){
+
 
     }
 
@@ -57,7 +67,7 @@ public class Controller {
         this.md=loadedMap;
         frame.loadMap(loadedMap);
 
-    frame.display();
+        frame.display();
         //View.Window frameh = new View.Window(1000,700,loadedMap);
 
         return loadedMap;
@@ -88,10 +98,9 @@ public class Controller {
         this.md = md;
     }
 
+    public void placerPoint(Request req) {}
 
-    public void placerPoint(Request req) {
 
-    }
 
     public void confirmPointEdition(String id, int type, String location, String hour) {
         System.out.println("Controller.confirmEdit");
