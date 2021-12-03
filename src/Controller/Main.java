@@ -40,10 +40,10 @@ public class Main {
         HashMap<String,Point> pointList=loadRequest.getListePoint();
         Graph g=Algorithm.createGraph(pointList,loadedMap);
         System.out.println(g);
-        ArrayList<Path> ap=Algorithm.TSP(g);
-        System.out.println(ap);
+        g.setSolution(Algorithm.TSP(g));
+        System.out.println(g.getSolution());
         Map m=frame.getMap();
-        m.setWay(ap);
+        m.setGraph(g);
         m.repaint();
 
     }

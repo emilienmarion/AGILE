@@ -1,6 +1,7 @@
 package View;
 
 import Model.*;
+import Model.Point;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ public class Map extends JPanel {
     private int sizeX;
     private int sizeY;
     private MapData mapData;
-    private ArrayList<Path> way;
+    private Graph graph;
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
         mapData=md;
@@ -28,12 +29,12 @@ public class Map extends JPanel {
         this.setLayout(new GridBagLayout());
     }
 
-    public ArrayList<Path> getWay() {
-        return way;
+    public Graph getGraph() {
+        return graph;
     }
 
-    public void setWay(ArrayList<Path> w) {
-        this.way = w;
+    public void setGraph(Graph graph) {
+        this.graph = graph;
     }
 
     private int[] getCoords(float longitude, float latitude){
@@ -41,9 +42,8 @@ public class Map extends JPanel {
         int y=Math.round((latitude- mapData.getMinY())*scale);
         return new int[]{x,y};
     }
-    private void drawGraph(ArrayList<Path> way,Graphics g){
-        System.out.println("drawGraph");
-        System.out.println(way);
+    private void drawGraph(Graph graph,Graphics g){
+        ArrayList<Path> way=graph.getSolution();
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
         ac.add(Color.blue);
@@ -55,13 +55,13 @@ public class Map extends JPanel {
         ac.add(Color.cyan);
         g.setColor(ac.get(index));
         for (Path p:way){
-            Node n=p.getPath().get(0);
-            Intersection start=n.getIntersection();
+            Node n=p.getPath();
+            Point start=graph.getListePoint().get(n.getIntersection().getId());
             int[] coordA=getCoords(start.getLongitude(),start.getLatitude());
-            g.fillRect(coordA[0],coordA[1],10,10);
+            if (start.getType().equals("delivery")) g.fillRect(coordA[0],coordA[1],10,10);
+            else g.fillOval(coordA[0],coordA[1],10,10);
             Node n2=n.getPredecessor();
             while (n2!=null){
-                p.addToPath(n);
                 Intersection i1=n.getIntersection();
                 float latitude1=i1.getLatitude();
                 float longitude1=i1.getLongitude();
@@ -74,13 +74,13 @@ public class Map extends JPanel {
                 n=n.getPredecessor();
                 n2=n2.getPredecessor();
             }
-            Intersection end=n.getIntersection();
+            Point end=graph.getListePoint().get(n.getIntersection().getId());
             int[] coordB=getCoords(end.getLongitude(),end.getLatitude());
-            g.fillRect(coordB[0],coordB[1],10,10);
+            if (end.getType().equals("delivery")) g.fillRect(coordB[0],coordB[1],10,10);
+            else g.fillOval(coordB[0],coordB[1],10,10);
             g.setColor(ac.get(index));
             if (index!=6)index++;
         }
-        System.out.println(way);
         g.setColor(Color.black);
     }
     public void paintComponent(Graphics g){
@@ -98,8 +98,8 @@ public class Map extends JPanel {
                 int destinationC[]=getCoords(destinationLongitude,destinationLatitude);
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
             }
-            if (way!=null){
-                drawGraph(way,g);
+            if (graph!=null){
+                drawGraph(graph,g);
             }
         }
     }
