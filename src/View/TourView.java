@@ -3,12 +3,17 @@ package View;
 import Controller.Controller;
 import Model.Point;
 import Model.Request;
+import Utils.Algorithm;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import Model.*;
+import Utils.Algorithm;
+import Utils.GraphConverter;
 
 public class TourView {
     protected JFrame frame;
@@ -122,10 +127,22 @@ public class TourView {
 
     public void loadRequest(Request req) {
         System.out.println("ToutPanel.loadRequest");
-        Map map = mapView.getMap();
-        map.setMapData(mapView.getMapData());
-        map.setReq(req);
-        map.repaint();
+       // Map map = mapView.getMap();
+       // map.setMapData(mapView.getMapData());
+        //map.setReq(req);
+        //map.repaint();
+
+        HashMap<String,Point> pointList=req.getListePoint();
+        Graph g= Algorithm.createGraph(pointList,mapView.getMap().getMapData());
+        System.out.println(g);
+        ArrayList<Path> ap=Algorithm.TSP(g);
+        System.out.println(ap);
+        Map m=mapView.getMap();
+        m.setWay(ap);
+        m.repaint();
+
+
+
     }
 
     public void editPoint(String id){
