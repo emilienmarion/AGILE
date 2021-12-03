@@ -5,23 +5,15 @@ import Model.Point;
 import Model.Request;
 import Utils.Algorithm;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import java.util.ArrayList;
 
 import java.util.HashMap;
 import Model.*;
-import Utils.Algorithm;
-import Utils.GraphConverter;
 
 public class TourView {
     protected JFrame frame;
@@ -111,9 +103,7 @@ public class TourView {
 
             //System.out.println("point : " +unId);
 
-                JLabel id = new JLabel(unId+ " ");
-                JLabel type = new JLabel(unType + " ");
-                JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+
 
             JLabel id = new JLabel(unId + " ");
             JLabel type = new JLabel(unType + " ");
