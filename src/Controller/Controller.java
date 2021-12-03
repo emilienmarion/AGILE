@@ -39,6 +39,12 @@ public class Controller {
 
     }
 
+
+    public void highLight(String i){
+
+
+    }
+
     public MapData loadMap() {
         System.out.println("Controller.loadMap");
         String Firm="";
@@ -92,6 +98,8 @@ public class Controller {
     public void placerPoint(Request req) {
 
     }
+
+
 
     public void confirmPointEdition(String id, int type, String location, String hour) {
         System.out.println("Controller.confirmEdit");
