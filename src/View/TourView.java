@@ -19,12 +19,17 @@ public class TourView {
     protected JFrame frame;
     protected JPanel rightPanel;
     protected JPanel headerInfo;
+    protected HeadInfo headDate;
+    protected HeadInfo headDeparture;
+    protected HeadInfo headETA;
+    protected HeadInfo headDuration;
     protected JScrollPane scrollPane;
     protected MapView mapView;
     protected ButtonListener buttonListener;
     protected Request req;
     protected HashMap<String, JPanel> jpanelList;
     protected Controller controller;
+
 
 
     public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller) {
@@ -84,7 +89,7 @@ public class TourView {
         System.out.println("request : " + this.req);
         if(this.req!=null) {
             HashMap<String, Point> listePoint = req.getListePoint();
-            System.out.println("point : " +unId);
+            //System.out.println("point : " +unId);
 
                 JLabel id = new JLabel(unId+ " ");
                 JLabel type = new JLabel(unType + " ");
@@ -109,40 +114,72 @@ public class TourView {
                 row.add(buttonBlock);
 
         }
-
         jpanelList.put(unId, row);
         return row;
     }
 
     private void initHeaderTour() {
-        //TODO : Déclarer panel de droite avec le scrollbar et les détails des tours
-
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
         headerInfo.setBackground(new Color(86,86,86));
+        headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
+        headerInfo.setPreferredSize(new Dimension(1000, 100));
+        headerInfo.setMaximumSize(new Dimension(1000, 100));
+        headDate = new HeadInfo("Date", "-- -- --");
+        headDeparture = new HeadInfo("Depature", "__:__");
+        headETA = new HeadInfo("ETA", "__:__");
+        headDuration = new HeadInfo("Duration", "__:__");
 
-        //TODO : Déclarer la liste puis la rendre paramétrable en entrée de la méthode
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDate);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDeparture);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headETA);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDuration);
+        headerInfo.add(Box.createHorizontalGlue());
     }
 
     public void loadRequest(Request req) {
         System.out.println("ToutPanel.loadRequest");
-       // Map map = mapView.getMap();
-       // map.setMapData(mapView.getMapData());
-        //map.setReq(req);
-        //map.repaint();
 
         HashMap<String,Point> pointList=req.getListePoint();
         Graph g= Algorithm.createGraph(pointList,mapView.getMap().getMapData());
-        System.out.println(g);
+        //System.out.println(g);
         ArrayList<Path> ap=Algorithm.TSP(g);
-        System.out.println(ap);
+        //System.out.println(ap);
         Map m=mapView.getMap();
         m.setWay(ap);
         m.repaint();
 
+        // TODO : Donner les infos de tournée
+        // Changer les variables ci dessous avec les données récupérées
+        String date1 = "21-45-3838";
+        String departure1 = "22:01";
+        String ETA1 = "22:03";
+        String duration1 = "00:02";
 
+        // Change la barre d'information de l'IHM avec les nouvelles données
+        this.setHeadDate(date1);
+        this.setHeadDeparture(departure1);
+        this.setHeadETA(ETA1);
+        this.setHeadDuration(duration1);
 
+        // Mise à jour dans le JPanel
+        headerInfo.removeAll();
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDate);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDeparture);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headETA);
+        headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headDuration);
+        headerInfo.add(Box.createHorizontalGlue());
+
+        // TODO : Trouver pk ça met pas à jour sur l'IHM
     }
 
     public void editPoint(String id){
@@ -181,5 +218,9 @@ public class TourView {
         JPanel point = jpanelList.get(id);
     }
 
+    public void setHeadDate(String date){this.headDate.setValue(date);}
+    public void setHeadDeparture(String hour){this.headDate.setValue(hour);}
+    public void setHeadETA(String hour){this.headDate.setValue(hour);}
+    public void setHeadDuration(String duration){this.headDate.setValue(duration);}
+
 }
-;
