@@ -72,6 +72,7 @@ public class XmlUtils {
                 int  pickupDuration= Integer.parseInt(eElement.getAttribute("pickupDuration"));
                 int  deliveryDuration= Integer.parseInt(eElement.getAttribute("deliveryDuration"));
                Intersection interPickUp=intersections.get(pickUpS);
+
                Point pickUp=new Point(interPickUp,pickupDuration,"pickUp");
                 Intersection interdelivery=intersections.get(deliveryS);
 
