@@ -1,8 +1,10 @@
 package View;
 
 import Controller.Controller;
+import Model.MapData;
 import Model.Point;
 import Model.Request;
+import Utils.XmlUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,7 @@ import java.util.HashMap;
 
 public class TourView {
     protected JFrame frame;
-    protected JPanel rightPanel;
+    protected JPanel mainPanel;
     protected JPanel headerInfo;
     protected JScrollPane scrollPane;
     protected MapView mapView;
@@ -20,18 +22,39 @@ public class TourView {
     protected Request req;
     protected HashMap<Integer, JPanel> jpanelList;
     protected Controller controller;
+    protected JLabel mapPath;
+    private Map map;
+    private MapData mdT;
+    private final int mapSquare=500;
+    private Image image;
 
 
-    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller) {
-        this.rightPanel = rightPanel;
+    public TourView(JPanel mainPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller) {
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
         this.mapView = mapView;
         this.req = req;
         this.jpanelList = new HashMap<>();
         this.controller = controller;
+        this.mainPanel = mainPanel;
 
-        rightPanel.setBackground(new Color(40,40,40));
+        //Initialisation du container
+        mainPanel.setMinimumSize(new Dimension(1000, 700));
+        mainPanel.setBackground(new Color(40,40,40));
+        mainPanel.setLayout(new GridBagLayout());
+
+        //Creation des composants
+
+        JButton dateButton = new JButton("Date");
+        JButton departureButton = new JButton("Departure");
+        JButton ETAButton = new JButton("ETA");
+        JButton durationButton = new JButton("Duration");
+
+        JPanel mapPanel = new JPanel();
+        mapPanel.setBackground(new Color(140,40,40));
+
+        JPanel tourPanel = new JPanel();
+        tourPanel.setBackground(new Color(86,86,86));
 
         JPanel test = new JPanel();
         JLabel pathLabel = new JLabel("./uberIf/requests");
@@ -41,6 +64,67 @@ public class TourView {
 
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
+
+        //Ajout des conposants
+
+        //Button date
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(10, 15, 0, 0);
+        mainPanel.add(dateButton, gbc);
+
+        //Button Departure
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(10, 15, 0, 0);
+        mainPanel.add(departureButton, gbc);
+
+        //Button ETA
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(10, 15, 0, 0);
+        mainPanel.add(ETAButton, gbc);
+
+        //Button Duration
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(10, 15, 0, 0);
+        mainPanel.add(durationButton, gbc);
+
+        //Panel map
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(10, 15, 0, 15);
+        gbc.fill = GridBagConstraints.BOTH;
+
+        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
+        mdT = loadedMap;
+        float diffX=mdT.getMaxX()-mdT.getMinX();
+        float diffY=mdT.getMaxY()-mdT.getMinY();
+        float scale=Math.min(mapSquare/diffX,mapSquare/diffY);
+        map = new Map(50,50,diffX,diffY,scale,mdT);
+        map.repaint();
+        mapPanel.add(map);
+        mainPanel.add(mapPanel, gbc);
+
+
+        //Panel tour
+
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 1;
+        gbc.insets = new Insets(10, 15, 0, 10);
 
         Point point ;
         HashMap<String, Point> listePoint = req.getListePoint();
@@ -57,10 +141,11 @@ public class TourView {
         scrollPane.setOpaque(true);
         scrollPane.getViewport().setBackground(Color.black);
 
-        rightPanel.add(Box.createVerticalGlue());
-        rightPanel.add(scrollPane);
-        rightPanel.add(test);
-        rightPanel.add(Box.createVerticalGlue());
+        tourPanel.add(scrollPane);
+        mainPanel.add(tourPanel, gbc);
+
+
+
 
         initHeaderTour();
     }
@@ -68,7 +153,7 @@ public class TourView {
     protected JPanel createJPanelPoint(String unId, String unType, int uneDuration)
     {
         // TODO : Faire marcher les logos
-        ImageIcon pickupIcon = new ImageIcon("../img/iconTestBlack.png");
+        ImageIcon image = new ImageIcon("../img/iconTestBlack.png");
 
         JPanel row = new JPanel();
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
@@ -84,6 +169,7 @@ public class TourView {
                 JLabel id = new JLabel(unId+ " ");
                 JLabel type = new JLabel(unType + " ");
                 JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+                JLabel icon = new JLabel(image, JLabel.CENTER);
 
 
                 JPanel buttonBlock = new JPanel();
@@ -98,6 +184,7 @@ public class TourView {
                 editButton.addActionListener(buttonListener);
                 deleteButton.addActionListener(buttonListener);
 
+                row.add(icon);
                 row.add(id);
                 row.add(type);
                 row.add(duration);
@@ -163,6 +250,8 @@ public class TourView {
         // TODO : changer aspect de la row
         JPanel point = jpanelList.get(id);
     }
+
+
 
 }
 ;

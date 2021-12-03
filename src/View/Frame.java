@@ -134,9 +134,9 @@ public class Frame {
     {
         System.out.println("Frame.switchToTourView");
         // Reset right panel
-        rightPanel.removeAll();
+        mainPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller);
+        tourView = new TourView(mainPanel, headerInfo, buttonListener, this.mapView, req, this.controller);
         tourView.loadRequest(req);
     }
 
