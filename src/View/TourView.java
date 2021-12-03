@@ -197,6 +197,10 @@ public class TourView {
        // map.setMapData(mapView.getMapData());
         map.setReq(req);
         //map.repaint();
+
+
+        map.addMouseListener(new PointLocater(map,controller));
+
         HashMap<String,Point> pointList=req.getListePoint();
         Graph g= Algorithm.createGraph(pointList,map.getMapData());
         //System.out.println(g);
@@ -235,7 +239,20 @@ public class TourView {
         // TODO : Trouver pk ça met pas à jour sur l'IHM
     }
 
+
+    public void highlight(String id){
+
+        for (String j :jpanelList.keySet()){
+            jpanelList.get(j).setBackground(new Color(61, 61, 61));
+        }
+
+        JPanel point = jpanelList.get(id);
+        point.setBackground(new Color(116, 69, 206));
+    }
+
+    
     public void editPoint(String id) {
+
         JPanel point = jpanelList.get(id);
         point.setBackground(Color.MAGENTA);
         int type;

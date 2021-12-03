@@ -45,8 +45,7 @@ public class Controller {
 
 
     public void highLight(String i){
-
-
+frame.highlight(i);
     }
 
     public MapData loadMap() {

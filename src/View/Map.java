@@ -28,7 +28,7 @@ public class Map extends JPanel {
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
 
-        addMouseListener(new PointLocater(this));
+        //addMouseListener(new PointLocater(this));
         mapData=md;
         sizeX=(int)Math.round(diffX*echelon);
         sizeY=(int)Math.round(diffY*echelon);

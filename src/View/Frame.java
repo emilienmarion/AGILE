@@ -156,6 +156,9 @@ public class Frame {
     public void editPoint(String id) {
         tourView.editPoint(id);}
 
+    public void highlight(String id) {
+        tourView.highlight(id);}
+
     public void confirmEdit(String i) {tourView.confirmEdit(i);}
 }
 
