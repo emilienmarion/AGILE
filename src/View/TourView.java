@@ -132,6 +132,7 @@ public class TourView {
         map.setReq(req);
         //map.repaint();
 
+        map.addMouseListener(new PointLocater(map,controller));
         HashMap<String,Point> pointList=req.getListePoint();
         Graph g= Algorithm.createGraph(pointList,map.getMapData());
         System.out.println(g);
@@ -143,6 +144,16 @@ public class TourView {
 
 
 
+    }
+
+    public void highlight(String id){
+
+        for (String j :jpanelList.keySet()){
+            jpanelList.get(j).setBackground(new Color(61, 61, 61));
+        }
+
+        JPanel point = jpanelList.get(id);
+        point.setBackground(new Color(116, 69, 206));
     }
 
     public void editPoint(String id){
