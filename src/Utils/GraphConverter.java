@@ -29,7 +29,12 @@ public class GraphConverter {
                     line[j]=v.getLength();
                     if (g.getListePoint().get(v.getIdDestination()).getType().equals("delivery")){
                         System.out.println("DELIVERY");
-                        lineUnlocked[j]=false;
+                        if (i%2==0 && i==j-1){ //quand origin= destination-1 (i-->origin,j-->destination)
+                            lineUnlocked[j]=true;
+                        }
+                        else{
+                            lineUnlocked[j]=false;
+                        }
                     }
                     else{
                         System.out.println("PICKUP");

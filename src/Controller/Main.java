@@ -30,12 +30,7 @@ public class Main {
 
 
         MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
-
-       // System.out.println(loadedMap);
-
-       // System.out.println("hello World");
-
-       // Window frame=new Window(1000,700,loadedMap);
+       Window frame=new Window(1000,700,loadedMap);
         Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
         //System.out.println(loadRequest);
         HashMap<String,Point> pointList=loadRequest.getListePoint();
@@ -46,35 +41,6 @@ public class Main {
         Map m=frame.getMap();
         m.setGraph(g);
         m.repaint();
-
-
-        try {
-            // Set cross-platform Java L&F (also called "Metal")
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        }
-        catch (UnsupportedLookAndFeelException e) {
-            // handle exception
-        }
-        catch (ClassNotFoundException e) {
-            // handle exception
-        }
-        catch (InstantiationException e) {
-            // handle exception
-        }
-        catch (IllegalAccessException e) {
-            // handle exception
-        }
-
-
-	    MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
-        //System.out.println(loadedMap);
-
-        //Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
-        //System.out.println(loadRequest);
-
-        Frame frame = new Frame(loadedMap);
-        frame.display();
 
     }
 }
