@@ -24,6 +24,7 @@ public class Frame {
     protected TourView tourView;
     protected Controller controller;
     protected ButtonListener buttonListener;
+    protected String TourPath;
 
 
     public Frame(MapData md) {
@@ -118,17 +119,18 @@ public class Frame {
         this.mapView = mapView;
     }
 
-    public void switchToTourView(Request req)
+    public void switchToTourView(Request req, String tp)
     {
         System.out.println("Frame.switchToTourView");
+        this.TourPath = tp;
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller);
-        tourView.loadRequest(req);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath);
+        tourView.loadRequest(req, this.TourPath);
     }
 
-    public void loadTour(Request req){tourView.loadRequest(req);}
+    public void loadTour(Request req){tourView.loadRequest(req, this.TourPath);}
 
     public void loadMap(MapData loadedMap) {
         mapView.loadMap(loadedMap);

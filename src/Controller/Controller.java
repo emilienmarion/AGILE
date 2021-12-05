@@ -35,7 +35,7 @@ public class Controller {
             loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
 
             if(!firstLoadTour){
-                frame.switchToTourView(loadRequest);
+                frame.switchToTourView(loadRequest, Firm);
             }else{
                 frame.loadTour(loadRequest);
             }
