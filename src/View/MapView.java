@@ -13,17 +13,19 @@ public class MapView {
     private final int mapSquare;
     private MapData mdT;
     protected MapView mapView;
+    protected String mapPathString;
 
-    public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT){
+    public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT, String mp){
         this.leftPanel = leftPanel;
         this.mapSquare = mapSquare;
         this.mapPath = mapPath;
         this.mdT = mdT;
+        this.mapPathString = mp;
         System.out.println("map data : "+ mdT);
-        loadMap(this.mdT);
+        loadMap(this.mdT, this.mapPathString);
     }
 
-    public void loadMap(MapData mdT)
+    public void loadMap(MapData mdT, String mps)
     {
         leftPanel.removeAll();
 
@@ -32,7 +34,7 @@ public class MapView {
         float scale=Math.min(mapSquare/diffX,mapSquare/diffY);
 
         System.out.println("Frame.initMapSide");
-        mapPath = new JLabel("src/petiteMap.xml");
+        mapPath = new JLabel(mps);
         mapPath.setForeground(Color.WHITE);
         mapPath.setAlignmentX(Component.CENTER_ALIGNMENT);
 

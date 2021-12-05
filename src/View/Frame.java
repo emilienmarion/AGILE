@@ -27,12 +27,12 @@ public class Frame {
     protected String TourPath;
 
 
-    public Frame(MapData md) {
+    public Frame(MapData md, String mapath) {
         controller = new Controller(this);
         controller.setMd(md);
         buttonListener = new ButtonListener(controller, this);
         initFrame();
-        mapView = new MapView(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
+        mapView = new MapView(leftPanel, mapSquare, mapPath, md, mapath); // Call the constructor and init this side
         initLoaderSide();
     }
 
@@ -132,8 +132,8 @@ public class Frame {
 
     public void loadTour(Request req){tourView.loadRequest(req, this.TourPath);}
 
-    public void loadMap(MapData loadedMap) {
-        mapView.loadMap(loadedMap);
+    public void loadMap(MapData loadedMap, String mapath) {
+        mapView.loadMap(loadedMap, mapath);
     }
 
     public void editPoint(String id) {

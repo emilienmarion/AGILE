@@ -67,7 +67,7 @@ frame.highlight(i);
         }
         MapData loadedMap = XmlUtils.readMap(Firm);
         this.md=loadedMap;
-        frame.loadMap(loadedMap);
+        frame.loadMap(loadedMap, Firm);
         frame.display();
 
         return loadedMap;
