@@ -10,6 +10,7 @@ import Model.Request;
 public class Frame {
 
     protected JFrame frame;
+    protected MenuBar menuBar;
     protected JButton loadMapButton;
     protected JButton loadTourButton;
     protected JLabel mapPath;
@@ -18,19 +19,20 @@ public class Frame {
     protected JPanel mainPanel;
     protected JPanel splitPanel;
     protected JPanel headerInfo;
-    private final int mapSquare=500;
+    private final int mapSquare=450;
     protected MapView mapView;
     protected TourView tourView;
     protected Controller controller;
     protected ButtonListener buttonListener;
+    protected String TourPath;
 
 
-    public Frame(MapData md) {
+    public Frame(MapData md, String mapath) {
         controller = new Controller(this);
         controller.setMd(md);
         buttonListener = new ButtonListener(controller, this);
         initFrame();
-        mapView = new MapView(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
+        mapView = new MapView(leftPanel, mapSquare, mapPath, md, mapath); // Call the constructor and init this side
         initLoaderSide();
     }
 
@@ -42,33 +44,7 @@ public class Frame {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //create a menu bar
-        final JMenuBar menuBar = new JMenuBar();
-        //create menus
-        JMenu fileMenu = new JMenu("File");
-        //create menu items
-        JMenuItem loadTourMenuItem = new JMenuItem("Load tour");
-        loadTourMenuItem.setActionCommand("Load Tour");
-        loadTourMenuItem.addActionListener(buttonListener);
-        JMenuItem loadMapMenuItem = new JMenuItem("Load map");
-        loadMapMenuItem.setActionCommand("Load map");
-        loadMapMenuItem.addActionListener(buttonListener);
-        JMenuItem saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.setActionCommand("Save");
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.setActionCommand("Exit");
-
-
-        //add menu items to menus
-        fileMenu.add(loadTourMenuItem);
-        fileMenu.add(loadMapMenuItem);
-        fileMenu.add(saveMenuItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitMenuItem);
-
-        //add menu to menubar
-        menuBar.add(fileMenu);
-
+        menuBar = new MenuBar(buttonListener);
         //add menubar to the frame
         frame.setJMenuBar(menuBar);
 
@@ -98,10 +74,16 @@ public class Frame {
         loadMapButton = new JButton("Load map");
         loadMapButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loadMapButton.addActionListener(buttonListener);
+        loadMapButton.setBackground(new Color(61, 61, 61));
+        //loadMapButton.setBorder(BorderFactory.createEmptyBorder(70, 40, 70, 40));
+        loadMapButton.setForeground(Color.WHITE);
+        //loadMapButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loadTourButton.addActionListener(buttonListener);
+        loadTourButton.setBackground(new Color(61, 61, 61));
+        loadTourButton.setForeground(Color.WHITE);
 
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
@@ -137,20 +119,21 @@ public class Frame {
         this.mapView = mapView;
     }
 
-    public void switchToTourView(Request req)
+    public void switchToTourView(Request req, String tp)
     {
         System.out.println("Frame.switchToTourView");
+        this.TourPath = tp;
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller);
-        tourView.loadRequest(req);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath);
+        tourView.loadRequest(req, this.TourPath);
     }
 
-    public void loadTour(Request req){tourView.loadRequest(req);}
+    public void loadTour(Request req){tourView.loadRequest(req, this.TourPath);}
 
-    public void loadMap(MapData loadedMap) {
-        mapView.loadMap(loadedMap);
+    public void loadMap(MapData loadedMap, String mapath) {
+        mapView.loadMap(loadedMap, mapath);
     }
 
     public void editPoint(String id) {
