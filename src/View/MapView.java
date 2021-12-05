@@ -30,15 +30,21 @@ public class MapView {
         float diffX=mdT.getMaxX()-mdT.getMinX();
         float diffY=mdT.getMaxY()-mdT.getMinY();
         float scale=Math.min(mapSquare/diffX,mapSquare/diffY);
+
         System.out.println("Frame.initMapSide");
         mapPath = new JLabel("src/petiteMap.xml");
         mapPath.setForeground(Color.WHITE);
+        mapPath.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         leftPanel.setBackground(new Color(40,40,40));
         leftPanel.setPreferredSize(new Dimension(500, 500));
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
         this.map = new Map(50,50,diffX,diffY,scale,mdT);
+        this.map.setPreferredSize(new Dimension(this.mapSquare, this.mapSquare));
+        this.map.setMaximumSize(new Dimension(this.mapSquare, this.mapSquare));
+        this.map.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         System.out.println("Map initialized");
 
         leftPanel.add(Box.createVerticalGlue());

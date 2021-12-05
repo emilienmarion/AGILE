@@ -36,7 +36,7 @@ public class Map extends JPanel {
         System.out.println(sizeX);
         System.out.println(sizeY);
         this.setBounds(offsetX,offsetY,sizeX,sizeY);
-        this.setBackground(Color.white);
+        this.setBackground(new Color(192,192,192));
         this.setLayout(new GridBagLayout());
     }
 
@@ -59,7 +59,6 @@ public class Map extends JPanel {
         //System.out.println(way);
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
-
 
         ac.add(Color.blue);
         ac.add(Color.red);
@@ -182,12 +181,5 @@ public class Map extends JPanel {
                 drawGraph(way,g);
             }
         }
-
-
-
-
-
     }
-
-
 }
