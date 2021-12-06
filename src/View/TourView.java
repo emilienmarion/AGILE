@@ -54,7 +54,7 @@ public class TourView {
 
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
-        componentToScroll.setBackground(new Color(80,80,80));
+        componentToScroll.setBackground(new Color(61,61,61));
 
         Point point;
         HashMap<String, Point> listePoint = req.getListePoint();
@@ -66,7 +66,7 @@ public class TourView {
         }
 
         scrollPane = new JScrollPane(componentToScroll);
-        scrollPane.setBackground(new Color(80,80,80));
+        scrollPane.setBackground(new Color(61,61,61));
         scrollPane.setPreferredSize(new Dimension(400, 400));
         scrollPane.setMaximumSize(new Dimension(400, 400));
         scrollPane.setOpaque(false);
@@ -87,11 +87,14 @@ public class TourView {
         ImageIcon iconDelete = new ImageIcon (new ImageIcon("./img/icons8-trash-240.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
 
         JLabel imageEdit = new JLabel(iconEdit);
+        imageEdit.setBackground(new Color(86,86,86));
+        imageEdit.setOpaque(true);
         JLabel imageDelete = new JLabel(iconDelete);
-
+        imageDelete.setBackground(new Color(198,52,52));
+        imageDelete.setOpaque(true);
 
         JPanel row = new JPanel();
-        row.setBackground(new Color(86,86,86));
+        row.setBackground(new Color(61,61,61));
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
         row.setPreferredSize(new Dimension(100, 30));
@@ -122,14 +125,16 @@ public class TourView {
 
 
             JPanel buttonBlock = new JPanel();
-            buttonBlock.setBackground(new Color(86,86,86));
+            buttonBlock.setBackground(new Color(61,61,61));
             buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
             JButton editButton = new JButton();
-            editButton.setBackground(new Color(70,70,70));
+            editButton.setBackground(new Color(86,86,86));
+            editButton.setOpaque(true);
             editButton.add(imageEdit);
             editButton.setActionCommand("editRow" + unId);
             JButton deleteButton = new JButton();
-            deleteButton.setBackground(new Color(140,40,40));
+            deleteButton.setBackground(Color.red);
+            deleteButton.setOpaque(true);
             deleteButton.add(imageDelete);
             deleteButton.setActionCommand("deleteRow" + unId);
 
