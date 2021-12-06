@@ -5,6 +5,7 @@ public class CompleteGraph implements TSPGraph{
     private static final int MIN_COST = 10;
     int nbVertices;
     float[][] cost;
+    boolean[][] isUnlocked;
     /**
      * Create a complete directed graph such that each edge has a weight within [MIN_COST,MAX_COST]
      * @param nbVertices
@@ -32,12 +33,20 @@ public class CompleteGraph implements TSPGraph{
             System.out.println();
         }
     }
-    public CompleteGraph(int nbVertices,float[][] cost){
+    public CompleteGraph(int nbVertices,float[][] cost,boolean[][] isUnlocked){
         System.out.println("Complete Graph");
         this.nbVertices = nbVertices;
         this.cost=cost;
+        this.isUnlocked=isUnlocked;
         for(float[] i:cost){
             for (float k:i){
+                System.out.print(k);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+        for(boolean[] i:isUnlocked){
+            for (boolean k:i){
                 System.out.print(k);
                 System.out.print(" ");
             }

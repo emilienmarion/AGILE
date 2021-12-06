@@ -15,28 +15,58 @@ public class Controller {
     private Frame frame;
     private MapData md;
     private Request loadRequest;
+    private boolean firstLoadTour = false;
+
+
     public Controller(Frame frame) {
         this.frame = frame;
     }
 
 
-    public void loadTour() throws ParseException {
+
+    /**
+     * Open a JFileChooser. Return true and call frame.loadTour if the file is an xml. Return false in other cases.
+     * @return boolean
+     */
+    public boolean loadTour() throws ParseException{
+
         System.out.println("Controller.loadTour");
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
         chooser.setApproveButtonText("Select"); //intitulé du bouton
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-            System.out.println("Vous avez choisis : "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
-            Firm= chooser.getSelectedFile().getAbsolutePath();
-            System.out.println(Firm);
 
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION && chooser.getSelectedFile() != null) {
+            System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
+            Firm = chooser.getSelectedFile().getAbsolutePath();
+
+            if(!verifXml(Firm)){
+                System.out.println("File type is not xml");
+                return false;
+            }else {
+                loadRequest = XmlUtils.ReadRequest(Firm, this.md.getIntersections());
+
+                if (!firstLoadTour) {
+                    frame.switchToTourView(loadRequest, Firm);
+                } else {
+                    frame.loadTour(loadRequest);
+                }
+                frame.display();
+
+                return true;
+            }
+        }else{
+            System.out.println("File chooser closed or an error hapenned");
+            return false;
         }
-        loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
-        //placerPoint(loadRequest);
-        //frame.initMapSide(loadedMap);
-        frame.switchToTourView(loadRequest);
-        frame.display();
+
+
+    }
+
+
+    public void highLight(String i){
+
+        frame.highlight(i);
+
 
     }
 
@@ -48,21 +78,38 @@ public class Controller {
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
         {
             System.out.println("Vous avez choisis: "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
-             Firm= chooser.getSelectedFile().getAbsolutePath();
-            System.out.println(Firm);
-
-
+            try {
+                Firm = chooser.getSelectedFile().getAbsolutePath();
+                System.out.println(Firm);
+            }catch (Exception e){
+                System.out.println("Error : " + e);
+            }
         }
         MapData loadedMap = XmlUtils.readMap(Firm);
-
         this.md=loadedMap;
-        frame.loadMap(loadedMap);
-
-    frame.display();
-        //View.Window frameh = new View.Window(1000,700,loadedMap);
+        frame.loadMap(loadedMap, Firm);
+        frame.display();
 
         return loadedMap;
     }
+
+    /**
+     * Return True if the extension's parameter "firm" equals "xml", false else.
+     * @param firm
+     * @return boolean
+     */
+    private boolean verifXml(String firm) {
+        System.out.println("Controller.verifXml on : " + firm);
+        String chain[] = firm.split("\\.");
+        if(chain.length > 0 && chain[chain.length-1].equals("xml")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
 
     public void loadEditMode() {
         System.out.println("Controller.loadEditMode");
@@ -89,10 +136,9 @@ public class Controller {
         this.md = md;
     }
 
+    public void placerPoint(Request req) {}
 
-    public void placerPoint(Request req) {
 
-    }
 
     public void confirmPointEdition(String id, int type, String location, String hour) {
         System.out.println("Controller.confirmEdit");

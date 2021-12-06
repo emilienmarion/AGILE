@@ -79,8 +79,8 @@ public class Algorithm {
         String idDestination=n.getIntersection().getId();
         String idOrigin=new String();
         Path p=new Path();
+        p.addToPath(n);
         while (n!=null){
-            p.addToPath(n);
             idOrigin=n.getIntersection().getId();
             n=n.getPredecessor();
         }
@@ -92,13 +92,14 @@ public class Algorithm {
         Set<String> pointListKeySet=pointList.keySet();
         int length=pointListKeySet.size();
         System.out.println(length);
-        Graph g=new Graph(length);
+        Graph g=new Graph(length,pointList);
         for (String pointId:pointListKeySet) {
             Point p=pointList.get(pointId);
             HashMap<String, Node> result = dijkstra(loadedMap.getIntersections(), p);
             for (String s : pointListKeySet) {
                 g.addVertice(Algorithm.getPath(result.get(s)).toVertice());
             }
+            System.out.println(g.getContent());
         }
         return g;
     }

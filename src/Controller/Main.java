@@ -34,7 +34,7 @@ public class Main {
        // System.out.println(loadedMap);
 
        // System.out.println("hello World");
-        Frame frame = new Frame(loadedMap);
+        Frame frame = new Frame(loadedMap,"xmlFiles/smallMap.xml");
        // Window frame=new Window(1000,700,loadedMap);
        // Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
         //System.out.println(loadRequest);
@@ -43,10 +43,17 @@ public class Main {
        HashMap<String,Point> pointList=loadRequest.getListePoint();
         Graph g=Algorithm.createGraph(pointList,loadedMap);
         System.out.println(g);
+
+        g.setSolution(Algorithm.TSP(g));
+        System.out.println(g.getSolution());
+        Map m=frame.getMap();
+        m.setGraph(g);
+
         ArrayList<Path> ap=Algorithm.TSP(g);
         System.out.println(ap);
         Map m=frame.getMapView().getMap();
         m.setWay(ap);
+
         m.repaint();
 */
 
