@@ -10,7 +10,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import java.util.HashMap;
 import Model.*;
@@ -151,6 +154,26 @@ public class TourView {
             imageEdit.setVisible(true);
 
         }
+        row.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+                for (String j :jpanelList.keySet()){
+                    jpanelList.get(j).setBackground(new Color(61, 61, 61));
+
+                }
+
+                row.setBackground(new Color(116, 69, 206));
+                Map m=mapView.getMap();
+
+                m.setTest(true);
+                m.setCurentid(unId);
+                m.repaint();
+               
+            }
+
+        });
+
         jpanelList.put(unId, row);
         return row;
     }
@@ -197,10 +220,14 @@ public class TourView {
         Graph g= Algorithm.createGraph(pointList,map.getMapData());
         //System.out.println(g);
 
-        ArrayList<Path> ap=Algorithm.TSP(g);
+        g.setSolution(Algorithm.TSP(g));
         //System.out.println(ap);
         Map m=mapView.getMap();
+
+        m.setGraph(g);
+
         //m.setWay(ap);
+
         m.repaint();
 
 

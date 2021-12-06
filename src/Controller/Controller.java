@@ -55,6 +55,16 @@ public class Controller {
             System.out.println("File chooser closed or an error hapenned");
             return false;
         }
+
+
+    }
+
+
+    public void highLight(String i){
+
+        frame.highlight(i);
+
+
     }
 
     public MapData loadMap() {
