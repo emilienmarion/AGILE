@@ -106,9 +106,7 @@ public class Controller {
     }
 
 
-    public void highLight(String i){
-        frame.highlight(i);
-    }
+
 
     public void loadEditMode() {
         System.out.println("Controller.loadEditMode");
