@@ -52,6 +52,7 @@ public class PointLocater extends MouseAdapter {
                   // map.
                     //System.out.println("je suis dans ce coordonée");
                     controller.highLight(s);
+
                 }
 
 

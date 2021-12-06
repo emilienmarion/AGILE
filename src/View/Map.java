@@ -19,7 +19,10 @@ public class Map extends JPanel {
     private int sizeY;
     private MapData mapData;
     private Graph graph;
+    private String curentid;
 
+
+    boolean test;
     private Request req;
 
     protected Controller controller;
@@ -29,7 +32,7 @@ public class Map extends JPanel {
     public Map(int offsetX,int offsetY,float diffX,float diffY,float echelon,MapData md){
         super();
 
-        //addMouseListener(new PointLocater(this));
+
         mapData=md;
         sizeX=(int)Math.round(diffX*echelon);
         sizeY=(int)Math.round(diffY*echelon);
@@ -39,6 +42,18 @@ public class Map extends JPanel {
         this.setBounds(offsetX,offsetY,sizeX,sizeY);
         this.setBackground(Color.white);
         this.setLayout(new GridBagLayout());
+
+        this.curentid=null;
+        test=false;
+        //System.out.println("je suis null"+ curentid);
+    }
+
+    public boolean isTest() {
+        return test;
+    }
+
+    public void setTest(boolean test) {
+        this.test = test;
     }
 
     public Graph getGraph() {
@@ -49,11 +64,31 @@ public class Map extends JPanel {
         this.graph = graph;
     }
 
+    public String getCurentid() {
+        return curentid;
+    }
+
+    public void setCurentid(String curentid) {
+        this.curentid = curentid;
+    }
+
     private int[] getCoords(float longitude, float latitude){
         int x=Math.round((longitude- mapData.getMinX())*scale);
         int y=Math.round((latitude- mapData.getMinY())*scale);
         return new int[]{x,y};
     }
+
+
+    private void grossir(String curentid,Graphics g){
+      int lat= (int) req.getListePoint().get(curentid).getLatitudeSurPanel();
+      int longi=  (int)req.getListePoint().get(curentid).getLongitudeSurPanel();
+
+        g.setColor(Color.red);
+        g.fillRect(lat,longi,20,20);
+    }
+
+
+
 
     private void drawGraph(Graph graph,Graphics g){
         ArrayList<Path> way=graph.getSolution();
@@ -99,6 +134,7 @@ public class Map extends JPanel {
                 float latitude2=i2.getLatitude();
                 float longitude2=i2.getLongitude();
                 int[] coord1=getCoords(longitude1,latitude1);
+
                 int[] coord2=getCoords(longitude2,latitude2);
                 g.drawLine(coord1[0],coord1[1],coord2[0],coord2[1]);
                 n=n.getPredecessor();
@@ -106,6 +142,8 @@ public class Map extends JPanel {
             }
             Point end=graph.getListePoint().get(n.getIntersection().getId());
             int[] coordB=getCoords(end.getLongitude(),end.getLatitude());
+            end.setLatitudeSurPanel(coordB[0]);
+            end.setLongitudeSurPanel(coordB[1]);
             if (end.getType().equals("delivery")) g.fillRect(coordB[0],coordB[1],10,10);
             else g.fillOval(coordB[0],coordB[1],10,10);
             g.setColor(ac.get(index));
@@ -134,6 +172,7 @@ public class Map extends JPanel {
 
 
     public void paintComponent(Graphics g){
+
         super.paintComponent(g);
         HashMap<String, Intersection> intersections=new HashMap<String,Intersection>(mapData.getIntersections());
         for (String currentId:intersections.keySet()){
@@ -149,40 +188,14 @@ public class Map extends JPanel {
                 g.setColor(Color.black);
                 g.drawLine(originC[0],originC[1],destinationC[0],destinationC[1]);
 
-                if(req!=null){
-                    HashMap<String, Point> listePoint=req.getListePoint();
 
-                    float LatitudeDep =req.getDepot().getLatitude();
-                    float LongitudeDep=req.getDepot().getLongitude();
-                    int CoorDep[]=getCoords(LongitudeDep,LatitudeDep);
-                    req.getDepot().setLongitudeSurPanel(CoorDep[1]);
-                    req.getDepot().setLatitudeSurPanel(CoorDep[0]);
-
-                    g.setColor(Color.green);
-                    g.fillRect(CoorDep[0],CoorDep[1],10,10);
-
-
-                    for(String s:listePoint.keySet()){
-                        float Latitude=listePoint.get(s).getLatitude();
-                        float Longitude= listePoint.get(s).getLongitude();
-
-                        int Coor[]=getCoords(Longitude,Latitude);
-                        listePoint.get(s).setLatitudeSurPanel(Coor[0]);
-                        listePoint.get(s).setLongitudeSurPanel(Coor[1]);
-
-                        if(listePoint.get(s).getType().equals("pickUp")){
-                            g.setColor(Color.red);
-                            g.fillRect(Coor[0],Coor[1],10,10);
-                        }
-                        if(listePoint.get(s).getType().equals("delivery")){
-                            g.setColor(Color.blue);
-                            g.fillOval(Coor[0],Coor[1],10,10);
-                        }
-                    }
-                }
             }
             if (graph!=null){
                 drawGraph(graph,g);
+            }
+            if (test ){
+
+                grossir(this.curentid,g);
             }
         }
 
@@ -190,7 +203,13 @@ public class Map extends JPanel {
 
 
 
+
+
     }
+
+
+
+
 
 
 }
