@@ -60,16 +60,16 @@ public class CompleteGraph implements TSPGraph{
     }
 
     @Override
+    public boolean[][] getIsUnlocked() {
+        return isUnlocked;
+    }
+
+    @Override
     public float getCost(int i, int j) {
         if (i<0 || i>=nbVertices || j<0 || j>=nbVertices)
             return -1;
         return cost[i][j];
     }
 
-    @Override
-    public boolean isArc(int i, int j) {
-        if (i<0 || i>=nbVertices || j<0 || j>=nbVertices)
-            return false;
-        return i != j;
-    }
+
 }

@@ -1,4 +1,6 @@
 package Utils.TSP;
+import Utils.GraphConverter;
+
 import java.util.Collection;
 import java.util.Iterator;
 public class SeqIter implements Iterator<Integer>{
@@ -13,10 +15,10 @@ public class SeqIter implements Iterator<Integer>{
      * @param currentVertex
      * @param g
      */
-    public SeqIter(Collection<Integer> unvisited, int currentVertex, TSPGraph g){
+    public SeqIter(Collection<Integer> unvisited, int currentVertex, TSPGraph g,boolean[][] isUnlocked){
         this.candidates = new Integer[unvisited.size()];
         for (Integer s : unvisited){
-            if (g.isArc(currentVertex, s))
+            if (GraphConverter.isArc(currentVertex, s,isUnlocked))
                 candidates[nbCandidates++] = s;
         }
     }

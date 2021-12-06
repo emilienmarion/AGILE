@@ -34,13 +34,24 @@ public class Main {
         Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsSmall2.xml",loadedMap.getIntersections());
         //System.out.println(loadRequest);
         HashMap<String,Point> pointList=loadRequest.getListePoint();
-        Graph g=Algorithm.createGraph(pointList,loadedMap);
+        Point depot=loadRequest.getDepot();
+        pointList.put(depot.getId(),depot);
+        Graph g=Algorithm.createGraph(pointList,loadedMap,depot);
         System.out.println(g);
         g.setSolution(Algorithm.TSP(g));
         System.out.println(g.getSolution());
         Map m=frame.getMap();
         m.setGraph(g);
         m.repaint();
-
+        System.out.println(g);
+       /* ArrayList<Integer> ai=new ArrayList<>();
+        ai.add(9);
+        int i=0;
+        ai.add(i);
+        ai.add(6);
+        ai.add(5);
+        Collections.sort(ai);
+        System.out.println(ai);
+        System.out.println(i);*/
     }
 }

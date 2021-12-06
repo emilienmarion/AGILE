@@ -85,7 +85,7 @@ public class Algorithm {
         p.setId(idOrigin+"-"+idDestination);
         return p;
     }
-    public static Graph createGraph(HashMap<String,Point> pointList,MapData loadedMap){
+    public static Graph createGraph(HashMap<String,Point> pointList,MapData loadedMap,Point depot){
         System.out.println("createGraph");
         Set<String> pointListKeySet=pointList.keySet();
         int length=pointListKeySet.size();
@@ -95,7 +95,8 @@ public class Algorithm {
             Point p=pointList.get(pointId);
             HashMap<String, Node> result = dijkstra(loadedMap.getIntersections(), p);
             for (String s : pointListKeySet) {
-                g.addVertice(Algorithm.getPath(result.get(s)).toVertice());
+                boolean isDepot=result.get(s).getIntersection().getId().equals(depot.getId());
+                g.addVertice(Algorithm.getPath(result.get(s)).toVertice(),isDepot);
             }
             System.out.println(g.getContent());
         }
@@ -123,6 +124,7 @@ public class Algorithm {
         System.out.print("-->");
         System.out.println(v.getAssociatedPath());
         result.add(v.getAssociatedPath());
+        System.out.println(tsp.getNbConfig());
         return result;
     }
 }

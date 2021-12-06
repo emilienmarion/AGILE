@@ -1,4 +1,7 @@
 package Utils.TSP;
+import Utils.Array;
+import Utils.GraphConverter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,6 +12,11 @@ public abstract class TemplateTSP implements TSP {
     private float bestSolCost;
     private int timeLimit;
     private long startTime;
+    private int nbConfig;
+
+    public int getNbConfig() {
+        return nbConfig;
+    }
 
     public void searchSolution(int timeLimit, TSPGraph g){
         if (timeLimit <= 0) return;
@@ -21,7 +29,9 @@ public abstract class TemplateTSP implements TSP {
         Collection<Integer> visited = new ArrayList<Integer>(g.getNbVertices());
         visited.add(0); // The first visited vertex is 0
         bestSolCost = Float.MAX_VALUE;
-        branchAndBound(0, unvisited, visited, 0);
+        boolean[][] isUnlocked= Array.getCopy(g.getIsUnlocked(),g.getNbVertices());
+        nbConfig=0;
+        branchAndBound(0, unvisited, visited,isUnlocked, 0);
     }
 
     public Integer getSolution(int i){
@@ -43,7 +53,7 @@ public abstract class TemplateTSP implements TSP {
      * @return a lower bound of the cost of paths in <code>g</code> starting from <code>currentVertex</code>, visiting
      * every vertex in <code>unvisited</code> exactly once, and returning back to vertex <code>0</code>.
      */
-    protected abstract int bound(Integer currentVertex, Collection<Integer> unvisited);
+    protected abstract float bound(Integer currentVertex, Collection<Integer> unvisited,boolean[][] isUnlocked);
 
     /**
      * Method that must be defined in TemplateTSP subclasses
@@ -52,7 +62,7 @@ public abstract class TemplateTSP implements TSP {
      * @param g
      * @return an iterator for visiting all vertices in <code>unvisited</code> which are successors of <code>currentVertex</code>
      */
-    protected abstract Iterator<Integer> iterator(Integer currentVertex, Collection<Integer> unvisited, TSPGraph g);
+    protected abstract Iterator<Integer> iterator(Integer currentVertex, Collection<Integer> unvisited, TSPGraph g,boolean[][] isUnlocked);
 
     /**
      * Template method of a branch and bound algorithm for solving the TSP in <code>g</code>.
@@ -62,25 +72,37 @@ public abstract class TemplateTSP implements TSP {
      * @param currentCost the cost of the path corresponding to <code>visited</code>
      */
     private void branchAndBound(int currentVertex, Collection<Integer> unvisited,
-                                Collection<Integer> visited, float currentCost){
+                                Collection<Integer> visited,boolean[][] isUnlocked, float currentCost){
+        nbConfig++;
         if (System.currentTimeMillis() - startTime > timeLimit) return;
         if (unvisited.size() == 0){
-            if (g.isArc(currentVertex,0)){
+            if (GraphConverter.isArc(currentVertex,0,isUnlocked)){
                 if (currentCost+g.getCost(currentVertex,0) < bestSolCost){
                     visited.toArray(bestSol);
                     bestSolCost = currentCost+g.getCost(currentVertex,0);
+                    System.out.print("Nouvelle solution en : ");
+                    System.out.println(bestSolCost);
                 }
             }
-        } else if (currentCost+bound(currentVertex,unvisited) < bestSolCost){
-            Iterator<Integer> it = iterator(currentVertex, unvisited, g);
+        } else if (currentCost+bound(currentVertex,unvisited,isUnlocked) < bestSolCost){
+            Iterator<Integer> it = iterator(currentVertex, unvisited, g,isUnlocked);
             while (it.hasNext()){
                 Integer nextVertex = it.next();
-                visited.add(nextVertex);
-                unvisited.remove(nextVertex);
-                branchAndBound(nextVertex, unvisited, visited,
-                        currentCost+g.getCost(currentVertex, nextVertex));
-                visited.remove(nextVertex);
-                unvisited.add(nextVertex);
+                if (isUnlocked[currentVertex][nextVertex]) {
+                    visited.add(nextVertex);
+                    unvisited.remove(nextVertex);
+                    boolean[][] newIsUnlocked= Array.getCopy(isUnlocked,g.getNbVertices());
+                    if (currentVertex%2==0){
+                        if (newIsUnlocked[currentVertex+1][0]){
+                            Array.allowDelivery(newIsUnlocked,currentVertex+1,g.getNbVertices());
+                        }
+                    }
+                    //Array.display(newIsUnlocked,g.getNbVertices());
+                    branchAndBound(nextVertex, unvisited, visited,newIsUnlocked,
+                            currentCost + g.getCost(currentVertex, nextVertex));
+                    visited.remove(nextVertex);
+                    unvisited.add(nextVertex);
+                }
             }
         }
     }

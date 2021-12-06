@@ -14,15 +14,15 @@ public class Graph {
     public Graph(int dimension,HashMap<String,Point> listePoint) {
         content=new ArrayList<ArrayList<Vertice>>();
         tableIndex=new HashMap<String,Integer>();
-        for (int i=0;i<dimension;i++){
+        for (int i=0;i<=dimension;i++){
             ArrayList<Vertice> current=new ArrayList<Vertice>();
-            for (int k=0;k<dimension;k++){
+            for (int k=0;k<=dimension;k++){
                 current.add(null);
             }
             content.add(current);
         }
-        compteurPickUp=0;
-        compteurDelivery=1;
+        compteurPickUp=1;
+        compteurDelivery=2;
         this.dimension=dimension;
         this.listePoint=listePoint;
     }
@@ -65,33 +65,37 @@ public class Graph {
     public void setContent(ArrayList<ArrayList<Vertice>> content) {
         this.content = content;
     }
-    public void addVertice(Vertice v){
+    public void addVertice(Vertice v,boolean isDepot){
         if (v!=null) {
-            String idOrigin = v.getIdOrigin();
-            String idDestination = v.getIdDestination();
-            if (tableIndex.get(idOrigin) == null) {
-                if (listePoint.get(idOrigin).getType().equals("delivery")) {
-                    tableIndex.put(idOrigin, compteurDelivery);
-                    compteurDelivery += 2;
-                }else{
-                    tableIndex.put(idOrigin, compteurPickUp);
-                    compteurPickUp += 2;
+            if (isDepot) {
+
+            } else {
+                String idOrigin = v.getIdOrigin();
+                String idDestination = v.getIdDestination();
+                if (tableIndex.get(idOrigin) == null) {
+                    if (listePoint.get(idOrigin).getType().equals("delivery")) {
+                        tableIndex.put(idOrigin, compteurDelivery);
+                        compteurDelivery += 2;
+                    } else {
+                        tableIndex.put(idOrigin, compteurPickUp);
+                        compteurPickUp += 2;
+                    }
                 }
-            }
-            if (tableIndex.get(idDestination) == null) {
-                if (listePoint.get(idDestination).getType().equals("delivery")) {
-                    tableIndex.put(idDestination, compteurDelivery);
-                    compteurDelivery += 2;
-                }else{
-                    tableIndex.put(idDestination, compteurPickUp);
-                    compteurPickUp += 2;
+                if (tableIndex.get(idDestination) == null) {
+                    if (listePoint.get(idDestination).getType().equals("delivery")) {
+                        tableIndex.put(idDestination, compteurDelivery);
+                        compteurDelivery += 2;
+                    } else {
+                        tableIndex.put(idDestination, compteurPickUp);
+                        compteurPickUp += 2;
+                    }
                 }
+                int indexOrigin = tableIndex.get(idOrigin);
+                int indexDestination = tableIndex.get(idDestination);
+                System.out.println(tableIndex);
+                System.out.println(content);
+                content.get(indexOrigin).set(indexDestination, v);
             }
-            int indexOrigin = tableIndex.get(idOrigin);
-            int indexDestination = tableIndex.get(idDestination);
-            System.out.println(tableIndex);
-            System.out.println(content);
-            content.get(indexOrigin).set(indexDestination, v);
         }
         else{
             System.out.println("NON NULL");

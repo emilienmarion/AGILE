@@ -49,6 +49,7 @@ public class Map extends JPanel {
     }
     private void drawGraph(Graph graph,Graphics g){
         ArrayList<Path> way=graph.getSolution();
+        int length=graph.getListePoint().size();
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
         ac.add(Color.blue);

@@ -50,4 +50,8 @@ public class GraphConverter {
         CompleteGraph cg=new CompleteGraph(d,cost,isUnlocked);
         return cg;
     }
+    public static boolean isArc(int i,int j,boolean[][] isUnlocked){
+        return i!=j;
+        //return isUnlocked[i][j];
+    }
 }
