@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -179,4 +182,17 @@ public class XmlUtils {
         }
         return inters;
     }
+
+    public static Date findSchedule(Date heurePrec, float costToReach, int durationPrec) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+
+        int secondHeurePrec= heurePrec.getHours()*3600+heurePrec.getMinutes()*60+heurePrec.getSeconds();
+        int secondTotal= (int)costToReach + durationPrec + secondHeurePrec;
+
+        Date schedule = new SimpleDateFormat("HH:mm:ss").parse("00:00:"+String.valueOf(secondTotal));
+        return schedule;
+
+    }
+
 }

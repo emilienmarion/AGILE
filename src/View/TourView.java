@@ -9,15 +9,44 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+
+import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+
 import Model.*;
 import obs.Observable;
 import obs.Observer;
 
+
+
+import Utils.Algorithm;
+import Utils.GraphConverter;
+import Utils.XmlUtils;
+
+
+
+
+
 public class TourView implements Observer {
+
     protected JFrame frame;
     protected JPanel rightPanel;
     protected JPanel headerInfo;
@@ -35,7 +64,11 @@ public class TourView implements Observer {
     protected ImageIcon icon;
 
 
-    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller, String TourPath) {
+
+
+
+    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller, String TourPath) throws ParseException {
+
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
@@ -44,11 +77,13 @@ public class TourView implements Observer {
         this.jpanelList = new HashMap<>();
         this.controller = controller;
 
+
         initTourView(TourPath);
     }
 
-    public void initTourView(String TourPath){
+    public void initTourView(String TourPath) throws ParseException{
         rightPanel.removeAll();
+
         rightPanel.setBackground(new Color(40, 40, 40));
 
         JPanel test = new JPanel();
@@ -63,11 +98,16 @@ public class TourView implements Observer {
 
         Point point;
         HashMap<String, Point> listePoint = req.getListePoint();
-        Point depot = req.getDepot();
-        componentToScroll.add(createJPanelPoint(depot.getId(), depot.getType(), depot.getDuration()));
-        for (String s : listePoint.keySet()) {
-            point = listePoint.get(s);
-            componentToScroll.add(createJPanelPoint(point.getId(), point.getType(), point.getDuration()));
+
+
+
+        ArrayList<Point> listePointDef = getTheFinalPointListtulululu(listePoint);
+
+        for (Point s : listePointDef) {
+            point = s;
+            componentToScroll.add(createJPanelPoint(point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule()));
+
+
         }
 
         scrollPane = new JScrollPane(componentToScroll);
@@ -81,9 +121,13 @@ public class TourView implements Observer {
         rightPanel.add(scrollPane);
         rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        setHeaderTour("", req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
     }
 
-    protected JPanel createJPanelPoint(String unId, String unType, int uneDuration) {
+
+    protected JPanel createJPanelPoint(String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
+
         // TODO : Faire marcher les logos
 
         ImageIcon iconEdit = new ImageIcon (new ImageIcon("./img/icons8-edit-150.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
@@ -98,19 +142,27 @@ public class TourView implements Observer {
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
         row.setPreferredSize(new Dimension(100, 30));
+
         row.setMaximumSize(new Dimension(380, 60));
 
-        System.out.println("request : " + this.req);
+
         if (this.req != null) {
             HashMap<String, Point> listePoint = req.getListePoint();
 
             //System.out.println("point : " +unId);
 
-
-
             JLabel id = new JLabel(unId + " ");
             JLabel type = new JLabel(unType + " ");
             JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+            //JLabel costToReach = new JLabel(String.valueOf((unCost/60) + " "));
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            String heurePassage = dateFormat.format(unSchedule);
+            JLabel schedule = new JLabel(heurePassage);
+
+
+           // JLabel id = new JLabel(unId + " ");
+           // JLabel type = new JLabel(unType + " ");
+           // JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
             if (unType == "depot") {
                 icon = new ImageIcon (new ImageIcon("./img/icons8-garage-ouvert-24.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
             }
@@ -122,6 +174,9 @@ public class TourView implements Observer {
             }
 
             JLabel image = new JLabel(icon);
+
+
+
 
 
             JPanel buttonBlock = new JPanel();
@@ -142,6 +197,12 @@ public class TourView implements Observer {
             deleteButton.addActionListener(buttonListener);
 
             row.add(Box.createHorizontalGlue());
+
+            row.add(duration);
+
+            row.add(schedule);
+
+
             row.add(image);
             row.add(id);
             row.add(type);
@@ -173,8 +234,120 @@ public class TourView implements Observer {
 
         });
 
+
         jpanelList.put(unId, row);
         return row;
+    }
+
+
+    public ArrayList<Point> getTheFinalPointListtulululu(HashMap<String, Point> listePointReq) throws ParseException {
+        Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData());
+        ArrayList<Path> ap = Algorithm.TSP(g);
+
+        Node predecessor;
+
+        ArrayList<Point> listePointDef = new ArrayList<Point>();
+        float costInter = 0;
+        int durationPrec = 0;
+        int k = 0;
+        int j=0;
+        boolean test = true;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Date dateInter = sdf.parse(req.getDepartureTime());
+        System.out.println("date de depart : " + dateInter);
+        req.getDepot().setSchedule(dateInter);
+        listePointDef.add(req.getDepot());
+
+
+        for (int i = 0; i < ap.size(); i++) {
+            predecessor = ap.get(i).getPath();
+
+            ArrayList<Node> listeNodeTot = new ArrayList<Node>();
+
+            while (predecessor != null) {
+
+
+
+
+                listeNodeTot.add(predecessor);
+                costInter += (predecessor.getCost() / (3.6 * 15));
+                //System.out.println("listeNodeTot[" + j + "] : " + listeNodeTot.get(j));
+
+
+                for (String s : listePointReq.keySet()) {
+
+
+                    if (predecessor.getIntersection().getId() == listePointReq.get(s).getId() && !listePointDef.contains(listePointReq.get(s))) {
+
+
+                        listePointReq.get(s).setCostToReach(costInter);
+                        dateInter = XmlUtils.findSchedule(dateInter, costInter, durationPrec);
+                        listePointReq.get(s).setSchedule(dateInter);
+
+                        listePointDef.add(listePointReq.get(s));
+                        // System.out.println("Date inter" + listePointDef.get(k).getSchedule());
+                        costInter = 0;
+                        durationPrec = listePointDef.get(k).getDuration(); //à verifier
+                        k++;
+                    }
+                }
+                predecessor=predecessor.getPredecessor();
+                j++;
+
+            }
+        }
+
+           /* inter = ap.get(i).getPath();
+
+            for (int j = 0; j < inter.size(); j++) {
+
+                listeNodeTot.add(inter.get(j));
+                costInter += (inter.get(j).getCost()/(3.6*15));
+                System.out.println("listeNodeTot[" + j + "] : " + listeNodeTot.get(j));
+                intersecTot.add(inter.get(j).getIntersection());
+
+                for (String s : listePointReq.keySet()) {
+
+
+
+
+
+
+
+                    if (intersecTot.get(j).getId() == listePointReq.get(s).getId() && !listePointDef.contains(listePointReq.get(s))) {
+                        System.out.println("je rentre dans ce if");
+
+                        listePointReq.get(s).setCostToReach(costInter);
+                        dateInter = XmlUtils.findSchedule(dateInter, costInter, durationPrec);
+                        listePointReq.get(s).setSchedule(dateInter);
+
+                        listePointDef.add(listePointReq.get(s));
+                       // System.out.println("Date inter" + listePointDef.get(k).getSchedule());
+                        costInter = 0;
+                        durationPrec = listePointDef.get(k).getDuration(); //à verifier
+                        k++;
+                    }
+                }
+
+            }
+
+        }*/
+
+
+
+
+        System.out.println("Point dans la liste def : " + listePointDef + "c'est fini la");
+        return listePointDef;
+    }
+
+    private void initHeaderTour() {
+        //TODO : Déclarer panel de droite avec le scrollbar et les détails des tours
+
+        //TODO : Déclarer panel du haut avec indices d'aide à la tournée
+
+        headerInfo.setPreferredSize(new Dimension(100, 100));
+        headerInfo.setBackground(new Color(86, 86, 86));
     }
 
     private void setHeaderTour(String V1, String V2, String V3, String V4 ) {
@@ -202,13 +375,14 @@ public class TourView implements Observer {
         headerInfo.add(headDuration);
         headerInfo.add(Box.createHorizontalGlue());
 
+
     }
 
-    public void loadRequest(Request req, String tp) {
+    public void loadRequest(Request req, String tp) throws ParseException {
         System.out.println("ToutPanel.loadRequest");
 
         Map map = mapView.getMap();
-       // map.setMapData(mapView.getMapData());
+        // map.setMapData(mapView.getMapData());
         map.setReq(req);
         //map.repaint();
 
@@ -236,10 +410,13 @@ public class TourView implements Observer {
         String departure1 = "22:01";
         String ETA1 = "22:03";
         String duration1 = "00:02";
-        setHeaderTour(date1, departure1, ETA1, duration1);
+
+
+
 
         initTourView(tp);
     }
+
 
 
     public void highlight(String id){
@@ -257,6 +434,7 @@ public class TourView implements Observer {
 
     
     public void editPoint(String id) {
+
 
         JPanel point = jpanelList.get(id);
         point.setBackground(Color.MAGENTA);

@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 import Model.MapData;
 import Model.Request;
@@ -22,11 +23,13 @@ public class Controller {
     }
 
 
+
     /**
      * Open a JFileChooser. Return true and call frame.loadTour if the file is an xml. Return false in other cases.
      * @return boolean
      */
-    public boolean loadTour() {
+    public boolean loadTour() throws ParseException{
+
         System.out.println("Controller.loadTour");
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
@@ -143,5 +146,6 @@ public class Controller {
         frame.confirmEdit(id);
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
+
 }
 

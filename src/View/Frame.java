@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 
 import Controller.*;
 import Model.MapData;
@@ -119,8 +120,10 @@ public class Frame {
         this.mapView = mapView;
     }
 
-    public void switchToTourView(Request req, String tp)
+
+    public void switchToTourView(Request req, String tp)throws ParseException
     {
+
         System.out.println("Frame.switchToTourView");
         this.TourPath = tp;
         // Reset right panel
@@ -130,7 +133,7 @@ public class Frame {
         tourView.loadRequest(req, this.TourPath);
     }
 
-    public void loadTour(Request req){tourView.loadRequest(req, this.TourPath);}
+    public void loadTour(Request req) throws ParseException {tourView.loadRequest(req, this.TourPath);}
 
     public void loadMap(MapData loadedMap, String mapath) {
         mapView.loadMap(loadedMap, mapath);
