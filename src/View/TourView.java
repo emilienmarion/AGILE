@@ -82,24 +82,29 @@ public class TourView {
     }
 
     protected JPanel createJPanelPoint(String unId, String unType, int uneDuration) {
-        // TODO : Faire marcher les logos
+
 
         ImageIcon iconEdit = new ImageIcon (new ImageIcon("./img/icons8-edit-150.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-        ImageIcon iconDelete = new ImageIcon (new ImageIcon("./img/icons8-trash-240.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-
         JLabel imageEdit = new JLabel(iconEdit);
         imageEdit.setBackground(new Color(86,86,86));
         imageEdit.setOpaque(true);
+
+        ImageIcon iconDelete = new ImageIcon (new ImageIcon("./img/icons8-trash-240.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         JLabel imageDelete = new JLabel(iconDelete);
         imageDelete.setBackground(new Color(198,52,52));
         imageDelete.setOpaque(true);
 
+
+
         JPanel row = new JPanel();
         row.setBackground(new Color(61,61,61));
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
-        row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-        row.setPreferredSize(new Dimension(100, 30));
+        row.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        row.setPreferredSize(new Dimension(380, 60));
         row.setMaximumSize(new Dimension(380, 60));
+        row.setMinimumSize(new Dimension(380, 60));
 
         System.out.println("request : " + this.req);
         if (this.req != null) {
@@ -107,11 +112,21 @@ public class TourView {
 
             //System.out.println("point : " +unId);
 
-
-
             JLabel id = new JLabel(unId + " ");
-            JLabel type = new JLabel(unType + " ");
+            id.setForeground(Color.WHITE);
+
             JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+            duration.setForeground(Color.WHITE);
+
+            JPanel adressPanel = new JPanel();
+            adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
+            adressPanel.setBackground(new Color(86,86,86));
+            adressPanel.setPreferredSize(new Dimension(150, 50));
+            adressPanel.add(id,BorderLayout.WEST);
+            adressPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+
+
+
             if (unType == "depot") {
                 icon = new ImageIcon (new ImageIcon("./img/icons8-garage-ouvert-24.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
             }
@@ -124,33 +139,56 @@ public class TourView {
 
             JLabel image = new JLabel(icon);
 
+            //Gestion bouton edit et delete
 
             JPanel buttonBlock = new JPanel();
-            buttonBlock.setBackground(new Color(61,61,61));
+            buttonBlock.setOpaque(true);
+            //buttonBlock.setBackground(new Color(161,61,61));
             buttonBlock.setLayout(new BoxLayout(buttonBlock, BoxLayout.Y_AXIS));
+
+            //Gestion bouton edit
             JButton editButton = new JButton();
             editButton.setBackground(new Color(86,86,86));
             editButton.setOpaque(true);
             editButton.add(imageEdit);
             editButton.setActionCommand("editRow" + unId);
+            editButton.addActionListener(buttonListener);
+
+            //Gestion bouton delete
             JButton deleteButton = new JButton();
-            deleteButton.setBackground(Color.red);
+            //deleteButton.setBackground(Color.RED);
+            deleteButton.setBackground(new Color(86,86,86));
             deleteButton.setOpaque(true);
             deleteButton.add(imageDelete);
             deleteButton.setActionCommand("deleteRow" + unId);
+            deleteButton.addActionListener(buttonListener);
 
             buttonBlock.add(editButton);
             buttonBlock.add(deleteButton);
-            editButton.addActionListener(buttonListener);
-            deleteButton.addActionListener(buttonListener);
 
-            row.add(Box.createHorizontalGlue());
-            row.add(image);
-            row.add(id);
-            row.add(type);
-            row.add(duration);
-            row.add(buttonBlock);
-            row.add(Box.createHorizontalGlue());
+            gbc.gridx = gbc.gridy = 0;
+            gbc.insets = new Insets(0, 10, 0, 10);
+            gbc.anchor = GridBagConstraints.LINE_START;
+            row.add(image, gbc);
+
+            gbc.gridx = 1;
+            gbc.gridy = 0;
+            gbc.weightx = 1;
+            row.add(adressPanel,gbc);
+
+
+            gbc.gridx = 2;
+            gbc.gridy = 0;
+            gbc.gridwidth = GridBagConstraints.RELATIVE;
+            gbc.anchor = GridBagConstraints.BELOW_BASELINE_TRAILING;
+            row.add(duration, gbc);
+
+            gbc.gridx = 3;
+            gbc.gridy = 0;
+            gbc.insets = new Insets(0, 5, 0, 10);
+            gbc.anchor = GridBagConstraints.LINE_END;
+            row.add(buttonBlock, gbc);
+
             image.setVisible(true);
             imageDelete.setVisible(true);
             imageEdit.setVisible(true);
@@ -205,7 +243,7 @@ public class TourView {
         ArrayList<Path> ap=Algorithm.TSP(g);
         //System.out.println(ap);
         Map m=mapView.getMap();
-        m.setWay(ap);
+        //m.setWay(ap);
         m.repaint();
 
 
@@ -235,16 +273,39 @@ public class TourView {
     public void editPoint(String id) {
 
         JPanel point = jpanelList.get(id);
-        point.setBackground(Color.MAGENTA);
+
+
         int type;
         String location = "location";
         String hour = "33h33";
 
         point.removeAll();
-        JTextField fieldLocation = new JTextField(location);
-        JTextField fieldHour = new JTextField(hour);
 
-        JButton confirmEdit = new JButton("Confirm Edition");
+        point.setBackground(new Color(61,61,61));
+        point.setName(String.valueOf(1)); //jsp à quoi ça sert
+        point.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        point.setPreferredSize(new Dimension(380, 60));
+        point.setMaximumSize(new Dimension(380, 60));
+        point.setMinimumSize(new Dimension(380, 60));
+
+        ImageIcon iconValide = new ImageIcon (new ImageIcon("./img/icons8-en-cours-24.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        JLabel imageValide = new JLabel(iconValide);
+        imageValide.setBackground(new Color(116, 69, 206));
+        imageValide.setOpaque(false);
+
+
+        JTextField fieldLocation = new JTextField(location);
+        fieldLocation.setBackground(new Color(116, 69, 206));
+        fieldLocation.setForeground(Color.WHITE);
+        fieldLocation.setBorder(BorderFactory.createEmptyBorder());
+        JTextField fieldHour = new JTextField(hour);
+        fieldHour.setBackground(new Color(61, 61, 61));
+        fieldHour.setForeground(Color.WHITE);
+        fieldHour.setBorder(BorderFactory.createEmptyBorder());
+
+        JButton confirmEdit = new JButton(iconValide);
         // Ici on squiz le button listener car j'ai pas trouvé comment passer des variables en paramètre pour donner
         // au controller les données à persister dans le modèle de donnée.
         confirmEdit.addActionListener(new ActionListener() {
@@ -258,9 +319,49 @@ public class TourView {
             }
         });
 
-        point.add(fieldLocation);
-        point.add(fieldHour);
-        point.add(confirmEdit);
+
+
+        JLabel image = new JLabel(icon);
+
+        JPanel adressPanel = new JPanel();
+        adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
+        adressPanel.setBackground(new Color(86,86,86));
+        adressPanel.setPreferredSize(new Dimension(150, 50));
+        adressPanel.add(fieldLocation,BorderLayout.WEST);
+        //adressPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+
+
+        confirmEdit.setPreferredSize(new Dimension(50,55));
+        confirmEdit.setBackground(new Color(116, 69, 206));
+        confirmEdit.setOpaque(false);
+
+
+
+        gbc.gridx = gbc.gridy = 0;
+        gbc.insets = new Insets(0, 10, 0, 10);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        point.add(image, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1;
+        point.add(adressPanel,gbc);
+
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridwidth = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.BELOW_BASELINE_TRAILING;
+        point.add(fieldHour, gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(0, 5, 0, 10);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        point.add(confirmEdit, gbc);
+
+        image.setVisible(true);
+
     }
 
     public void confirmEdit(String id) {
