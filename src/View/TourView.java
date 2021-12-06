@@ -200,7 +200,7 @@ public class TourView {
         ArrayList<Path> ap=Algorithm.TSP(g);
         //System.out.println(ap);
         Map m=mapView.getMap();
-        m.setWay(ap);
+        //m.setWay(ap);
         m.repaint();
 
 
