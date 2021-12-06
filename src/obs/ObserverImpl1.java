@@ -1,5 +1,6 @@
 package obs;
 
+/*
 public class ObserverImpl1 implements Observer {
 
 
@@ -8,4 +9,4 @@ public class ObserverImpl1 implements Observer {
         int etat = ((ObservableConcret)o).getEtat();
         System.out.println("Resultat : "+etat*3);
     }
-}
+}*/

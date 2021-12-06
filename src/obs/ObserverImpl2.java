@@ -1,5 +1,6 @@
 package obs;
 
+/*
 public class ObserverImpl2 implements Observer{
 
 
@@ -9,3 +10,4 @@ public class ObserverImpl2 implements Observer{
         System.out.println("Resultat : "+etat*6);
     }
 }
+*/
