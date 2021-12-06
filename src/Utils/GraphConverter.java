@@ -11,20 +11,38 @@ public class GraphConverter {
     public static CompleteGraph toTSPGraph(Graph g){
         int d=g.getDimension();
         System.out.println(d);
+        System.out.println(g.getContent());
         float[][] cost=new float[d][d];
+        boolean[][] isUnlocked=new boolean[d][d];
         int i=0;
         for (ArrayList<Vertice> av:g.getContent()){
             int j=0;
             float[] line=new float[d];
+            boolean[] lineUnlocked=new boolean[d];
             for (Vertice v:av){
-                if (v==null) line[j]=-1;
-                else line[j]=v.getLength();
+                if (v==null){
+                    System.out.println("NULL");
+                    lineUnlocked[j]=false;
+                    line[j]=-1;
+                }
+                else{
+                    line[j]=v.getLength();
+                    if (g.getListePoint().get(v.getIdDestination()).getType().equals("delivery")){
+                        System.out.println("DELIVERY");
+                        lineUnlocked[j]=false;
+                    }
+                    else{
+                        System.out.println("PICKUP");
+                        lineUnlocked[j]=true;
+                    }
+                }
                 j++;
             }
             cost[i]=line;
+            isUnlocked[i]=lineUnlocked;
             i++;
         }
-        CompleteGraph cg=new CompleteGraph(d,cost);
+        CompleteGraph cg=new CompleteGraph(d,cost,isUnlocked);
         return cg;
     }
 }

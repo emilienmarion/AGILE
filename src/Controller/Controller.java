@@ -22,25 +22,27 @@ public class Controller {
         this.frame = frame;
     }
 
-
     public void loadTour() {
         System.out.println("Controller.loadTour");
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
         chooser.setApproveButtonText("Select"); //intitulé du bouton
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
-            Firm = chooser.getSelectedFile().getAbsolutePath();
-        }
-        loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
+        try{
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
+                Firm = chooser.getSelectedFile().getAbsolutePath();
+            }
+            loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
 
-        if(!firstLoadTour){
-            frame.switchToTourView(loadRequest);
-        }else{
-            frame.loadTour(loadRequest);
+            if(!firstLoadTour){
+                frame.switchToTourView(loadRequest, Firm);
+            }else{
+                frame.loadTour(loadRequest);
+            }
+            frame.display();
+        }catch (Exception e){
+            System.out.println("Controller.loadTour Error : " + e);
         }
-        frame.display();
-
     }
 
 
@@ -56,18 +58,17 @@ frame.highlight(i);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
         {
             System.out.println("Vous avez choisis: "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
-             Firm= chooser.getSelectedFile().getAbsolutePath();
-            System.out.println(Firm);
-
-
+            try {
+                Firm = chooser.getSelectedFile().getAbsolutePath();
+                System.out.println(Firm);
+            }catch (Exception e){
+                System.out.println("Error : " + e);
+            }
         }
         MapData loadedMap = XmlUtils.readMap(Firm);
-
         this.md=loadedMap;
-        frame.loadMap(loadedMap);
-
+        frame.loadMap(loadedMap, Firm);
         frame.display();
-        //View.Window frameh = new View.Window(1000,700,loadedMap);
 
         return loadedMap;
     }

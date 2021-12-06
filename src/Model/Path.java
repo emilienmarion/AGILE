@@ -3,18 +3,18 @@ package Model;
 import java.util.ArrayList;
 
 public class Path {
-    private ArrayList<Node> path;
+    private Node path;
     private String id;
     public Path() {
-        path=new ArrayList<Node>();
+        path=new Node();
     }
 
     public Path(String id) {
         this.id = id;
-        path=new ArrayList<Node>();
+        path=new Node();
     }
 
-    public ArrayList<Node> getPath() {
+    public Node getPath() {
         return path;
     }
 
@@ -26,16 +26,17 @@ public class Path {
         this.id = id;
     }
 
-    public void setPath(ArrayList<Node> path) {
+    public void setPath(Node path) {
         this.path = path;
     }
     public void addToPath(Node n){
-        path.add(n);
+        path=n;
     }
     public Vertice toVertice(){
         String[] ids=id.split("-");
+        System.out.println(ids[0]+"-"+ids[1]);
         if (ids[0].equals(ids[1])) return null;
-        Vertice v=new Vertice(ids[0],ids[1],path.get(0).getCost(),this);
+        Vertice v=new Vertice(ids[0],ids[1],path.getCost(),this);
         return v;
     }
     @Override
