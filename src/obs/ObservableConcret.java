@@ -3,6 +3,7 @@ package obs;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 public class ObservableConcret implements Observable{
 
     private List<Observer> observers = new ArrayList<>();
@@ -39,3 +40,4 @@ public class ObservableConcret implements Observable{
         notifyObservers();
     }
 }
+*/
