@@ -2,6 +2,7 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 
 import Controller.*;
 import Model.MapData;
@@ -137,8 +138,7 @@ public class Frame {
         this.mapView = mapView;
     }
 
-    public void switchToTourView(Request req)
-    {
+    public void switchToTourView(Request req) throws ParseException {
         System.out.println("Frame.switchToTourView");
         // Reset right panel
         rightPanel.removeAll();

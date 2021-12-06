@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 import Model.MapData;
 import Model.Request;
@@ -19,7 +20,7 @@ public class Controller {
     }
 
 
-    public void loadTour() {
+    public void loadTour() throws ParseException {
         System.out.println("Controller.loadTour");
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
@@ -99,5 +100,6 @@ public class Controller {
         frame.confirmEdit(id);
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
+
 }
 
