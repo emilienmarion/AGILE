@@ -248,7 +248,10 @@ public class TourView {
         for (String j :jpanelList.keySet()){
             jpanelList.get(j).setBackground(new Color(61, 61, 61));
         }
-
+        Map m=mapView.getMap();
+        m.setCurentid(id);
+        m.setTest(true);
+        m.repaint();
         JPanel point = jpanelList.get(id);
         point.setBackground(new Color(116, 69, 206));
     }
