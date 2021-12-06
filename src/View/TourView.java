@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 
 import Model.*;
 import Utils.Algorithm;
@@ -55,6 +57,8 @@ public class TourView {
 
         Point point;
         HashMap<String, Point> listePoint = req.getListePoint();
+
+
         ArrayList<Point> listePointDef = getTheFinalPointListtulululu(listePoint);
         //Point depot = req.getDepot();
         //componentToScroll.add(createJPanelPoint(depot.getId(), depot.getType(), depot.getDuration()));
@@ -125,13 +129,15 @@ public class TourView {
     public ArrayList<Point> getTheFinalPointListtulululu(HashMap<String, Point> listePointReq) throws ParseException {
         Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData());
         ArrayList<Path> ap = Algorithm.TSP(g);
-        ArrayList<Node> listeNodeTot = new ArrayList<Node>();
+
         ArrayList<Node> inter = new ArrayList<Node>();
-        ArrayList<Intersection> intersecTot = new ArrayList<Intersection>();
+
         ArrayList<Point> listePointDef = new ArrayList<Point>();
         float costInter = 0;
         int durationPrec = 0;
         int k = 0;
+        boolean test= true;
+
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         Date dateInter = sdf.parse(req.getDepartureTime());
         System.out.println("date de depart : " +dateInter);
@@ -139,18 +145,32 @@ public class TourView {
         listePointDef.add(req.getDepot());
         for (int i = 0; i < ap.size(); i++) {
             inter = ap.get(i).getPath();
+            ArrayList<Node> listeNodeTot = new ArrayList<Node>();
+            ArrayList<Intersection> intersecTot = new ArrayList<Intersection>();
             for (int j = 0; j < inter.size(); j++) {
+
                 listeNodeTot.add(inter.get(j));
                 costInter += (inter.get(j).getCost()/(3.6*15));
                 System.out.println("listeNodeTot[" + j + "] : " + listeNodeTot.get(j));
                 intersecTot.add(inter.get(j).getIntersection());
+
                 for (String s : listePointReq.keySet()) {
-                    if (intersecTot.get(j).getId() == listePointReq.get(s).getId()) {
+
+
+
+
+
+
+
+                    if (intersecTot.get(j).getId() == listePointReq.get(s).getId() && !listePointDef.contains(listePointReq.get(s))) {
+                        System.out.println("je rentre dans ce if");
+
                         listePointReq.get(s).setCostToReach(costInter);
                         dateInter = XmlUtils.findSchedule(dateInter, costInter, durationPrec);
                         listePointReq.get(s).setSchedule(dateInter);
+
                         listePointDef.add(listePointReq.get(s));
-                        System.out.println("Date inter" + listePointDef.get(k).getSchedule());
+                       // System.out.println("Date inter" + listePointDef.get(k).getSchedule());
                         costInter = 0;
                         durationPrec = listePointDef.get(k).getDuration(); //à verifier
                         k++;
@@ -160,6 +180,8 @@ public class TourView {
             }
 
         }
+
+
         System.out.println("Point dans la liste def : " + listePointDef + "c'est fini la");
         return listePointDef;
     }
