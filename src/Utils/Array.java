@@ -21,10 +21,10 @@ public class Array {
     }
     public static void allowDelivery(boolean[][] isUnlocked,int index,int length){
         for (int i=0;i<length;i++){
-            if (i!=index){
-                isUnlocked[index][i]=true;
+            if (i != index) {
+                isUnlocked[i][index] = true;
             }
-            isUnlocked[index-1][i]=false;
+            isUnlocked[i][index - 1] = false;
         }
     }
     public static void display(boolean[][] isUnlocked,int length){

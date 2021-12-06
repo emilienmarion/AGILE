@@ -73,6 +73,7 @@ public abstract class TemplateTSP implements TSP {
      */
     private void branchAndBound(int currentVertex, Collection<Integer> unvisited,
                                 Collection<Integer> visited,boolean[][] isUnlocked, float currentCost){
+
         nbConfig++;
         if (System.currentTimeMillis() - startTime > timeLimit) return;
         if (unvisited.size() == 0){
@@ -86,13 +87,14 @@ public abstract class TemplateTSP implements TSP {
             }
         } else if (currentCost+bound(currentVertex,unvisited,isUnlocked) < bestSolCost){
             Iterator<Integer> it = iterator(currentVertex, unvisited, g,isUnlocked);
+            int compteur=0;
             while (it.hasNext()){
                 Integer nextVertex = it.next();
                 if (isUnlocked[currentVertex][nextVertex]) {
                     visited.add(nextVertex);
                     unvisited.remove(nextVertex);
                     boolean[][] newIsUnlocked= Array.getCopy(isUnlocked,g.getNbVertices());
-                    if (currentVertex%2==0){
+                    if (currentVertex%2==1 ){
                         if (newIsUnlocked[currentVertex+1][0]){
                             Array.allowDelivery(newIsUnlocked,currentVertex+1,g.getNbVertices());
                         }
@@ -103,6 +105,7 @@ public abstract class TemplateTSP implements TSP {
                     visited.remove(nextVertex);
                     unvisited.add(nextVertex);
                 }
+                compteur++;
             }
         }
     }

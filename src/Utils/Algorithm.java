@@ -28,7 +28,6 @@ public class Algorithm {
     //-->Amelioration, Rajouter des attributs dans path avec une linked list d'intersection pour pouvoir printer
     //Remarque: dans notre cas on part d'un Point donné
     public static HashMap<String, Node> dijkstra(HashMap<String, Intersection> intersections, Point point){
-        System.out.println("Dijkstra");
         HashMap<String, Node> paths=new HashMap<String, Node>();
         //on init avec le premier path qui a un cout de 0 car on y est deja
         String startId=point.getId();
@@ -73,7 +72,6 @@ public class Algorithm {
         return paths;
     }
     public static Path getPath(Node n){
-        System.out.println("getPath");
         String idDestination=n.getIntersection().getId();
         String idOrigin=new String();
         Path p=new Path();
@@ -86,19 +84,15 @@ public class Algorithm {
         return p;
     }
     public static Graph createGraph(HashMap<String,Point> pointList,MapData loadedMap,Point depot){
-        System.out.println("createGraph");
         Set<String> pointListKeySet=pointList.keySet();
         int length=pointListKeySet.size();
-        System.out.println(length);
-        Graph g=new Graph(length,pointList);
+        Graph g=new Graph(length,pointList,depot);
         for (String pointId:pointListKeySet) {
             Point p=pointList.get(pointId);
             HashMap<String, Node> result = dijkstra(loadedMap.getIntersections(), p);
             for (String s : pointListKeySet) {
-                boolean isDepot=result.get(s).getIntersection().getId().equals(depot.getId());
-                g.addVertice(Algorithm.getPath(result.get(s)).toVertice(),isDepot);
+                g.addVertice(Algorithm.getPath(result.get(s)).toVertice());
             }
-            System.out.println(g.getContent());
         }
         return g;
     }

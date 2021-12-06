@@ -34,7 +34,6 @@ public class Path {
     }
     public Vertice toVertice(){
         String[] ids=id.split("-");
-        System.out.println(ids[0]+"-"+ids[1]);
         if (ids[0].equals(ids[1])) return null;
         Vertice v=new Vertice(ids[0],ids[1],path.getCost(),this);
         return v;

@@ -21,15 +21,13 @@ public class GraphConverter {
             boolean[] lineUnlocked=new boolean[d];
             for (Vertice v:av){
                 if (v==null){
-                    System.out.println("NULL");
                     lineUnlocked[j]=false;
                     line[j]=-1;
                 }
                 else{
                     line[j]=v.getLength();
                     if (g.getListePoint().get(v.getIdDestination()).getType().equals("delivery")){
-                        System.out.println("DELIVERY");
-                        if (i%2==0 && i==j-1){ //quand origin= destination-1 (i-->origin,j-->destination)
+                        if (i%2==1 && i==j-1){ //quand origin= destination-1 (i-->origin,j-->destination)
                             lineUnlocked[j]=true;
                         }
                         else{
@@ -37,7 +35,6 @@ public class GraphConverter {
                         }
                     }
                     else{
-                        System.out.println("PICKUP");
                         lineUnlocked[j]=true;
                     }
                 }
@@ -51,7 +48,7 @@ public class GraphConverter {
         return cg;
     }
     public static boolean isArc(int i,int j,boolean[][] isUnlocked){
-        return i!=j;
-        //return isUnlocked[i][j];
+        //return i!=j;
+        return isUnlocked[i][j];
     }
 }
