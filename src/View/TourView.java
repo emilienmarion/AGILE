@@ -36,9 +36,7 @@ public class TourView {
     protected ImageIcon icon;
 
 
-
-
-    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller) {
+    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller, String TourPath) {
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
         this.headerInfo = headerInfo;
@@ -47,10 +45,15 @@ public class TourView {
         this.jpanelList = new HashMap<>();
         this.controller = controller;
 
+        initTourView(TourPath);
+    }
+
+    public void initTourView(String TourPath){
+        rightPanel.removeAll();
         rightPanel.setBackground(new Color(40, 40, 40));
 
         JPanel test = new JPanel();
-        JLabel pathLabel = new JLabel("./uberIf/requests");
+        JLabel pathLabel = new JLabel(TourPath);
         pathLabel.setForeground(Color.WHITE);
         test.add(pathLabel);
         test.setBackground(new Color(40, 40, 40));
@@ -79,8 +82,6 @@ public class TourView {
         rightPanel.add(scrollPane);
         rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
-
-        initHeaderTour();
     }
 
     protected JPanel createJPanelPoint(String unId, String unType, int uneDuration) {
@@ -177,19 +178,20 @@ public class TourView {
         return row;
     }
 
-    private void initHeaderTour() {
+    private void setHeaderTour(String V1, String V2, String V3, String V4 ) {
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
+        headerInfo.removeAll();
 
         headerInfo.setBackground(new Color(86,86,86));
         headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
-        headDate = new HeadInfo("Date", "-- -- --");
-        headDeparture = new HeadInfo("Depature", "__:__");
-        headETA = new HeadInfo("ETA", "__:__");
-        headDuration = new HeadInfo("Duration", "__:__");
+        headDate = new HeadInfo("Date", V1);
+        headDeparture = new HeadInfo("Depature", V2);
+        headETA = new HeadInfo("ETA", V3);
+        headDuration = new HeadInfo("Duration", V4);
 
         headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headDate);
@@ -203,7 +205,7 @@ public class TourView {
 
     }
 
-    public void loadRequest(Request req) {
+    public void loadRequest(Request req, String tp) {
         System.out.println("ToutPanel.loadRequest");
 
         Map map = mapView.getMap();
@@ -221,8 +223,13 @@ public class TourView {
         g.setSolution(Algorithm.TSP(g));
         //System.out.println(ap);
         Map m=mapView.getMap();
+
         m.setGraph(g);
+
+        //m.setWay(ap);
+
         m.repaint();
+
 
         // TODO : Donner les infos de tournée
         // Changer les variables ci dessous avec les données récupérées
@@ -230,26 +237,9 @@ public class TourView {
         String departure1 = "22:01";
         String ETA1 = "22:03";
         String duration1 = "00:02";
+        setHeaderTour(date1, departure1, ETA1, duration1);
 
-        // Change la barre d'information de l'IHM avec les nouvelles données
-        this.setHeadDate(date1);
-        this.setHeadDeparture(departure1);
-        this.setHeadETA(ETA1);
-        this.setHeadDuration(duration1);
-
-        // Mise à jour dans le JPanel
-        headerInfo.removeAll();
-        headerInfo.add(Box.createHorizontalGlue());
-        headerInfo.add(headDate);
-        headerInfo.add(Box.createHorizontalGlue());
-        headerInfo.add(headDeparture);
-        headerInfo.add(Box.createHorizontalGlue());
-        headerInfo.add(headETA);
-        headerInfo.add(Box.createHorizontalGlue());
-        headerInfo.add(headDuration);
-        headerInfo.add(Box.createHorizontalGlue());
-
-        // TODO : Trouver pk ça met pas à jour sur l'IHM
+        initTourView(tp);
     }
 
 
