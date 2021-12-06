@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,7 @@ import java.util.Date;
 
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -28,6 +30,9 @@ import java.util.Set;
 import java.util.HashSet;
 
 import Model.*;
+import obs.Observable;
+import obs.Observer;
+
 
 import Utils.Algorithm;
 import Utils.GraphConverter;
@@ -35,7 +40,9 @@ import Utils.XmlUtils;
 
 
 
-public class TourView {
+
+public class TourView implements Observer {
+
     protected JFrame frame;
     protected JPanel rightPanel;
     protected JPanel headerInfo;
@@ -465,5 +472,10 @@ public class TourView {
     public void setHeadDeparture(String hour){this.headDate.setValue(hour);}
     public void setHeadETA(String hour){this.headDate.setValue(hour);}
     public void setHeadDuration(String duration){this.headDate.setValue(duration);}
+
+    @Override
+    public void update(Observable o, Object arg){
+        // TODO : code pour display
+    }
 
 }
