@@ -16,10 +16,10 @@ public class Tour
     private HashMap<String, Point> points;
     private Date departureTime;
     private Date arrivalTime;
-    private float totalDuration;
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     private MapView mapView;
     private Request req;
+    private Graph graph;
 
 
     public Tour(MapView mv){
@@ -44,7 +44,7 @@ public class Tour
     }
 
     public String getDepartureTime() {
-        String ret = Integer.toString(departureTime.getHours()) + "h " + Integer.toString(departureTime.getMinutes())+"min "+Integer.toString(departureTime.getSeconds())+"s";
+        String ret = Integer.toString(departureTime.getHours()) + ":" + Integer.toString(departureTime.getMinutes())+":"+Integer.toString(departureTime.getSeconds());
         return ret;
     }
 
@@ -53,7 +53,7 @@ public class Tour
     }
 
     public String getArrivalTime() {
-        String ret = Integer.toString(arrivalTime.getHours()) + "h " + Integer.toString(arrivalTime.getMinutes())+"min "+Integer.toString(arrivalTime.getSeconds())+"s";
+        String ret = Integer.toString(arrivalTime.getHours()) + ":" + Integer.toString(arrivalTime.getMinutes())+":"+Integer.toString(arrivalTime.getSeconds());
         return ret;
     }
 
@@ -71,24 +71,14 @@ public class Tour
         return Integer.toString(h2-h1)+"h "+Integer.toString(m2-m1)+"min "+Integer.toString(s2-s1)+"s";
     }
 
-    public void setTotalDuration(float totalDuration) {
-        this.totalDuration = totalDuration;
-    }
-
-
 
     public void computeTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
         System.out.println("Tour.computeTheFinalPointList");
-        Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
-        ArrayList<Path> ap = Algorithm.TSP(g);
-
         this.graph = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
         ArrayList<Path> ap = Algorithm.TSP(this.graph);
         Node predecessor;
 
         Node node;
-
-
         ArrayList<Point> listePointDef = new ArrayList<Point>();
         float costInter = 0;
         int durationPrec = 0;
@@ -151,7 +141,6 @@ public class Tour
 
         setDepartureTime(this.pointsDef.get(0).getSchedule());
         setArrivalTime(this.pointsDef.get(pointsDef.size()-1).getSchedule());
-        setTotalDuration((this.pointsDef.get(pointsDef.size()-1).getSchedule().getTime())-(this.pointsDef.get(0).getSchedule().getTime()));
     }
 
     public void deletePoint(String idPoint)
@@ -199,19 +188,19 @@ public class Tour
       // System.out.println("-------------------> cout calcule :" + scheduleToCompare);
         Point pointToChange = new Point();
        // if(scheduleToCompare.before(newScheduleDate)){
-            for(int i=0; i<tour.size(); i++){
-                if(idPoint.equals(tour.get(i).getId())){
-                    pointToChange = tour.get(i);
-                    tour.remove(i);
+            for(int i=0; i<pointsDef.size(); i++){
+                if(idPoint.equals(pointsDef.get(i).getId())){
+                    pointToChange = pointsDef.get(i);
+                    pointsDef.remove(i);
                     pointToChange.setSchedule(newScheduleDate);
                 }
             }
        // }
 
 
-        tour.add(pointToChange);
+        pointsDef.add(pointToChange);
         System.out.println("Point modifié : " + pointToChange);
-        System.out.println("nouveau tour : " + tour);
+        System.out.println("nouveau tour : " + pointsDef);
         System.out.println("------------->nvSchedule point to change : " + pointToChange.getSchedule());
     }
 

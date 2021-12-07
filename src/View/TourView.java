@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -27,6 +26,7 @@ import java.awt.event.MouseEvent;
 
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import Model.*;
 import obs.Observable;
@@ -110,11 +110,7 @@ public class TourView implements Observer {
     }
 
 
-    protected JPanel createJPanelPoint(int i,int tailleListe,String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
-
-
-  
-
+    protected JPanel createJPanelPoint(int i, int tailleListe,String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
 
         ImageIcon iconEdit = new ImageIcon (new ImageIcon("./img/iconEdit.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         JLabel imageEdit = new JLabel(iconEdit);
@@ -126,8 +122,6 @@ public class TourView implements Observer {
         imageDelete.setBackground(new Color(198,52,52));
         imageDelete.setOpaque(true);
 
-
-
         JPanel row = new JPanel();
         row.setBackground(new Color(61,61,61));
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
@@ -137,10 +131,7 @@ public class TourView implements Observer {
         row.setMinimumSize(new Dimension(380, 60));
         GridBagConstraints gbc = new GridBagConstraints();
 
-
         if (this.req != null) {
-            HashMap<String, Point> listePoint = req.getListePoint();
-
 
             JLabel id = new JLabel(unId + " ");
             id.setForeground(Color.WHITE);
@@ -311,8 +302,10 @@ public class TourView implements Observer {
         // Créer la ligne pour chaque point de passage à partir du modèle de données
         if(tour == null){System.out.println("TourView.loadRequest : tour is null");}
         else{
+            AtomicInteger i = new AtomicInteger(1);
             tour.getPointsDef().forEach((s) -> {
-                createJPanelPoint(s.getIdAssociated(), s.getType(), s.getDuration(), s.getCostToReach(), s.getSchedule());
+                createJPanelPoint(i.get(), tour.getPointsDef().size(), s.getIdAssociated(), s.getType(), s.getDuration(), s.getCostToReach(), s.getSchedule());
+                i.getAndIncrement();
             });
         }
 
@@ -386,6 +379,7 @@ public class TourView implements Observer {
         fieldHour.setBackground(new Color(86, 86, 86));
         fieldHour.setForeground(Color.WHITE);
         fieldHour.setBorder(BorderFactory.createEmptyBorder());
+
 
         JButton confirmEdit = new JButton(iconValide);
         //confirmEdit.setUI(new BasicButtonUI());
