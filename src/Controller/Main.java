@@ -13,6 +13,7 @@ import View.*;
 import View.Map;
 
 
+import java.text.ParseException;
 import java.util.*;
 
 import java.util.HashMap;
@@ -26,7 +27,7 @@ import javax.swing.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
 
 
