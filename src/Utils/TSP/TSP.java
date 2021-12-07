@@ -22,4 +22,8 @@ public interface TSP {
      * (-1 if <code>searcheSolution</code> has not been called yet).
      */
     public float getSolutionCost();
+    /**
+     * @return number of config visited
+     */
+    public int getNbConfig();
 }

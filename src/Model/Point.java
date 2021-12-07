@@ -1,9 +1,13 @@
 package Model;
 
+import java.util.Date;
+
 public class Point extends Intersection{
     private int duration;
     private String type;
     private String idAssociated;
+    private float costToReach;
+    private Date schedule;
     public Point() {
     }
 
@@ -40,6 +44,18 @@ public class Point extends Intersection{
         this.type = type;
     }
 
+    public void setCostToReach(float costToReach){ this.costToReach = costToReach ;}
+
+    public float getCostToReach(){ return costToReach; }
+
+    public Date getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(Date schedule) {
+        this.schedule = schedule;
+    }
+
     public void setIdAssociated(String idAssociated) {
         this.idAssociated = idAssociated;
     }
@@ -53,6 +69,8 @@ public class Point extends Intersection{
                 ",\nduration=" + duration +
                 ",\ntype='" + type + '\'' +
                 ",\nidAssociated='" + idAssociated + '\'' +
+                ",\ncostToReach=" + costToReach + '\'' +
+                ",\nschedule= " + schedule +
                 '}';
     }
 }

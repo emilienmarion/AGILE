@@ -2,10 +2,12 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 
 import Controller.*;
 import Model.MapData;
 import Model.Request;
+import Model.Tour;
 
 public class Frame {
 
@@ -25,10 +27,12 @@ public class Frame {
     protected Controller controller;
     protected ButtonListener buttonListener;
     protected String TourPath;
+    protected Tour tour;
 
 
     public Frame(MapData md, String mapath) {
-        controller = new Controller(this);
+        tour = new Tour();
+        controller = new Controller(this, this.tour);
         controller.setMd(md);
         buttonListener = new ButtonListener(controller, this);
         initFrame();
@@ -119,18 +123,20 @@ public class Frame {
         this.mapView = mapView;
     }
 
-    public void switchToTourView(Request req, String tp)
+
+    public void switchToTourView(Request req, String tp)throws ParseException
     {
+
         System.out.println("Frame.switchToTourView");
         this.TourPath = tp;
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath, this.tour);
         tourView.loadRequest(req, this.TourPath);
     }
 
-    public void loadTour(Request req){tourView.loadRequest(req, this.TourPath);}
+    public void loadTour(Request req) throws ParseException {tourView.loadRequest(req, this.TourPath);}
 
     public void loadMap(MapData loadedMap, String mapath) {
         mapView.loadMap(loadedMap, mapath);

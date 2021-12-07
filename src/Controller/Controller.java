@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 import Model.MapData;
 import Model.Request;
+import Model.Tour;
 import Utils.XmlUtils;
 import View.Frame;
 
@@ -15,39 +17,60 @@ public class Controller {
     private MapData md;
     private Request loadRequest;
     private boolean firstLoadTour = false;
+    private Tour tour;
 
 
-
-    public Controller(Frame frame) {
+    public Controller(Frame frame, Tour tour) {
         this.frame = frame;
+        this.tour = tour;
     }
 
-    public void loadTour() {
+
+
+    /**
+     * Open a JFileChooser. Return true and call frame.loadTour if the file is an xml. Return false in other cases.
+     * @return boolean
+     */
+    public boolean loadTour() throws ParseException{
+
         System.out.println("Controller.loadTour");
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
         chooser.setApproveButtonText("Select"); //intitulé du bouton
-        try{
-            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
-                Firm = chooser.getSelectedFile().getAbsolutePath();
-            }
-            loadRequest=XmlUtils.ReadRequest(Firm,this.md.getIntersections());
 
-            if(!firstLoadTour){
-                frame.switchToTourView(loadRequest, Firm);
-            }else{
-                frame.loadTour(loadRequest);
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION && chooser.getSelectedFile() != null) {
+            System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
+            Firm = chooser.getSelectedFile().getAbsolutePath();
+
+            if(!verifXml(Firm)){
+                System.out.println("File type is not xml");
+                return false;
+            }else {
+                loadRequest = XmlUtils.ReadRequest(Firm, this.md.getIntersections());
+
+                if (!firstLoadTour) {
+                    frame.switchToTourView(loadRequest, Firm);
+                } else {
+                    frame.loadTour(loadRequest);
+                }
+                frame.display();
+
+                return true;
             }
-            frame.display();
-        }catch (Exception e){
-            System.out.println("Controller.loadTour Error : " + e);
+        }else{
+            System.out.println("File chooser closed or an error hapenned");
+            return false;
         }
+
+
     }
 
 
     public void highLight(String i){
-frame.highlight(i);
+
+        frame.highlight(i);
+
+
     }
 
     public MapData loadMap() {
@@ -73,6 +96,24 @@ frame.highlight(i);
         return loadedMap;
     }
 
+    /**
+     * Return True if the extension's parameter "firm" equals "xml", false else.
+     * @param firm
+     * @return boolean
+     */
+    private boolean verifXml(String firm) {
+        System.out.println("Controller.verifXml on : " + firm);
+        String chain[] = firm.split("\\.");
+        if(chain.length > 0 && chain[chain.length-1].equals("xml")){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+
+
     public void loadEditMode() {
         System.out.println("Controller.loadEditMode");
     }
@@ -82,6 +123,7 @@ frame.highlight(i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         frame.deletePoint(i);
         frame.display();
+
     }
 
     public void editPoint(String i) {
@@ -115,5 +157,6 @@ frame.highlight(i);
         frame.confirmEdit(id);
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
+
 }
 

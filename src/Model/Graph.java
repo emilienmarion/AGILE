@@ -11,7 +11,11 @@ public class Graph {
     private int compteurPickUp;
     private int compteurDelivery;
     private ArrayList<Path> solution;
-    public Graph(int dimension,HashMap<String,Point> listePoint) {
+
+    public Graph(int dimension,HashMap<String,Point> listePoint,Point depot) {
+
+
+
         content=new ArrayList<ArrayList<Vertice>>();
         tableIndex=new HashMap<String,Integer>();
         for (int i=0;i<dimension;i++){
@@ -21,10 +25,11 @@ public class Graph {
             }
             content.add(current);
         }
-        compteurPickUp=0;
-        compteurDelivery=1;
+        compteurPickUp=1;
+        compteurDelivery=2;
         this.dimension=dimension;
         this.listePoint=listePoint;
+        tableIndex.put(depot.getId(),0);
     }
 
     public Graph(ArrayList<ArrayList<Vertice>> content) {
@@ -73,7 +78,7 @@ public class Graph {
                 if (listePoint.get(idOrigin).getType().equals("delivery")) {
                     tableIndex.put(idOrigin, compteurDelivery);
                     compteurDelivery += 2;
-                }else{
+                } else {
                     tableIndex.put(idOrigin, compteurPickUp);
                     compteurPickUp += 2;
                 }
@@ -82,19 +87,18 @@ public class Graph {
                 if (listePoint.get(idDestination).getType().equals("delivery")) {
                     tableIndex.put(idDestination, compteurDelivery);
                     compteurDelivery += 2;
-                }else{
+                } else {
                     tableIndex.put(idDestination, compteurPickUp);
                     compteurPickUp += 2;
                 }
             }
             int indexOrigin = tableIndex.get(idOrigin);
             int indexDestination = tableIndex.get(idDestination);
-            System.out.println(tableIndex);
-            System.out.println(content);
+            System.out.print("indexOrigin=");
+            System.out.println(indexOrigin);
+            System.out.print("indexDestination=");
+            System.out.println(indexDestination);
             content.get(indexOrigin).set(indexDestination, v);
-        }
-        else{
-            System.out.println("NON NULL");
         }
     }
 
