@@ -33,9 +33,7 @@ public class Tour
         this.tour = tour;
     }
 
-    public Date getDepartureTime() {
-        return departureTime;
-    }
+    public Date getDepartureTime() { return departureTime; }
 
     public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
