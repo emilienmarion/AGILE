@@ -30,7 +30,7 @@ public class Main {
 
 
 
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/largeMap.xml");
+        MapData loadedMap = XmlUtils.readMap("xmlFiles/smallMap.xml");
       Frame frame = new Frame(loadedMap,"xmlFiles/smallMap.xml");
       /*Window frame=new Window(1000,700,loadedMap);
       
@@ -80,7 +80,7 @@ public class Main {
     
 
         
-*/
+
 
         try {
             // Set cross-platform Java L&F (also called "Metal")

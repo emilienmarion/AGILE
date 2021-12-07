@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class Tour
 {
     public static ArrayList<Point> getTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
-        Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData());
+        Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
         ArrayList<Path> ap = Algorithm.TSP(g);
 
         Node predecessor;

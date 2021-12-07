@@ -99,7 +99,7 @@ public class TourView implements Observer {
         Point point;
         HashMap<String, Point> listePoint = req.getListePoint();
 
-
+        listePoint.put(req.getDepot().getId(),req.getDepot());
 
         ArrayList<Point> listePointDef = Tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
 
@@ -282,7 +282,8 @@ public class TourView implements Observer {
         map.addMouseListener(new PointLocater(map,controller));
 
         HashMap<String,Point> pointList=req.getListePoint();
-        Graph g= Algorithm.createGraph(pointList,map.getMapData());
+         pointList.put(req.getDepot().getId(),req.getDepot());
+        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
         //System.out.println(g);
 
         g.setSolution(Algorithm.TSP(g));

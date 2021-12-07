@@ -94,6 +94,10 @@ public class Graph {
             }
             int indexOrigin = tableIndex.get(idOrigin);
             int indexDestination = tableIndex.get(idDestination);
+            System.out.print("indexOrigin=");
+            System.out.println(indexOrigin);
+            System.out.print("indexDestination=");
+            System.out.println(indexDestination);
             content.get(indexOrigin).set(indexDestination, v);
         }
     }
