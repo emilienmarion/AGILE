@@ -3,8 +3,10 @@ package View;
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import Controller.*;
+import Model.Point;
 import View.*;
 
 public class ButtonListener extends JFrame implements ActionListener {
@@ -43,7 +45,11 @@ public class ButtonListener extends JFrame implements ActionListener {
                 if (e.getActionCommand().contains("deleteRow")) {
                     controller.deletePoint(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
                 } else if (e.getActionCommand().contains("editRow")) {
-                    controller.editPoint(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());
+                    try {
+                        controller.editPoint(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());//recuperer l'heure de la zone de texte
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
                 }
         }
     }

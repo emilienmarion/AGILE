@@ -186,7 +186,6 @@ public class XmlUtils {
     public static Date findSchedule(Date heurePrec, float costToReach) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
-
         int secondHeurePrec= heurePrec.getHours()*3600+heurePrec.getMinutes()*60+heurePrec.getSeconds();
         int secondTotal= (int)costToReach  + secondHeurePrec;
 

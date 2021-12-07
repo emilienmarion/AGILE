@@ -30,7 +30,8 @@ public class Frame {
     protected Tour tour;
 
 
-    public Frame(MapData md, String mapath) {
+
+    public Frame(MapData md, String mapath) throws ParseException {
         tour = new Tour();
         controller = new Controller(this, this.tour);
         controller.setMd(md);
@@ -142,8 +143,11 @@ public class Frame {
         mapView.loadMap(loadedMap, mapath);
     }
 
-    public void editPoint(String id) {
-        tourView.editPoint(id);}
+    public String editPoint(String id) {
+        String schedule = tourView.editPoint(id);
+        System.out.println("Frame.editPoint : " + schedule);
+        return schedule;
+    }
 
     public void confirmEdit(String i) {tourView.confirmEdit(i);}
 
