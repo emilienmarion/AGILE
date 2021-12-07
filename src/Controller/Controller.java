@@ -121,6 +121,7 @@ public class Controller {
     public void deletePoint(String i) {
         System.out.println("Controller.deleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
+        tour.deletePoint(i);
         frame.deletePoint(i);
         frame.display();
 

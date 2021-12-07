@@ -58,7 +58,7 @@ public class Tour
     }
 
     public ArrayList<Point> getTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
-        Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData());
+        Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
 
         ArrayList<Path> ap = Algorithm.TSP(g);
 
@@ -120,7 +120,7 @@ public class Tour
         System.out.println("Tour.deletePoint");
         System.out.println(this.tour);
         for(int i = 0; i<tour.size();i++){
-            if(idPoint == tour.get(i).getId())
+            if(idPoint.equals(tour.get(i).getId()))
             {
                 this.tour.remove(i);
                 break;
