@@ -21,10 +21,15 @@ public class MapView {
         this.mapPath = mapPath;
         this.mdT = mdT;
         this.mapPathString = mp;
-        System.out.println("map data : "+ mdT);
+        //System.out.println("map data : "+ mdT);
         loadMap(this.mdT, this.mapPathString);
     }
 
+    /**
+     *
+     * @param mdT map's data
+     * @param mps map's path
+     */
     public void loadMap(MapData mdT, String mps)
     {
         leftPanel.removeAll();

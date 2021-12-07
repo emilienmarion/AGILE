@@ -21,7 +21,6 @@ public class Frame {
     protected JPanel mainPanel;
     protected JPanel splitPanel;
     protected JPanel headerInfo;
-    private final int mapSquare=450;
     protected MapView mapView;
     protected TourView tourView;
     protected Controller controller;
@@ -31,14 +30,17 @@ public class Frame {
 
 
 
-    public Frame(MapData md, String mapath) throws ParseException {
-        tour = new Tour();
-        controller = new Controller(this, this.tour);
+    public Frame(MapData md, String mapath) {
+        controller = new Controller(this);
         controller.setMd(md);
         buttonListener = new ButtonListener(controller, this);
+        int mapSquare = 450;
         initFrame();
         mapView = new MapView(leftPanel, mapSquare, mapPath, md, mapath); // Call the constructor and init this side
         initLoaderSide();
+        tour = new Tour(mapView);
+        this.controller.setTourObject(this.tour);
+
     }
 
 
@@ -110,21 +112,6 @@ public class Frame {
         frame.setVisible(true);
     }
 
-    public void PlacerPoint()
-    {
-        //map.drawPickUp();
-
-    }
-
-    public MapView getMapView() {
-        return mapView;
-    }
-
-    public void setMapView(MapView mapView) {
-        this.mapView = mapView;
-    }
-
-
     public void switchToTourView(Request req, String tp)throws ParseException
     {
 
@@ -160,7 +147,8 @@ public class Frame {
     }
 
     public void highlight(String id) {
-        tourView.highlight(id);}
+        tourView.highlight(id);
+    }
 }
 
 
