@@ -77,10 +77,11 @@ frame.highlight(i);
         System.out.println("Controller.loadEditMode");
     }
 
-    public void deleteRow(String i) {
+    public void deletePoint(String i) {
         System.out.println("Controller.deleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
-        //frame.deleteRow(Integer.valueOf(i));
+        frame.deletePoint(i);
+        frame.display();
     }
 
     public void editPoint(String i) {
@@ -88,6 +89,12 @@ frame.highlight(i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         frame.editPoint(i);
         frame.display();
+    }
+
+    public void confirmDeleteRow( String i) {
+        System.out.println("Controller.deleteRow : "+i);
+        frame.confirmDeleteRow(i);
+
     }
 
     public MapData getMd() {

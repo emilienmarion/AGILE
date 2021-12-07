@@ -139,10 +139,18 @@ public class Frame {
     public void editPoint(String id) {
         tourView.editPoint(id);}
 
+    public void confirmEdit(String i) {tourView.confirmEdit(i);}
+
+    public void deletePoint( String id) {
+        tourView.deletePoint(id);
+    }
+
+    public void confirmDeleteRow(String id) {
+        tourView.confirmDelete(id);
+    }
+
     public void highlight(String id) {
         tourView.highlight(id);}
-
-    public void confirmEdit(String i) {tourView.confirmEdit(i);}
 }
 
 
