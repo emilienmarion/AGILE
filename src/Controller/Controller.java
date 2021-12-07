@@ -8,6 +8,7 @@ import java.text.ParseException;
 
 import Model.MapData;
 import Model.Request;
+import Model.Tour;
 import Utils.XmlUtils;
 import View.Frame;
 
@@ -16,10 +17,12 @@ public class Controller {
     private MapData md;
     private Request loadRequest;
     private boolean firstLoadTour = false;
+    private Tour tour;
 
 
-    public Controller(Frame frame) {
+    public Controller(Frame frame, Tour tour) {
         this.frame = frame;
+        this.tour = tour;
     }
 
 
@@ -115,10 +118,13 @@ public class Controller {
         System.out.println("Controller.loadEditMode");
     }
 
-    public void deleteRow(String i) {
+    public void deletePoint(String i) {
         System.out.println("Controller.deleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
-        //frame.deleteRow(Integer.valueOf(i));
+        tour.deletePoint(i);
+        frame.deletePoint(i);
+        frame.display();
+
     }
 
     public void editPoint(String i) {
@@ -126,6 +132,12 @@ public class Controller {
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         frame.editPoint(i);
         frame.display();
+    }
+
+    public void confirmDeleteRow( String i) {
+        System.out.println("Controller.deleteRow : "+i);
+        frame.confirmDeleteRow(i);
+
     }
 
     public MapData getMd() {
