@@ -62,12 +62,13 @@ public class TourView implements Observer {
     protected Controller controller;
     protected String filename;
     protected ImageIcon icon;
+    protected Tour tour;
 
 
 
 
 
-    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller, String TourPath) throws ParseException {
+    public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller, String TourPath, Tour tour) throws ParseException {
 
         this.rightPanel = rightPanel;
         this.buttonListener = buttonListener;
@@ -76,6 +77,7 @@ public class TourView implements Observer {
         this.req = req;
         this.jpanelList = new HashMap<>();
         this.controller = controller;
+        this.tour = tour;
 
 
         initTourView(TourPath);
@@ -101,7 +103,7 @@ public class TourView implements Observer {
 
         listePoint.put(req.getDepot().getId(),req.getDepot());
 
-        ArrayList<Point> listePointDef = Tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
+        ArrayList<Point> listePointDef = tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
 
         for (Point s : listePointDef) {
             point = s;
