@@ -29,9 +29,9 @@ public class Main {
     public static void main(String[] args) {
 
 
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/largeMap.xml");
+        MapData loadedMap = XmlUtils.readMap("xmlFiles/mediumMap.xml");
        Window frame=new Window(1000,700,loadedMap);
-        Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsLarge7.xml",loadedMap.getIntersections());
+        Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsMedium5.xml",loadedMap.getIntersections());
         //System.out.println(loadRequest);
         HashMap<String,Point> pointList=loadRequest.getListePoint();
         Point depot=loadRequest.getDepot();
@@ -46,6 +46,7 @@ public class Main {
         m.setGraph(g);
         m.repaint();
         System.out.println(g);
+        Graph g2=Algorithm.createGraph(pointList,loadedMap,depot);
        /* ArrayList<Integer> ai=new ArrayList<>();
         ai.add(9);
         int i=0;
