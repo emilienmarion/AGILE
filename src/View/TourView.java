@@ -129,12 +129,12 @@ public class TourView implements Observer {
         int i=0;
 
     
-
+        int tailleListe= listePointDef.size()-1;
         for (Point s : listePointDef) {
 
             point = s;
-            componentToScroll.add(createJPanelPoint(i,point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule()));
-i++;
+            componentToScroll.add(createJPanelPoint(i,tailleListe,point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule()));
+          i++;
 
         }
 
@@ -154,7 +154,7 @@ i++;
     }
 
 
-    protected JPanel createJPanelPoint(int i,String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
+    protected JPanel createJPanelPoint(int i,int tailleListe,String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
 
 
   
@@ -194,7 +194,14 @@ i++;
             JLabel id = new JLabel(unId + " ");
             id.setForeground(Color.WHITE);
             DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
-            String scheduleString = dateFormat2.format(unSchedule);
+            String scheduleString;
+            if(i==0){
+                scheduleString= "8:00:00";
+            }else{
+                scheduleString = dateFormat2.format(unSchedule);
+            }
+
+
             JLabel duration = new JLabel(scheduleString);
 
             duration.setForeground(Color.WHITE);
@@ -207,16 +214,8 @@ i++;
             adressPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
 
-            //JLabel costToReach = new JLabel(String.valueOf((unCost/60) + " "));
-            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            String heurePassage;
-            if(i==0){
-                 heurePassage = "8:00:00";
-            }else{
-                heurePassage = dateFormat.format(unSchedule);
-            }
 
-            JLabel schedule = new JLabel(heurePassage);
+
 
 
 
@@ -258,9 +257,10 @@ i++;
             deleteButton.setActionCommand("deleteRow" + unId);
             deleteButton.addActionListener(buttonListener);
 
-            buttonBlock.add(editButton);
-            buttonBlock.add(deleteButton);
-
+            if(i!=0 && i!= tailleListe) {
+                buttonBlock.add(editButton);
+                buttonBlock.add(deleteButton);
+            }
 
             gbc.gridx = gbc.gridy = 0;
             gbc.insets = new Insets(0, 10, 0, 10);
@@ -285,15 +285,7 @@ i++;
             gbc.anchor = GridBagConstraints.LINE_END;
             row.add(buttonBlock, gbc);
 
-            //row.add(Box.createHorizontalGlue());
-            //row.add(duration);
-            //row.add(schedule);
-            //row.add(image);
-            //row.add(id);
-            //row.add(type);
-            //row.add(duration);
-            //row.add(buttonBlock);
-            //row.add(Box.createHorizontalGlue());
+
 
             image.setVisible(true);
             imageDelete.setVisible(true);
