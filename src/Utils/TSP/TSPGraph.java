@@ -13,11 +13,7 @@ public interface TSPGraph {
      */
     public abstract float getCost(int i, int j);
 
-    /**
-     * @param i
-     * @param j
-     * @return true if <code>(i,j)</code> is an arc of <code>this</code>
-     */
-    public abstract boolean isArc(int i, int j);
+    public abstract boolean[][] getIsUnlocked();
+
 
 }
