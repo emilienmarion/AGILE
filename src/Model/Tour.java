@@ -59,9 +59,13 @@ public class Tour
     }
 
     public ArrayList<Point> getTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
+
         this.graph = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
         ArrayList<Path> ap = Algorithm.TSP(this.graph);
         Node predecessor;
+
+        Node node;
+
 
         ArrayList<Point> listePointDef = new ArrayList<Point>();
         float costInter = 0;
@@ -75,39 +79,50 @@ public class Tour
         System.out.println("date de depart : " + dateInter);
         req.getDepot().setSchedule(dateInter);
         listePointDef.add(req.getDepot());
-
+     boolean isChecked=false;
 
         for (int i = 0; i < ap.size(); i++) {
-            predecessor = ap.get(i).getPath();
+            node = ap.get(i).getPath();
 
-            ArrayList<Node> listeNodeTot = new ArrayList<Node>();
+                costInter += (node.getCost() * (3.6 / 15));
 
-            while (predecessor != null) {
 
-                listeNodeTot.add(predecessor);
-                costInter += (predecessor.getCost() / (3.6 * 15));
-                //System.out.println("listeNodeTot[" + j + "] : " + listeNodeTot.get(j));
+                for (String s : listePointReq.keySet() ) {
 
-                for (String s : listePointReq.keySet()) {
-
-                    if (predecessor.getIntersection().getId() == listePointReq.get(s).getId() && !listePointDef.contains(listePointReq.get(s))) {
+                    if (node.getIntersection().getId() == listePointReq.get(s).getId() ) {
 
                         listePointReq.get(s).setCostToReach(costInter);
-                        dateInter = XmlUtils.findSchedule(dateInter, costInter, durationPrec);
+                        dateInter = XmlUtils.findSchedule(dateInter, costInter);
                         listePointReq.get(s).setSchedule(dateInter);
 
-                        listePointDef.add(listePointReq.get(s));
-                        // System.out.println("Date inter" + listePointDef.get(k).getSchedule());
+
+            //System.out.println("nodeID  : "+node.getIntersection().getId());
+                        if (node.getIntersection().getId().equals(req.getDepot().getId())){
+                            if (isChecked){
+                                Point p=new Point();
+                                p.setType("depot");
+                                p.setSchedule(dateInter);
+                                System.out.println("hehoooo"+p);
+                                listePointDef.add(p);
+                            }else{
+                                listePointDef.add(listePointReq.get(s));
+                                isChecked=true;
+                                System.out.println("hehoooo22");
+                            }
+                        }else{
+                            listePointDef.add(listePointReq.get(s));
+                        }
+
                         costInter = 0;
-                        durationPrec = listePointDef.get(k).getDuration(); //à verifier
+
                         k++;
                     }
                 }
-                predecessor=predecessor.getPredecessor();
-                j++;
 
             }
-        }
+
+
+
 
         System.out.println("Point dans la liste def : " + listePointDef + "c'est fini la");
         this.tour = listePointDef;

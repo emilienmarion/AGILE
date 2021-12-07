@@ -23,7 +23,21 @@ public class Point extends Intersection{
         this.duration = duration;
         this.type = type;
     }
+    public Point(Point p){
+        this.id=p.id;
+        this.type=p.type;
+        this.idAssociated=p.idAssociated;
+        this.costToReach=p.costToReach;
+        this.duration=p.duration;
+        this.schedule=p.schedule;
+        this.neighbors=p.neighbors;
+        this.latitude=p.latitude;
+        this.longitude=p.longitude;
+        this.latitudeSurPanel=p.longitudeSurPanel;
+        this.longitudeSurPanel=p.longitudeSurPanel;
 
+
+    }
     public int getDuration() {
         return duration;
     }
