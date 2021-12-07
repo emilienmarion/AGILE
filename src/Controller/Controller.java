@@ -20,9 +20,9 @@ public class Controller {
     private Tour tour;
 
 
-    public Controller(Frame frame, Tour tour) {
+    public Controller(Frame frame) {
+        System.out.println("Controller.CONSTRUCTOR");
         this.frame = frame;
-        this.tour = tour;
     }
 
 
@@ -160,5 +160,9 @@ public class Controller {
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
 
+    public void setTourObject(Tour tour) {
+        System.out.println("Controller.setTourObject");
+        this.tour = tour;
+    }
 }
 

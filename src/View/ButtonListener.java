@@ -14,6 +14,7 @@ public class ButtonListener extends JFrame implements ActionListener {
     private Frame frame;
 
     public ButtonListener(Controller controller, Frame frame) {
+        System.out.println("ButtonListener.CONSTRUCTOR");
         this.frame = frame;
         this.controller = controller;
     }
