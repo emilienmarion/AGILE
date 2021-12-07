@@ -2,6 +2,8 @@ package View;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.ParseException;
+
 import Controller.*;
 import View.*;
 
@@ -23,7 +25,13 @@ public class ButtonListener extends JFrame implements ActionListener {
                 controller.loadMap();
                 break;
             case "Load Tour":
-                controller.loadTour();
+
+                try {
+                    controller.loadTour();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
+                }
+
                 break;
             case "Confirm Edition":
                 //controller.confirmPointEdition();

@@ -11,7 +11,11 @@ public class Graph {
     private int compteurPickUp;
     private int compteurDelivery;
     private ArrayList<Path> solution;
+
     public Graph(int dimension,HashMap<String,Point> listePoint,Point depot) {
+
+
+
         content=new ArrayList<ArrayList<Vertice>>();
         tableIndex=new HashMap<String,Integer>();
         for (int i=0;i<dimension;i++){
