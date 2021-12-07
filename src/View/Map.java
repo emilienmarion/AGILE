@@ -86,13 +86,14 @@ public class Map extends JPanel {
         g.fillRect(lat, longi, 20, 20);
     }
 
+    private void drawGraph(Graph graph,Graphics g){
+        ArrayList<Path> way=graph.getSolution();
+        int length=graph.getListePoint().size();
+        int index=0;
+        ArrayList<Color> ac=new ArrayList<Color>();
 
-    private void drawGraph(Graph graph, Graphics g) {
-        ArrayList<Path> way = graph.getSolution();
 
 
-        int index = 0;
-        ArrayList<Color> ac = new ArrayList<Color>();
 
         ac.add(Color.blue);
         ac.add(Color.red);

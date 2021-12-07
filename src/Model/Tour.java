@@ -59,6 +59,7 @@ public class Tour
 
     public ArrayList<Point> getTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
         Graph g = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData());
+
         ArrayList<Path> ap = Algorithm.TSP(g);
 
         Node predecessor;
