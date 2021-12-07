@@ -307,8 +307,13 @@ i++;
                     jpanelList.get(j).setBackground(new Color(61, 61, 61));
 
                 }
+                if(!unId.equals(req.getDepot().getId()) && i!=0) {
 
+
+                    jpanelList.get(req.getListePoint().get(unId).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
+                }
                 row.setBackground(new Color(116, 69, 206));
+
                 Map m=mapView.getMap();
 
                 m.setTest(true);
@@ -319,8 +324,11 @@ i++;
 
         });
 
-
-        jpanelList.put(unId, row);
+       if(i==0){
+           jpanelList.put("1", row);
+       }else {
+           jpanelList.put(unId, row);
+       }
         return row;
     }
 
