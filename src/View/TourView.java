@@ -85,6 +85,22 @@ public class TourView implements Observer {
     }
 
     public void initTourView(String TourPath) throws ParseException{
+
+         /*
+        HashMap<String,Point> pointList=req.getListePoint();
+         pointList.put(req.getDepot().getId(),req.getDepot());
+        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
+
+        g.setSolution(Algorithm.TSP(g));
+        Map m=mapView.getMap();
+        m.setGraph(g);
+
+        m.repaint();
+        */
+
+
+
+
         rightPanel.removeAll();
 
         rightPanel.setBackground(new Color(40, 40, 40));
@@ -101,15 +117,21 @@ public class TourView implements Observer {
 
         Point point;
         HashMap<String, Point> listePoint = req.getListePoint();
+       // ArrayList<String> listeString= (ArrayList<String>) listePoint.keySet();
 
         listePoint.put(req.getDepot().getId(),req.getDepot());
 
-        ArrayList<Point> listePointDef = tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
+
+        ArrayList<Point> listePointDef = Tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
+        int i=0;
+
+    
 
         for (Point s : listePointDef) {
-            point = s;
-            componentToScroll.add(createJPanelPoint(point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule()));
 
+            point = s;
+            componentToScroll.add(createJPanelPoint(i,point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule()));
+i++;
 
         }
 
@@ -124,13 +146,15 @@ public class TourView implements Observer {
         rightPanel.add(scrollPane);
         rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         setHeaderTour("", req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
     }
 
 
+    protected JPanel createJPanelPoint(int i,String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
 
-    protected JPanel createJPanelPoint(String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
+
+  
 
 
 
@@ -184,13 +208,17 @@ public class TourView implements Observer {
 
             //JLabel costToReach = new JLabel(String.valueOf((unCost/60) + " "));
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            String heurePassage = dateFormat.format(unSchedule);
+            String heurePassage;
+            if(i==0){
+                 heurePassage = "8:00:00";
+            }else{
+                heurePassage = dateFormat.format(unSchedule);
+            }
+
             JLabel schedule = new JLabel(heurePassage);
 
 
-           // JLabel id = new JLabel(unId + " ");
-           // JLabel type = new JLabel(unType + " ");
-           // JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+
 
             if (unType == "depot") {
                 icon = new ImageIcon (new ImageIcon("./img/iconDepot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
@@ -340,40 +368,20 @@ public class TourView implements Observer {
         System.out.println("ToutPanel.loadRequest");
 
         Map map = mapView.getMap();
-        // map.setMapData(mapView.getMapData());
         map.setReq(req);
-        //map.repaint();
-
 
         map.addMouseListener(new PointLocater(map,controller));
 
         HashMap<String,Point> pointList=req.getListePoint();
          pointList.put(req.getDepot().getId(),req.getDepot());
         Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
-        //System.out.println(g);
 
         g.setSolution(Algorithm.TSP(g));
-        //System.out.println(ap);
         Map m=mapView.getMap();
-
 
         m.setGraph(g);
 
-        //m.setWay(ap);
-
-
         m.repaint();
-
-
-        // TODO : Donner les infos de tournée
-        // Changer les variables ci dessous avec les données récupérées
-        String date1 = "21-45-3838";
-        String departure1 = "22:01";
-        String ETA1 = "22:03";
-        String duration1 = "00:02";
-
-
-
 
         initTourView(tp);
     }

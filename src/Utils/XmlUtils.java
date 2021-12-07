@@ -183,12 +183,12 @@ public class XmlUtils {
         return inters;
     }
 
-    public static Date findSchedule(Date heurePrec, float costToReach, int durationPrec) throws ParseException {
+    public static Date findSchedule(Date heurePrec, float costToReach) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
 
         int secondHeurePrec= heurePrec.getHours()*3600+heurePrec.getMinutes()*60+heurePrec.getSeconds();
-        int secondTotal= (int)costToReach + durationPrec + secondHeurePrec;
+        int secondTotal= (int)costToReach  + secondHeurePrec;
 
         Date schedule = new SimpleDateFormat("HH:mm:ss").parse("00:00:"+String.valueOf(secondTotal));
         return schedule;
