@@ -122,7 +122,7 @@ public class TourView implements Observer {
         listePoint.put(req.getDepot().getId(),req.getDepot());
 
 
-        ArrayList<Point> listePointDef = Tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
+        ArrayList<Point> listePointDef = tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
         int i=0;
 
     
