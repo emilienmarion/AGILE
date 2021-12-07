@@ -13,6 +13,7 @@ import View.*;
 import View.Map;
 
 
+import java.text.ParseException;
 import java.util.*;
 
 import java.util.HashMap;
@@ -26,10 +27,12 @@ import javax.swing.*;
 
 public class Main {
 
+
     public static void main(String[] args) {
         String mapPath = "xmlFiles/smallMap.xml";
         MapData loadedMap = XmlUtils.readMap(mapPath);
         Frame frame = new Frame(loadedMap,mapPath);
+
         try {
             // Set cross-platform Java L&F (also called "Metal")
             UIManager.setLookAndFeel(

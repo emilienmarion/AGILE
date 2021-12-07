@@ -11,6 +11,7 @@ import Model.Request;
 import Model.Tour;
 import Utils.XmlUtils;
 import View.Frame;
+import View.TourView;
 
 public class Controller {
     private Frame frame;
@@ -18,6 +19,7 @@ public class Controller {
     private Request loadRequest;
     private boolean firstLoadTour = false;
     private Tour tour;
+
 
 
     public Controller(Frame frame) {
@@ -127,10 +129,13 @@ public class Controller {
 
     }
 
-    public void editPoint(String i) {
-        System.out.println("Controller.editRow : "+i);
+    public void editPoint(String id) throws ParseException {
+        System.out.println("Controller.editRow : "+id);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
-        frame.editPoint(i);
+
+        String nvSchedule = frame.editPoint(id);
+        System.out.println("------------->nvSchedule : " + nvSchedule);
+        tour.editPoint(id, nvSchedule);
         frame.display();
     }
 
@@ -153,10 +158,11 @@ public class Controller {
 
 
 
-    public void confirmPointEdition(String id, int type, String location, String hour) {
+    public void confirmPointEdition(String id, int type, String location, String hour) throws ParseException {
         System.out.println("Controller.confirmEdit");
         System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
         frame.confirmEdit(id);
+        tour.editPoint(id, hour);
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
 

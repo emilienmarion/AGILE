@@ -3,8 +3,10 @@ package View;
 import javax.swing.*;
 import java.awt.event.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import Controller.*;
+import Model.Point;
 import View.*;
 
 public class ButtonListener extends JFrame implements ActionListener {
@@ -47,6 +49,7 @@ public class ButtonListener extends JFrame implements ActionListener {
                     controller.editPoint(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());
                 } else if (e.getActionCommand().contains("confirmDelete")) {
                     controller.confirmDeleteRow(e.getActionCommand().subSequence(13, e.getActionCommand().length()).toString());
+
                 }
         }
     }
