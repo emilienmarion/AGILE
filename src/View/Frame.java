@@ -7,6 +7,7 @@ import java.text.ParseException;
 import Controller.*;
 import Model.MapData;
 import Model.Request;
+import Model.Tour;
 
 public class Frame {
 
@@ -26,10 +27,12 @@ public class Frame {
     protected Controller controller;
     protected ButtonListener buttonListener;
     protected String TourPath;
+    protected Tour tour;
 
 
     public Frame(MapData md, String mapath) {
-        controller = new Controller(this);
+        tour = new Tour();
+        controller = new Controller(this, this.tour);
         controller.setMd(md);
         buttonListener = new ButtonListener(controller, this);
         initFrame();
@@ -129,7 +132,7 @@ public class Frame {
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath, this.tour);
         tourView.loadRequest(req, this.TourPath);
     }
 
