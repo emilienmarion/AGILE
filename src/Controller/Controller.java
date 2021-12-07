@@ -118,11 +118,11 @@ public class Controller {
         System.out.println("Controller.loadEditMode");
     }
 
-    public void deletePoint(String i) {
-        System.out.println("Controller.deleteRow : "+i);
+    public void confirmDeleteRow (String i) {
+        System.out.println("Controller.deleteTheRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         tour.deletePoint(i);
-        frame.deletePoint(i);
+        frame.confirmDeleteRow(i);
         frame.display();
 
     }
@@ -134,9 +134,10 @@ public class Controller {
         frame.display();
     }
 
-    public void confirmDeleteRow( String i) {
+    public void deletePoint( String i) {
         System.out.println("Controller.deleteRow : "+i);
-        frame.confirmDeleteRow(i);
+        frame.deletePoint(i);
+        frame.display();
 
     }
 

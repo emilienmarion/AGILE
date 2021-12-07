@@ -21,29 +21,16 @@ import java.util.Date;
 
 
 import java.awt.event.MouseAdapter;
-import java.util.ArrayList;
 
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 
 import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
 
 import Model.*;
 import obs.Observable;
 import obs.Observer;
-
-
-
-import Utils.Algorithm;
-import Utils.GraphConverter;
-import Utils.XmlUtils;
-
-
-
 
 
 public class TourView implements Observer {
@@ -64,6 +51,9 @@ public class TourView implements Observer {
     protected String filename;
     protected ImageIcon icon;
     protected Tour tour;
+    protected HashMap<String, String> infoTour;
+    protected ArrayList<Point> listePointDef;
+    protected String tourPath;
 
 
 
@@ -79,21 +69,43 @@ public class TourView implements Observer {
         this.jpanelList = new HashMap<>();
         this.controller = controller;
         this.tour = tour;
+        this.tourPath = TourPath;
 
-
-        initTourView(TourPath);
+        initTourView();
+        displayTourView(TourPath);
     }
 
-    public void initTourView(String TourPath) throws ParseException{
+
+    public void initTourView() throws ParseException {
+
+
+        Point point;
+        HashMap<String, Point> listePoint = req.getListePoint();
+
+        listePoint.put(req.getDepot().getId(),req.getDepot());
+
+        ArrayList<Point> listePointDef = tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
+
+        for (Point s : listePointDef) {
+            point = s;
+            createJPanelPoint(point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule());
+
+        }
+
+    }
+
+    public void displayTourView(String TourPath) throws ParseException{
+        //TODO finir le refectoring displayTourView, initialisation du tour dans Tour.java
+
         rightPanel.removeAll();
 
         rightPanel.setBackground(new Color(40, 40, 40));
 
-        JPanel test = new JPanel();
+        JPanel pathPanel = new JPanel();
         JLabel pathLabel = new JLabel(TourPath);
         pathLabel.setForeground(Color.WHITE);
-        test.add(pathLabel);
-        test.setBackground(new Color(40, 40, 40));
+        pathPanel.add(pathLabel);
+        pathPanel.setBackground(new Color(40, 40, 40));
 
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
@@ -106,33 +118,25 @@ public class TourView implements Observer {
 
         ArrayList<Point> listePointDef = tour.getTheFinalPointList(listePoint,  this.mapView, this.req);
 
-        for (Point s : listePointDef) {
-            point = s;
-            componentToScroll.add(createJPanelPoint(point.getId(), point.getType(), point.getDuration(), point.getCostToReach(), point.getSchedule()));
-
-
-        }
+        jpanelList.forEach((id, value) -> componentToScroll.add(value));
 
         scrollPane = new JScrollPane(componentToScroll);
         scrollPane.setBackground(new Color(61,61,61));
         scrollPane.setPreferredSize(new Dimension(400, 400));
         scrollPane.setMaximumSize(new Dimension(400, 400));
         scrollPane.setOpaque(false);
-        //scrollPane.getViewport().setBackground(Color.black);
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(scrollPane);
-        rightPanel.add(test);
+        rightPanel.add(pathPanel);
         rightPanel.add(Box.createVerticalGlue());
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        setHeaderTour("", req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
+
+        setHeaderTour("", this.tour.getDepartureTime().toString(), this.tour.getArrivalTime().toString(), Float.toString(this.tour.getTotalDuration()));
     }
 
 
 
     protected JPanel createJPanelPoint(String unId, String unType, int uneDuration, float unCost, Date unSchedule) {
-
-
 
 
         ImageIcon iconEdit = new ImageIcon (new ImageIcon("./img/iconEdit.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
@@ -150,28 +154,22 @@ public class TourView implements Observer {
         JPanel row = new JPanel();
         row.setBackground(new Color(61,61,61));
         row.setName(String.valueOf(1)); //jsp à quoi ça sert
-
         row.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
         row.setPreferredSize(new Dimension(380, 60));
-
         row.setMaximumSize(new Dimension(380, 60));
         row.setMinimumSize(new Dimension(380, 60));
+        GridBagConstraints gbc = new GridBagConstraints();
 
 
         if (this.req != null) {
             HashMap<String, Point> listePoint = req.getListePoint();
 
-            //System.out.println("point : " +unId);
 
             JLabel id = new JLabel(unId + " ");
             id.setForeground(Color.WHITE);
 
-            JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
 
-            duration.setForeground(Color.WHITE);
-
+            //Gestion adresse
             JPanel adressPanel = new JPanel();
             adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
             adressPanel.setBackground(new Color(86,86,86));
@@ -180,17 +178,12 @@ public class TourView implements Observer {
             adressPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
 
-
-
+            //Gestion de l'heure
             //JLabel costToReach = new JLabel(String.valueOf((unCost/60) + " "));
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
             String heurePassage = dateFormat.format(unSchedule);
             JLabel schedule = new JLabel(heurePassage);
-
-
-           // JLabel id = new JLabel(unId + " ");
-           // JLabel type = new JLabel(unType + " ");
-           // JLabel duration = new JLabel(String.valueOf(uneDuration + " "));
+            schedule.setForeground(Color.WHITE);
 
             if (unType == "depot") {
                 icon = new ImageIcon (new ImageIcon("./img/iconDepot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
@@ -248,23 +241,13 @@ public class TourView implements Observer {
             gbc.gridy = 0;
             gbc.gridwidth = GridBagConstraints.RELATIVE;
             gbc.anchor = GridBagConstraints.BELOW_BASELINE_TRAILING;
-            row.add(duration, gbc);
+            row.add(schedule, gbc);
 
             gbc.gridx = 3;
             gbc.gridy = 0;
             gbc.insets = new Insets(0, 5, 0, 10);
             gbc.anchor = GridBagConstraints.LINE_END;
             row.add(buttonBlock, gbc);
-
-            //row.add(Box.createHorizontalGlue());
-            //row.add(duration);
-            //row.add(schedule);
-            //row.add(image);
-            //row.add(id);
-            //row.add(type);
-            //row.add(duration);
-            //row.add(buttonBlock);
-            //row.add(Box.createHorizontalGlue());
 
             image.setVisible(true);
             imageDelete.setVisible(true);
@@ -290,7 +273,6 @@ public class TourView implements Observer {
             }
 
         });
-
 
         jpanelList.put(unId, row);
         return row;
@@ -375,7 +357,7 @@ public class TourView implements Observer {
 
 
 
-        initTourView(tp);
+        displayTourView(tp);
     }
 
 
@@ -400,12 +382,15 @@ public class TourView implements Observer {
         JPanel point = jpanelList.get(id);
         point.setBackground(new Color(61,61,61));
 
+        tour.getTour().getPoint(id).gethour();
+
+
 
         int type;
         String location = "location";
         String hour = "33h33";
-
         point.removeAll();
+        point.validate();
 
 
         point.setBackground(new Color(61,61,61));
@@ -498,6 +483,7 @@ public class TourView implements Observer {
 
         image.setVisible(true);
         point.revalidate();
+        point.repaint();
 
 
     }
@@ -508,11 +494,16 @@ public class TourView implements Observer {
         JPanel point = jpanelList.get(id);
     }
 
+
     public void deletePoint(String id) {
 
         JPanel point = jpanelList.get(id);
 
+
+
         String heure = "22h22";
+        String type;
+
 
         point.removeAll();
 
@@ -528,11 +519,11 @@ public class TourView implements Observer {
 
 
         JPanel adressPanel = new JPanel();
-        JButton confirmDelete = new JButton("Delete");
+        JButton confirmDelete = new JButton("ConfirmDelete");
         confirmDelete.setBackground(new Color(198,52,52));
         confirmDelete.setForeground(Color.WHITE);
         confirmDelete.setUI(new BasicButtonUI());
-        confirmDelete.setActionCommand("confirm delete" + id);
+        confirmDelete.setActionCommand("confirmDelete" + id);
         confirmDelete.addActionListener(buttonListener);
         //confirmDelete.setOpaque(false);
         adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
@@ -621,8 +612,13 @@ public class TourView implements Observer {
 
     public void confirmDelete(String id) {
         System.out.println("TourPanel.confirmDelete");
-        // TODO : changer aspect de la row
-        //JPanel point = jpanelList.get(id);
+        jpanelList.remove(id);
+        try {
+            displayTourView(tourPath);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
