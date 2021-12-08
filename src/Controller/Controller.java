@@ -57,7 +57,6 @@ public class Controller {
                     frame.loadTour(loadRequest);
                 }
                 frame.display();
-
                 return true;
             }
         }else{
@@ -122,12 +121,20 @@ public class Controller {
     }
 
     public void confirmDeleteRow (String i) {
-        System.out.println("Controller.deleteTheRow : "+i);
+        System.out.println("Controller.confirmDeleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
+        // Suppression dans le modèle de données
         tour.deletePoint(i);
-        frame.confirmDeleteRow(i);
-        frame.display();
 
+        // Actualisation des IHM
+        try {
+            frame.getTourView().loadRequest(frame.getTourView().getTourPath());
+            frame.getMapView().loadRequest(frame.getTourView().getRequest());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //frame.confirmDeleteRow(i);
+        frame.display();
     }
 
     public void editPoint(String id) throws ParseException {
