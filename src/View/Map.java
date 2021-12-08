@@ -183,7 +183,6 @@ public class Map extends JPanel {
                 drawGraph(graph, g);
             }
             if (test) {
-
                 grossir(this.curentid, g,true);
             }
         }

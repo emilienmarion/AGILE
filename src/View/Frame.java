@@ -157,6 +157,13 @@ public class Frame {
     public void highlight(String id) {
         tourView.highlight(id);
     }
+
+    public TourView getTourView() {return this.tourView;
+    }
+
+    public MapView getMapView() {return this.mapView;
+    }
+
 }
 
 

@@ -87,7 +87,8 @@ public class TourView implements Observer {
      * @throws ParseException
      */
     public void displayTourView(String TourPath) throws ParseException {
-        //TODO finir le refectoring displayTourView, initialisation du tour dans Tour.java
+        System.out.println("TourView.displayTourView");
+
         rightPanel.removeAll();
 
         rightPanel.setBackground(new Color(40, 40, 40));
@@ -132,11 +133,11 @@ public class TourView implements Observer {
         rightPanel.add(pathPanel);
         rightPanel.add(Box.createVerticalGlue());
 
+        rightPanel.repaint();
+
         // Afficher le header avec les informations du modèle de donnée
         setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
-
-        // Afficher le chemin sur la map
-
+        System.out.println("TourView.displayTour EXIT");
     }
 
 
@@ -290,9 +291,6 @@ public class TourView implements Observer {
     }
 
 
-
-
-
 /*
     private void initHeaderTour() {
         //TODO : Déclarer panel de droite avec le scrollbar et les détails des tours
@@ -365,6 +363,11 @@ public class TourView implements Observer {
             System.out.println("TourView.loadRequest : tour is null");
         }
         else{
+            if(orderJpanelList!=null)
+                orderJpanelList.clear();
+            if(jpanelList!=null)
+                jpanelList.clear();
+
             tour.getPointsDef().forEach((s) -> {
                 createJPanelPoint(s);
             });
@@ -535,6 +538,7 @@ public class TourView implements Observer {
         confirmDelete.setUI(new BasicButtonUI());
         confirmDelete.setActionCommand("confirmDelete" + id);
         confirmDelete.addActionListener(buttonListener);
+
         //confirmDelete.setOpaque(false);
         adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
         adressPanel.setBackground(new Color(198,52,52));
@@ -620,6 +624,7 @@ public class TourView implements Observer {
     public void confirmDelete(String id) {
         System.out.println("TourPanel.confirmDelete");
         jpanelList.remove(id);
+        orderJpanelList.remove(id);
         try {
             displayTourView(tourPath);
         } catch (ParseException e) {
@@ -645,4 +650,9 @@ public class TourView implements Observer {
         // TODO : code pour display
     }
 
+    public String getTourPath() {return this.tourPath;
+    }
+
+    public Request getRequest() {return this.req;
+    }
 }

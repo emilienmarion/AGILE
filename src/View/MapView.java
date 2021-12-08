@@ -76,16 +76,33 @@ public class MapView {
     }
 
     public void loadRequest(Request req) {
+        System.out.println("MapView.loadRequest");
+
         map.setReq(req);
         map.addMouseListener(new PointLocater(map,controller));
+
 
         HashMap<String, Point> pointList = req.getListePoint();
         pointList.put(req.getDepot().getId(),req.getDepot());
         Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
         g.setSolution(Algorithm.TSP(g));
 
+           /*
+
+        HashMap<String, Point> pointList = req.getListePoint();
+        pointList.put(req.getDepot().getId(),req.getDepot());
+
+        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
+
+        tour.getGraph().setSolution(Algorithm.TSP(g));
+
+        tour est une array list de path
+*/
         map.setGraph(g);
         map.repaint();
+
+
+        System.out.println("MapView.loadRequest EXIT");
     }
 
     public void setTourObject(Tour tour) {
