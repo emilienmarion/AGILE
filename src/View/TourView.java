@@ -52,6 +52,7 @@ public class TourView implements Observer {
     protected JPanel rightPanel;
     protected JPanel headerInfo;
     protected HeadInfo headDate;
+    protected HeadInfo headExp;
     protected HeadInfo headDeparture;
     protected HeadInfo headETA;
     protected HeadInfo headDuration;
@@ -64,6 +65,7 @@ public class TourView implements Observer {
     protected String filename;
     protected ImageIcon icon;
     protected Tour tour;
+    protected PointLocater pointLocater;
 
 
 
@@ -79,7 +81,10 @@ public class TourView implements Observer {
         this.jpanelList = new HashMap<>();
         this.controller = controller;
         this.tour = tour;
+        Map map = mapView.getMap();
 
+        pointLocater=new PointLocater(map,controller);
+        map.addMouseListener(pointLocater);
 
         initTourView(TourPath);
     }
@@ -88,18 +93,6 @@ public class TourView implements Observer {
     }
 
     public void initTourView(String TourPath) throws ParseException{
-
-         /*
-        HashMap<String,Point> pointList=req.getListePoint();
-         pointList.put(req.getDepot().getId(),req.getDepot());
-        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
-
-        g.setSolution(Algorithm.TSP(g));
-        Map m=mapView.getMap();
-        m.setGraph(g);
-
-        m.repaint();
-        */
 
 
 
@@ -113,6 +106,20 @@ public class TourView implements Observer {
         pathLabel.setForeground(Color.WHITE);
         test.add(pathLabel);
         test.setBackground(new Color(40, 40, 40));
+
+// Bouton d'ajout de demande
+        ImageIcon iconAdd = new ImageIcon (new ImageIcon("./img/AddIcon.png").getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
+        JLabel imageAdd = new JLabel(iconAdd);
+        imageAdd.setBackground(new Color(86,86,86));
+        imageAdd.setOpaque(true);
+
+        JButton addButton = new JButton();
+        addButton.setUI(new BasicButtonUI());
+        addButton.setBackground(new Color(86,86,86));
+        addButton.setOpaque(true);
+        addButton.add(imageAdd);
+        addButton.setActionCommand("add request" );
+        addButton.addActionListener(buttonListener);
 
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
@@ -150,7 +157,7 @@ public class TourView implements Observer {
         rightPanel.add(test);
         rightPanel.add(Box.createVerticalGlue());
          DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        setHeaderTour("", req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
+        setHeaderTour(addButton, req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
     }
 
 
@@ -337,7 +344,7 @@ public class TourView implements Observer {
         headerInfo.setBackground(new Color(86, 86, 86));
     }
 
-    private void setHeaderTour(String V1, String V2, String V3, String V4 ) {
+    private void setHeaderTour(JButton addButton, String V2, String V3, String V4 ) {
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
@@ -347,13 +354,14 @@ public class TourView implements Observer {
         headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
-        headDate = new HeadInfo("Date", V1);
+
+        headDate = new HeadInfo("Ajoutez une demande","");
         headDeparture = new HeadInfo("Depature", V2);
         headETA = new HeadInfo("ETA", V3);
         headDuration = new HeadInfo("Duration", V4);
 
         headerInfo.add(Box.createHorizontalGlue());
-        headerInfo.add(headDate);
+        headerInfo.add(addButton);
         headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headDeparture);
         headerInfo.add(Box.createHorizontalGlue());
@@ -362,6 +370,28 @@ public class TourView implements Observer {
         headerInfo.add(headDuration);
         headerInfo.add(Box.createHorizontalGlue());
 
+
+    }
+
+
+    private void setExpAddRequest(){
+        headerInfo.setPreferredSize(new Dimension(100, 100));
+        headerInfo.removeAll();
+        headerInfo.validate();
+
+System.out.println("je suis laaa");
+        headerInfo.setBackground(new Color(86,86,86));
+       // headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
+        headerInfo.setPreferredSize(new Dimension(1000, 100));
+        headerInfo.setMaximumSize(new Dimension(1000, 100));
+
+        headExp = new HeadInfo("Pour ajoutez une nouvelle requets à cette tournée cliquez une première fois pour désigner le pickUp et une deuxième fois pour chosir le delivery");
+
+
+       // headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.add(headExp);
+        headerInfo.revalidate();
+        headerInfo.repaint();
 
     }
 
@@ -640,6 +670,17 @@ public class TourView implements Observer {
         // TODO : changer aspect de la row
         //JPanel point = jpanelList.get(id);
     }
+
+
+
+     public void addRequest(){
+         setExpAddRequest();
+         pointLocater.setAddPoint(true);
+
+
+
+
+     }
 
 
 

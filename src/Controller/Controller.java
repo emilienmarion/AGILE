@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
+import Model.Intersection;
 import Model.MapData;
 import Model.Request;
 import Model.Tour;
@@ -145,6 +146,18 @@ public class Controller {
         frame.confirmDeleteRow(i);
 
     }
+
+
+    public void addRequest( ) {
+        System.out.println("Controller.addRequest ");
+        frame.addRequest();
+    }
+     public void addNewRequest(int x,int y){
+
+       Intersection inter= md.findIntersection(x,y);
+
+     }
+
 
     public MapData getMd() {
         return md;

@@ -3,9 +3,30 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
+import static java.awt.Component.LEFT_ALIGNMENT;
+
 public class HeadInfo extends JPanel {
     private JLabel title;
     private JLabel value;
+
+    public HeadInfo(String exp)
+    {
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JLabel expJ = new JLabel(exp);
+
+        this.setBackground(new Color(40,40,40));
+        this.setPreferredSize(new Dimension(900, 70));
+        this.setMaximumSize(new Dimension(900, 70));
+        //this.setBorder(new RoundedBorder(20));
+        expJ.setForeground(new Color(140,140,140));
+
+        expJ.setLocation(35,15);
+
+        this.add(expJ);
+
+
+
+    }
 
     public HeadInfo(String title, String value)
     {

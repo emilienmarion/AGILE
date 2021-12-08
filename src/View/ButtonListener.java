@@ -39,6 +39,10 @@ public class ButtonListener extends JFrame implements ActionListener {
             case "Confirm Edition":
                 //controller.confirmPointEdition();
                 break;
+            case "add request":
+               controller.addRequest();
+                break;
+
             case "Confirm Delete":
                 controller.confirmDeleteRow(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
             default:
