@@ -430,7 +430,6 @@ System.out.println("je suis laaa");
         String scheduleString = dateFormat3.format(req.getListePoint().get(id).getSchedule());
 
         point.removeAll();
-        point.validate();
 
         point.setBackground(new Color(61,61,61));
         point.setName(String.valueOf(1)); //jsp à quoi ça sert
@@ -493,7 +492,7 @@ System.out.println("je suis laaa");
         adressPanel.add(fieldLocation,BorderLayout.WEST);
 
         confirmEdit.setUI(new BasicButtonUI());
-        confirmEdit.setPreferredSize(new Dimension(50,55));
+        confirmEdit.setPreferredSize(new Dimension(50,50));
         confirmEdit.setBackground(new Color(116, 69, 206));
         confirmEdit.setOpaque(true);
 
@@ -528,7 +527,7 @@ System.out.println("je suis laaa");
 
         image.setVisible(true);
         point.revalidate();
-        //point.repaint();
+        point.repaint();
         scheduleString = dateFormat3.format(req.getListePoint().get(id).getSchedule());
         System.out.println("------------->TourView.scheduleString : " + scheduleString);
         return scheduleString;
@@ -546,7 +545,7 @@ System.out.println("je suis laaa");
 
         JPanel point = jpanelList.get(id);
 
-        String heure = "22h22";
+        String heure = "00:00:00";
         String type;
 
         point.removeAll();
@@ -644,6 +643,9 @@ System.out.println("je suis laaa");
         image.setVisible(true);
         imageDelete.setVisible(true);
         imageEdit.setVisible(true);
+
+        point.revalidate();
+        point.repaint();
     }
 
     public void confirmDelete(String id) {
