@@ -70,6 +70,7 @@ public class Graph {
     public void setContent(ArrayList<ArrayList<Vertice>> content) {
         this.content = content;
     }
+
     public void addVertice(Vertice v){
         if (v!=null) {
             String idOrigin = v.getIdOrigin();
