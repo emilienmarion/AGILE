@@ -23,10 +23,9 @@ public class Controller {
 
 
 
-    public Controller(Frame frame, Tour tour) {
+    public Controller(Frame frame) {
+        System.out.println("Controller.CONSTRUCTOR");
         this.frame = frame;
-        this.tour = tour;
-
     }
 
 
@@ -122,11 +121,11 @@ public class Controller {
         System.out.println("Controller.loadEditMode");
     }
 
-    public void deletePoint(String i) {
-        System.out.println("Controller.deleteRow : "+i);
+    public void confirmDeleteRow (String i) {
+        System.out.println("Controller.deleteTheRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         tour.deletePoint(i);
-        frame.deletePoint(i);
+        frame.confirmDeleteRow(i);
         frame.display();
 
     }
@@ -141,9 +140,10 @@ public class Controller {
         frame.display();
     }
 
-    public void confirmDeleteRow( String i) {
+    public void deletePoint( String i) {
         System.out.println("Controller.deleteRow : "+i);
-        frame.confirmDeleteRow(i);
+        frame.deletePoint(i);
+        frame.display();
 
     }
 
@@ -179,5 +179,9 @@ public class Controller {
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
     }
 
+    public void setTourObject(Tour tour) {
+        System.out.println("Controller.setTourObject");
+        this.tour = tour;
+    }
 }
 

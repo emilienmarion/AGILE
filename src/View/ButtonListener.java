@@ -16,6 +16,7 @@ public class ButtonListener extends JFrame implements ActionListener {
     private Frame frame;
 
     public ButtonListener(Controller controller, Frame frame) {
+        System.out.println("ButtonListener.CONSTRUCTOR");
         this.frame = frame;
         this.controller = controller;
     }
@@ -36,24 +37,30 @@ public class ButtonListener extends JFrame implements ActionListener {
                 }
 
                 break;
-            case "Confirm Edition":
+            case "confirmEdition":
                 //controller.confirmPointEdition();
                 break;
+
             case "add request":
                controller.addRequest();
                 break;
 
-            case "Confirm Delete":
-                controller.confirmDeleteRow(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
+
+            case "confirmDelete":
+                controller.confirmDeleteRow(e.getActionCommand().subSequence(13, e.getActionCommand().length()).toString());
+
             default:
                 if (e.getActionCommand().contains("deleteRow")) {
                     controller.deletePoint(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
                 } else if (e.getActionCommand().contains("editRow")) {
                     try {
-                        controller.editPoint(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());//recuperer l'heure de la zone de texte
+                        controller.editPoint(e.getActionCommand().subSequence(7, e.getActionCommand().length()).toString());
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }
+                } else if (e.getActionCommand().contains("confirmDelete")) {
+                    controller.confirmDeleteRow(e.getActionCommand().subSequence(13, e.getActionCommand().length()).toString());
+
                 }
         }
     }
