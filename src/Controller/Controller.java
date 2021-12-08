@@ -50,7 +50,7 @@ public class Controller {
                 return false;
             }else {
                 loadRequest = XmlUtils.ReadRequest(Firm, this.md.getIntersections());
-
+                tour.loadNewRequest(loadRequest);
                 if (!firstLoadTour) {
                     frame.switchToTourView(loadRequest, Firm);
                 } else {

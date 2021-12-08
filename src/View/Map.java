@@ -31,7 +31,6 @@ public class Map extends JPanel {
     public Map(int offsetX, int offsetY, float diffX, float diffY, float echelon, MapData md) {
         super();
 
-
         mapData = md;
         sizeX = (int) Math.round(diffX * echelon);
         sizeY = (int) Math.round(diffY * echelon);
@@ -91,9 +90,6 @@ public class Map extends JPanel {
         int length=graph.getListePoint().size();
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
-
-
-
 
         ac.add(Color.blue);
         ac.add(Color.red);
@@ -168,7 +164,6 @@ public class Map extends JPanel {
 
 
     public void paintComponent(Graphics g) {
-
         super.paintComponent(g);
         HashMap<String, Intersection> intersections = new HashMap<String, Intersection>(mapData.getIntersections());
         for (String currentId : intersections.keySet()) {
@@ -183,8 +178,6 @@ public class Map extends JPanel {
                 int destinationC[] = getCoords(destinationLongitude, destinationLatitude);
                 g.setColor(Color.black);
                 g.drawLine(originC[0], originC[1], destinationC[0], destinationC[1]);
-
-
             }
             if (graph != null) {
                 drawGraph(graph, g);

@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -47,6 +48,7 @@ public class TourView implements Observer {
     protected MapView mapView;
     protected ButtonListener buttonListener;
     protected Request req;
+    protected ArrayList<String> orderJpanelList;
     protected HashMap<String, JPanel> jpanelList;
     protected Controller controller;
     protected String filename;
@@ -67,6 +69,7 @@ public class TourView implements Observer {
         this.mapView = mapView;
         this.req = req;
         this.jpanelList = new HashMap<>();
+        this.orderJpanelList = new ArrayList<>();
         this.controller = controller;
         this.tour = tour;
         this.tourPath = TourPath;
@@ -78,11 +81,13 @@ public class TourView implements Observer {
 
     }
 
-
+    /**
+     * Get informations from class Tour.java to display them on the Tour sides
+     * @param TourPath tour path to display above the scrollpane
+     * @throws ParseException
+     */
     public void displayTourView(String TourPath) throws ParseException {
         //TODO finir le refectoring displayTourView, initialisation du tour dans Tour.java
-
-
         rightPanel.removeAll();
 
         rightPanel.setBackground(new Color(40, 40, 40));
@@ -93,7 +98,7 @@ public class TourView implements Observer {
         pathPanel.add(pathLabel);
         pathPanel.setBackground(new Color(40, 40, 40));
 
-// Bouton d'ajout de demande
+        // Bouton d'ajout de demande
         ImageIcon iconAdd = new ImageIcon(new ImageIcon("./img/AddIcon.png").getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT));
         JLabel imageAdd = new JLabel(iconAdd);
         imageAdd.setBackground(new Color(86, 86, 86));
@@ -107,12 +112,14 @@ public class TourView implements Observer {
         addButton.setActionCommand("add request");
         addButton.addActionListener(buttonListener);
 
+        // Afficher la liste
         JPanel componentToScroll = new JPanel();
         componentToScroll.setLayout(new BoxLayout(componentToScroll, BoxLayout.Y_AXIS));
         componentToScroll.setBackground(new Color(61, 61, 61));
 
-
-        jpanelList.forEach((id, value) -> componentToScroll.add(value));
+        orderJpanelList.forEach((id) -> {
+            componentToScroll.add(jpanelList.get(id));
+        });
 
         scrollPane = new JScrollPane(componentToScroll);
         scrollPane.setBackground(new Color(61, 61, 61));
@@ -125,15 +132,16 @@ public class TourView implements Observer {
         rightPanel.add(pathPanel);
         rightPanel.add(Box.createVerticalGlue());
 
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        // setHeaderTour(addButton, req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
-
+        // Afficher le header avec les informations du modèle de donnée
         setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+
+        // Afficher le chemin sur la map
 
     }
 
 
-    protected void createJPanelPoint(String pointId, String pointType, int pointDuration, float pointCost, Date pointSchedule) {
+    protected void createJPanelPoint(Point point) {
+        System.out.println("CREATE -- " + point.getId()+" at "+point.getSchedule()+" >> "+ point.getIdAssociated());
 
         ImageIcon iconEdit = new ImageIcon(new ImageIcon("./img/iconEdit.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
         JLabel imageEdit = new JLabel(iconEdit);
@@ -160,7 +168,7 @@ public class TourView implements Observer {
             pointId.setForeground(Color.WHITE);*/
             DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
             String scheduleString;
-            scheduleString = dateFormat2.format(pointSchedule);
+            scheduleString = dateFormat2.format(point.getSchedule());
 
             JLabel duration = new JLabel(scheduleString);
             duration.setForeground(Color.WHITE);
@@ -171,7 +179,7 @@ public class TourView implements Observer {
             adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
             adressPanel.setBackground(new Color(86, 86, 86));
             adressPanel.setPreferredSize(new Dimension(150, 50));
-            JLabel labelToChange = new JLabel(pointId);
+            JLabel labelToChange = new JLabel(point.getId());
             adressPanel.add(labelToChange, BorderLayout.WEST);
             adressPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 
@@ -179,14 +187,14 @@ public class TourView implements Observer {
             //Gestion de l'heure
             //JLabel costToReach = new JLabel(String.valueOf((unCost/60) + " "));
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-            String heurePassage = dateFormat.format(pointSchedule);
+            String heurePassage = dateFormat.format(point.getSchedule());
             JLabel schedule = new JLabel(heurePassage);
             schedule.setForeground(Color.WHITE);
 
 
-            if (pointType == "depot") {
+            if (point.getType() == "depot") {
                 icon = new ImageIcon(new ImageIcon("./img/iconDepot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-            } else if (pointType == "pickUp") {
+            } else if (point.getType() == "pickUp") {
                 icon = new ImageIcon(new ImageIcon("./img/iconPickUp.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
             } else {
                 icon = new ImageIcon(new ImageIcon("./img/iconDelivery.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
@@ -207,7 +215,7 @@ public class TourView implements Observer {
             editButton.setBackground(new Color(86, 86, 86));
             editButton.setOpaque(true);
             editButton.add(imageEdit);
-            editButton.setActionCommand("editRow" + pointId);
+            editButton.setActionCommand("editRow" + point.getId());
             editButton.addActionListener(buttonListener);
 
             //Gestion bouton delete
@@ -216,10 +224,10 @@ public class TourView implements Observer {
             deleteButton.setBackground(new Color(198, 52, 52));
             deleteButton.setOpaque(true);
             deleteButton.add(imageDelete);
-            deleteButton.setActionCommand("deleteRow" + pointId);
+            deleteButton.setActionCommand("deleteRow" + point.getId());
             deleteButton.addActionListener(buttonListener);
 
-            if (pointType != "depot") {
+            if (point.getType() != "depot") {
                 buttonBlock.add(editButton);
                 buttonBlock.add(deleteButton);
             }
@@ -252,32 +260,33 @@ public class TourView implements Observer {
             imageEdit.setVisible(true);
 
         }
-        row.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
+        if(point.getType() != "depot") {
+            row.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
 
-                for (String j : jpanelList.keySet()) {
-                    jpanelList.get(j).setBackground(new Color(61, 61, 61));
+                    for (String j : jpanelList.keySet()) {
+                        jpanelList.get(j).setBackground(new Color(61, 61, 61));
 
+                    }
+                    if (!point.getId().equals(req.getDepot().getId())) {
+
+
+                        jpanelList.get(req.getListePoint().get(point.getId()).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
+                    }
+                    row.setBackground(new Color(116, 69, 206));
+
+                    Map m = mapView.getMap();
+
+                    m.setTest(true);
+                    m.setCurentid(point.getId());
+                    m.repaint();
                 }
-                if (!pointId.equals(req.getDepot().getId())) {
+            });
+        }
 
-
-                    jpanelList.get(req.getListePoint().get(pointId).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
-                }
-                row.setBackground(new Color(116, 69, 206));
-
-                Map m = mapView.getMap();
-
-                m.setTest(true);
-                m.setCurentid(pointId);
-                m.repaint();
-
-            }
-
-        });
-
-        jpanelList.put(pointId, row);
+        orderJpanelList.add(point.getId());
+        jpanelList.put(point.getId(), row);
     }
 
 
@@ -349,37 +358,18 @@ public class TourView implements Observer {
 
     }
 
-    public void loadRequest(Request req, String tp) throws ParseException {
+    public void loadRequest(String tp) throws ParseException {
         System.out.println("TourView.loadRequest");
-        tour.loadNewRequest(req);
         // Créer la ligne pour chaque point de passage à partir du modèle de données
         if(tour == null){
             System.out.println("TourView.loadRequest : tour is null");
         }
         else{
             tour.getPointsDef().forEach((s) -> {
-                System.out.println("ID POINT "+s.getId());
-                createJPanelPoint(s.getId(), s.getType(), s.getDuration(), s.getCostToReach(), s.getSchedule());
+                createJPanelPoint(s);
             });
         }
-
-        Map map = mapView.getMap();
-        map.setReq(req);
-
-        map.addMouseListener(new PointLocater(map,controller));
-
-        HashMap<String,Point> pointList=req.getListePoint();
-         pointList.put(req.getDepot().getId(),req.getDepot());
-        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
-
-        g.setSolution(Algorithm.TSP(g));
-        Map m=mapView.getMap();
-
-        m.setGraph(g);
-
-       m.repaint();
         displayTourView(tp);
-
     }
 
 
