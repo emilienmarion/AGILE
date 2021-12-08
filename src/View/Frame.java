@@ -136,6 +136,10 @@ public class Frame {
         return schedule;
     }
 
+    public void addRequest(){
+        tourView.addRequest();
+    }
+
     public void confirmEdit(String i) {tourView.confirmEdit(i);}
 
     public void deletePoint( String id) {
