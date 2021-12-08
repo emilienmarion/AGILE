@@ -24,6 +24,7 @@ public class Tour
 
     public Tour(MapView mv){
         this.mapView = mv;
+        pointsDef=new ArrayList<Point>();
     }
 
     public void loadNewRequest(Request r) throws ParseException {
@@ -70,16 +71,55 @@ public class Tour
         int s2 = arrivalTime.getSeconds();
         return Integer.toString(h2-h1)+"h "+Integer.toString(m2-m1)+"min "+Integer.toString(s2-s1)+"s";
     }
-
-
+//bouges moi ca garcon
+    private Node getTail(Node n){
+        while (n.getPredecessor()!=null){
+            n=n.getPredecessor();
+        }
+        return n;
+    }
     public void computeTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
         System.out.println("Tour.computeTheFinalPointList");
         this.graph = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
-        ArrayList<Path> ap = Algorithm.TSP(this.graph);
-        Node predecessor;
-
+        ArrayList<Path> tspResult = Algorithm.TSP(this.graph);
         Node node;
-        ArrayList<Point> listePointDef = new ArrayList<Point>();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Date currentDate = sdf.parse(req.getDepartureTime());
+        int durationPrec;
+        int compteur=0;
+        for (Path p:tspResult){
+            Node n=p.getPath();
+            if (compteur==0){
+                Point depot=req.getDepot();
+                Point depotToStock=new Point(depot);
+                depotToStock.setId(depot.getId()+"start");
+                depotToStock.setSchedule(currentDate);
+                pointsDef.add(depotToStock);
+            }
+            String id=n.getIntersection().getId();
+            Point current=req.getListePoint().get(id);
+            //TODO : ici verfier que la duration c'est bien la prcedente parce que je te met ma main a couper que c'est l'actuel
+            durationPrec = current.getDuration();
+            current.setCostToReach(n.getCost());
+            currentDate = XmlUtils.findSchedule(currentDate,current.getCostToReach(),durationPrec);
+            current.setSchedule(currentDate);
+            pointsDef.add(current);
+            compteur++;
+        }
+        for (Point p: pointsDef){
+            System.out.print(p.getId());
+            System.out.print("-->");
+            System.out.println(p.getCostToReach()*3.6/15);
+            System.out.println("schedule : " + p.getSchedule());
+        }
+
+        setDepartureTime(this.pointsDef.get(0).getSchedule());
+        setArrivalTime(this.pointsDef.get(pointsDef.size()-1).getSchedule());
+        /*
+        // A commenter ci dessous
+        ArrayList<Point> listePointDef = new ArrayList<>();
+        pointsDef = new ArrayList<>();
+
         float costInter = 0;
         int durationPrec = 0;
         int k = 0;
@@ -90,57 +130,52 @@ public class Tour
         Date dateInter = sdf.parse(req.getDepartureTime());
         System.out.println("date de depart : " + dateInter);
         req.getDepot().setSchedule(dateInter);
-        listePointDef.add(req.getDepot());
-     boolean isChecked=false;
 
-        for (int i = 0; i < ap.size(); i++) {
-            node = ap.get(i).getPath();
+        //listePointDef.add(req.getDepot());
+        pointsDef.add(req.getDepot());
 
+        boolean isChecked=false;
+
+        for (int i = 0; i < tspResult.size(); i++) {
+            node = tspResult.get(i).getPath();
                 costInter += (node.getCost() * (3.6 / 15));
 
-
                 for (String s : listePointReq.keySet() ) {
-
                     if (node.getIntersection().getId() == listePointReq.get(s).getId() ) {
-
+                        // Change values into listePointReq
                         listePointReq.get(s).setCostToReach(costInter);
                         dateInter = XmlUtils.findSchedule(dateInter, costInter);
                         listePointReq.get(s).setSchedule(dateInter);
 
-
-            //System.out.println("nodeID  : "+node.getIntersection().getId());
+                        //System.out.println("nodeID  : "+node.getIntersection().getId());
+                        // Depot gestion
                         if (node.getIntersection().getId().equals(req.getDepot().getId())){
                             if (isChecked){
-                                Point p=new Point();
+                                // Create the last depot
+                                Point p= new Point();
                                 p.setType("depot");
                                 p.setSchedule(dateInter);
-                                System.out.println("hehoooo"+p);
-                                listePointDef.add(p);
+                                p.setId("1");
+                                //System.out.println("hehoooo"+p);
+                                pointsDef.add(p);
                             }else{
-                                listePointDef.add(listePointReq.get(s));
+                                pointsDef.add(listePointReq.get(s));
                                 isChecked=true;
-                                System.out.println("hehoooo22");
+                                //System.out.println("hehoooo22");
                             }
                         }else{
-                            listePointDef.add(listePointReq.get(s));
+                            pointsDef.add(listePointReq.get(s));
                         }
-
                         costInter = 0;
-
                         k++;
                     }
                 }
-
             }
 
-
-
-
-        System.out.println("Point dans la liste def : " + listePointDef + "c'est fini la");
-        this.pointsDef = listePointDef;
+        System.out.println("Point dans la liste def : " + pointsDef + "c'est fini la");
 
         setDepartureTime(this.pointsDef.get(0).getSchedule());
-        setArrivalTime(this.pointsDef.get(pointsDef.size()-1).getSchedule());
+        setArrivalTime(this.pointsDef.get(pointsDef.size()-1).getSchedule());*/
     }
 
     public void deletePoint(String idPoint)

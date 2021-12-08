@@ -325,7 +325,6 @@ public class TourView implements Observer {
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
 
-
         headDate = new HeadInfo("Ajoutez une demande","");
 
         headDeparture = new HeadInfo("Depature", V2);
@@ -338,15 +337,12 @@ public class TourView implements Observer {
        // headerInfo.add(addButton);
         headerInfo.add(Box.createHorizontalGlue());
 
-
         headerInfo.add(headDeparture);
         headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headETA);
         headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headDuration);
         headerInfo.add(Box.createHorizontalGlue());
-
-
     }
 
 
@@ -355,14 +351,13 @@ public class TourView implements Observer {
         headerInfo.removeAll();
         headerInfo.validate();
 
-System.out.println("je suis laaa");
+        System.out.println("je suis laaa");
         headerInfo.setBackground(new Color(86,86,86));
-       // headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
+        // headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
 
         headExp = new HeadInfo("Pour ajoutez une nouvelle requets à cette tournée cliquez une première fois pour désigner le pickUp et une deuxième fois pour chosir le delivery");
-
 
        // headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headExp);
@@ -379,6 +374,7 @@ System.out.println("je suis laaa");
         else{
             AtomicInteger i = new AtomicInteger(1);
             tour.getPointsDef().forEach((s) -> {
+                System.out.println("ID POINT "+s.getId());
                 createJPanelPoint(i.get(), tour.getPointsDef().size(), s.getIdAssociated(), s.getType(), s.getDuration(), s.getCostToReach(), s.getSchedule());
                 i.getAndIncrement();
             });
