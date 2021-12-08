@@ -32,7 +32,7 @@ public class Tour
         this.req = r;
         this.points = req.getListePoint();
         points.put(req.getDepot().getId(),req.getDepot());
-        computeTheFinalPointList(points, mapView, req);
+        computeTheFinalPointList();
     }
 
 
@@ -78,9 +78,10 @@ public class Tour
         }
         return n;
     }
-    public void computeTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
+    public void computeTheFinalPointList() throws ParseException {
         System.out.println("Tour.computeTheFinalPointList");
-        this.graph = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
+
+        this.graph = Algorithm.createGraph(this.points, this.mapView.getMap().getMapData(), this.req.getDepot());
         ArrayList<Path> tspResult = Algorithm.TSP(this.graph);
         Node node;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -106,6 +107,8 @@ public class Tour
             pointsDef.add(current);
             compteur++;
         }
+
+        // Vérification of the pointDefs ArrayList
         for (Point p: pointsDef){
             System.out.print(p.getId());
             System.out.print("-->");
