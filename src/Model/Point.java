@@ -9,6 +9,7 @@ public class Point extends Intersection{
     private float costToReach;
     private Date schedule;
     public Point() {
+
     }
 
     public Point(Intersection i, int duration, String type, String idAssociated) {

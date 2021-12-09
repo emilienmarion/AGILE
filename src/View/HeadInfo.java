@@ -23,9 +23,6 @@ public class HeadInfo extends JPanel {
         expJ.setLocation(35,15);
 
         this.add(expJ);
-
-
-
     }
 
     public HeadInfo(String title, String value)

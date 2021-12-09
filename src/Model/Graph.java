@@ -13,9 +13,6 @@ public class Graph {
     private ArrayList<Path> solution;
 
     public Graph(int dimension,HashMap<String,Point> listePoint,Point depot) {
-
-
-
         content=new ArrayList<ArrayList<Vertice>>();
         tableIndex=new HashMap<String,Integer>();
         for (int i=0;i<dimension;i++){
@@ -70,6 +67,7 @@ public class Graph {
     public void setContent(ArrayList<ArrayList<Vertice>> content) {
         this.content = content;
     }
+
     public void addVertice(Vertice v){
         if (v!=null) {
             String idOrigin = v.getIdOrigin();

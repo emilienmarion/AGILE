@@ -24,6 +24,7 @@ public class Tour
 
     public Tour(MapView mv){
         this.mapView = mv;
+        pointsDef=new ArrayList<Point>();
     }
 
     public void loadNewRequest(Request r) throws ParseException {
@@ -31,7 +32,7 @@ public class Tour
         this.req = r;
         this.points = req.getListePoint();
         points.put(req.getDepot().getId(),req.getDepot());
-        computeTheFinalPointList(points, mapView, req);
+        computeTheFinalPointList();
     }
 
 
@@ -71,95 +72,96 @@ public class Tour
         return Integer.toString(h2-h1)+"h "+Integer.toString(m2-m1)+"min "+Integer.toString(s2-s1)+"s";
     }
 
-
-    public void computeTheFinalPointList(HashMap<String, Point> listePointReq, MapView mapView, Request req) throws ParseException {
+    public void computeTheFinalPointList() throws ParseException {
         System.out.println("Tour.computeTheFinalPointList");
-        this.graph = Algorithm.createGraph(listePointReq, mapView.getMap().getMapData(), req.getDepot());
-        ArrayList<Path> ap = Algorithm.TSP(this.graph);
-        Node predecessor;
 
-        Node node;
-        ArrayList<Point> listePointDef = new ArrayList<Point>();
-        float costInter = 0;
-        int durationPrec = 0;
-        int k = 0;
-        int j=0;
-        boolean test = true;
+        this.graph = Algorithm.createGraph(this.points, this.mapView.getMap().getMapData(), this.req.getDepot());
+        ArrayList<Path> tspResult = Algorithm.TSP(this.graph);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        Date dateInter = sdf.parse(req.getDepartureTime());
-        System.out.println("date de depart : " + dateInter);
-        req.getDepot().setSchedule(dateInter);
-        listePointDef.add(req.getDepot());
-     boolean isChecked=false;
-
-        for (int i = 0; i < ap.size(); i++) {
-            node = ap.get(i).getPath();
-
-                costInter += (node.getCost() * (3.6 / 15));
-
-
-                for (String s : listePointReq.keySet() ) {
-
-                    if (node.getIntersection().getId() == listePointReq.get(s).getId() ) {
-
-                        listePointReq.get(s).setCostToReach(costInter);
-                        dateInter = XmlUtils.findSchedule(dateInter, costInter);
-                        listePointReq.get(s).setSchedule(dateInter);
-
-
-            //System.out.println("nodeID  : "+node.getIntersection().getId());
-                        if (node.getIntersection().getId().equals(req.getDepot().getId())){
-                            if (isChecked){
-                                Point p=new Point();
-                                p.setType("depot");
-                                p.setSchedule(dateInter);
-                                System.out.println("hehoooo"+p);
-                                listePointDef.add(p);
-                            }else{
-                                listePointDef.add(listePointReq.get(s));
-                                isChecked=true;
-                                System.out.println("hehoooo22");
-                            }
-                        }else{
-                            listePointDef.add(listePointReq.get(s));
-                        }
-
-                        costInter = 0;
-
-                        k++;
-                    }
-                }
-
+        Date currentDate = sdf.parse(req.getDepartureTime());
+        int durationPrec;
+        int compteur=0;
+        for (Path p:tspResult){
+            Node n=p.getPath();
+            if (compteur==0){
+                Point depot=req.getDepot();
+                Point depotToStock=new Point(depot);
+                depotToStock.setId(depot.getId()+"start");
+                depotToStock.setSchedule(currentDate);
+                pointsDef.add(depotToStock);
             }
+            String id = n.getIntersection().getId();
+            Point current = req.getListePoint().get(id);
+            //TODO : ici verfier que la duration c'est bien la prcedente parce que je te met ma main a couper que c'est l'actuel
+            durationPrec = current.getDuration();
+            current.setCostToReach(n.getCost());
+            currentDate = XmlUtils.findSchedule(currentDate,current.getCostToReach(),durationPrec);
+            current.setSchedule(currentDate);
+            pointsDef.add(current);
+            compteur++;
+        }
 
+        // Vérification of the pointDefs ArrayList
+        for (Point p: pointsDef){
+            System.out.print(p.getId());
+            System.out.print("-->");
+            System.out.println(p.getCostToReach()*3.6/15);
+            System.out.println("schedule : " + p.getSchedule());
+        }
 
+        this.departureTime = this.pointsDef.get(0).getSchedule();
+        System.out.println("DEPARTURE : "+ this.departureTime);
+        this.arrivalTime = this.pointsDef.get(pointsDef.size()-1).getSchedule();
+        System.out.println("arrival : "+ this.arrivalTime);
 
-
-        System.out.println("Point dans la liste def : " + listePointDef + "c'est fini la");
-        this.pointsDef = listePointDef;
-
-        setDepartureTime(this.pointsDef.get(0).getSchedule());
-        setArrivalTime(this.pointsDef.get(pointsDef.size()-1).getSchedule());
     }
 
-    public void deletePoint(String idPoint)
-    {
-        //to do : recalculer l'heure d'arrivee et la duration totale SSI le point supprime est le dernier de la liste
-        // supprimer le pickup ou le delivery correspondant au point supprime
+    public void deletePoint(String idPoint){
         System.out.println("Tour.deletePoint");
-        System.out.println(this.pointsDef);
-        for(int i = 0; i< pointsDef.size(); i++){
-            if(idPoint.equals(pointsDef.get(i).getId()))
-            {
-                this.pointsDef.remove(i);
-                break;
+
+        Point firstToDelete = null;
+        Point secondToDelete = null;
+
+        for(Point p : pointsDef){
+            if(p.getId().equals(idPoint)){
+                System.out.println("Tour.pointsDef.deletePoint : "+ p.getId());
+                firstToDelete = p;
+            }else if(!(p.getId().equals(pointsDef.get(pointsDef.size()-1).getId())) && !(p.getId().equals(pointsDef.get(0).getId()))) {
+                if(p.getIdAssociated().equals(idPoint)){
+                    System.out.println("Tour.pointsDef.deletePoint : "+ p.getId());
+                    secondToDelete = p;
+                }
             }
         }
-        setPointsDef(this.pointsDef);
-        System.out.println("---------------------------------------------");
-        System.out.println(this.pointsDef);
+
+        boolean changeArrival = false;
+        // Detect the case where the arrival schedule must change
+        if(firstToDelete.getId().equals(pointsDef.get(pointsDef.size()-2).getId())
+                || secondToDelete.getId().equals(pointsDef.get(pointsDef.size()-2).getId())){
+            changeArrival = true;
+        }
+
+        // Delete from the data structure
+        if(firstToDelete!=null && secondToDelete!=null)
+        {
+            pointsDef.remove(firstToDelete);
+            pointsDef.remove(secondToDelete);
+        }
+
+        // Change the arrival time
+        try {
+            if (changeArrival) {
+                Point lastDepot = pointsDef.get(pointsDef.size() - 1);
+                Point previousPoint = pointsDef.get(pointsDef.size() - 2);
+                Date newDate = XmlUtils.findSchedule(previousPoint.getSchedule(), lastDepot.getCostToReach(), previousPoint.getDuration());
+                lastDepot.setSchedule(newDate);
+            }
+        }catch (Exception e){
+            System.out.println("Tour.deletePoint ERROR : "+e);
+        }
     }
+
 
     public void editPoint(String idPoint, String nvSchedule) throws ParseException {
         System.out.println("Tour.editPoint");
@@ -205,8 +207,11 @@ public class Tour
     }
 
 
+    public Graph getGraph() {
+        return graph;
+    }
 
-
-
-
+    public HashMap<String, Point> getPoints() {
+        return points;
+    }
 }

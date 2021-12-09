@@ -1,9 +1,13 @@
 package View;
 
-import Model.MapData;
+import Controller.Controller;
+import Model.*;
+import Model.Point;
+import Utils.Algorithm;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class MapView {
     protected JFrame frame;
@@ -12,15 +16,17 @@ public class MapView {
     private Map map;
     private final int mapSquare;
     private MapData mdT;
-    protected MapView mapView;
     protected String mapPathString;
+    private Tour tour;
+    private Controller controller;
 
-    public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT, String mp){
+    public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT, String mp, Controller controller){
         this.leftPanel = leftPanel;
         this.mapSquare = mapSquare;
         this.mapPath = mapPath;
         this.mdT = mdT;
         this.mapPathString = mp;
+        this.controller = controller;
         //System.out.println("map data : "+ mdT);
         loadMap(this.mdT, this.mapPathString);
     }
@@ -69,4 +75,37 @@ public class MapView {
         return this.mdT;
     }
 
+    public void loadRequest(Request req) {
+        System.out.println("MapView.loadRequest");
+
+        map.setReq(req);
+        map.addMouseListener(new PointLocater(map,controller));
+
+
+        HashMap<String, Point> pointList = req.getListePoint();
+        pointList.put(req.getDepot().getId(),req.getDepot());
+        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
+        g.setSolution(Algorithm.TSP(g));
+
+           /*
+
+        HashMap<String, Point> pointList = req.getListePoint();
+        pointList.put(req.getDepot().getId(),req.getDepot());
+
+        Graph g= Algorithm.createGraph(pointList,map.getMapData(), req.getDepot());
+
+        tour.getGraph().setSolution(Algorithm.TSP(g));
+
+        tour est une array list de path
+*/
+        map.setGraph(g);
+        map.repaint();
+
+
+        System.out.println("MapView.loadRequest EXIT");
+    }
+
+    public void setTourObject(Tour tour) {
+        this.tour = tour;
+    }
 }
