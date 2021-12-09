@@ -130,14 +130,19 @@ public class Controller {
         tour.deletePoint(i);
 
         // Actualisation des IHM
+        displayMapView();
+        //frame.confirmDeleteRow(i);
+        frame.display();
+    }
+
+    public void displayMapView()
+    {
         try {
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
             frame.getMapView().loadRequest(frame.getTourView().getRequest());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //frame.confirmDeleteRow(i);
-        frame.display();
     }
 
     public void editPoint(String id) throws ParseException {

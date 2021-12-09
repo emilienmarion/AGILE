@@ -143,13 +143,19 @@ public class Tour
         }
 
         boolean changeArrival = false;
-        // Detect the case where the arrival schedule must change
-        if(firstToDelete.getId().equals(pointsDef.get(pointsDef.size()-2).getId())
-                || secondToDelete.getId().equals(pointsDef.get(pointsDef.size()-2).getId())){
-            changeArrival = true;
-        }
-
         if(firstToDelete!=null && secondToDelete!=null) {
+
+            // Detect the case where the arrival schedule must change
+            System.out.println(" First point to delete  : " + firstToDelete.getId());
+            System.out.println(" Second point to delete : " + secondToDelete.getId());
+            String actualLastPointId = pointsDef.get(pointsDef.size()-2).getId();
+            System.out.println(" Actual last point      : " + actualLastPointId);
+            if(firstToDelete.getId().equals(actualLastPointId)
+                    || secondToDelete.getId().equals(actualLastPointId)){
+                changeArrival = true;
+                System.out.println("Tour.deletePoint : Point deleted just before the returnal deposit");
+            }
+
             // Free the schedule for avalaible new schedule in case of modification or addition
             // for the first point to delete
 
@@ -188,7 +194,10 @@ public class Tour
             if (changeArrival) {
                 Point lastDepot = pointsDef.get(pointsDef.size() - 1);
                 Point previousPoint = pointsDef.get(pointsDef.size() - 2);
-                // TODO : le getCostToReach n'est plus juste car le point précédent le dépot n'est plus celui du TSP
+                // TODO : calculer le travelling time à partir du point précédent
+                int travellingTime = 0;
+                int newCost = previousPoint.getDuration() + travellingTime;
+                lastDepot.setCostToReach(newCost);
                 Date newDate = XmlUtils.findSchedule(previousPoint.getSchedule(), lastDepot.getCostToReach(), previousPoint.getDuration());
                 lastDepot.setSchedule(newDate);
                 this.arrivalTime = newDate;
@@ -324,6 +333,7 @@ public class Tour
                 freeSchedule.add(newCouple);
             }
         }
+
         // Delete useless ones
         for (ArrayList<Date> toDelete : coupleToDelete) {
             if(freeSchedule.indexOf(toDelete) != -1)
@@ -421,8 +431,6 @@ public class Tour
     }
 
     public void calculechemin(Point pickUp,Point delivery){
-
-
         System.out.print("pu=");
         System.out.println(pickUp);
         Point pointPrecedent=pointsDef.get(pointsDef.size()-2);
