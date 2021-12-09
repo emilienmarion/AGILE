@@ -54,6 +54,7 @@ public class TourView implements Observer {
     protected String filename;
     protected ImageIcon icon;
     protected Tour tour;
+    protected JButton addButton;
 
     protected PointLocater pointLocater;
 
@@ -105,7 +106,7 @@ public class TourView implements Observer {
         imageAdd.setBackground(new Color(86, 86, 86));
         imageAdd.setOpaque(true);
 
-        JButton addButton = new JButton();
+         addButton = new JButton();
         addButton.setUI(new BasicButtonUI());
         addButton.setBackground(new Color(86, 86, 86));
         addButton.setOpaque(true);
@@ -133,10 +134,17 @@ public class TourView implements Observer {
         rightPanel.add(pathPanel);
         rightPanel.add(Box.createVerticalGlue());
 
+
+         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+      
+   
+        setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+
         rightPanel.repaint();
 
+
         // Afficher le header avec les informations du modèle de donnée
-        setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+       // setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
         System.out.println("TourView.displayTour EXIT");
     }
 
@@ -272,16 +280,18 @@ public class TourView implements Observer {
                     }
                     if (!point.getId().equals(req.getDepot().getId())) {
 
+                       // jpanelList.get(req.getListePoint().get(point.getId()).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
+                       // tour.getPointsDef().indexOf(point);
+                        jpanelList.get(tour.getPointsDef().get(tour.getPointsDef().indexOf(point)).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
 
-                        jpanelList.get(req.getListePoint().get(point.getId()).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
                     }
                     row.setBackground(new Color(116, 69, 206));
 
                     Map m = mapView.getMap();
 
-                    m.setTest(true);
-                    m.setCurentid(point.getId());
-                    m.repaint();
+                   // m.setTest(true);
+                   // m.setCurentid(point.getId());
+                   // m.repaint();
                 }
             });
         }
@@ -303,19 +313,22 @@ public class TourView implements Observer {
 
     //private void setHeaderTour(JButton addButton, String V2, String V3, String V4 ) {
 
-    private void setHeaderTour(String V2, String V3, String V4 ) {
+    private void setHeaderTour(JButton addButton,String V2, String V3, String V4 ) {
 
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
+
+
         headerInfo.removeAll();
+        headerInfo.validate();
 
         headerInfo.setBackground(new Color(86,86,86));
         headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
 
-        headDate = new HeadInfo("Ajoutez une demande","");
+
 
         headDeparture = new HeadInfo("Depature", V2);
         headETA = new HeadInfo("ETA", V3);
@@ -323,8 +336,8 @@ public class TourView implements Observer {
 
         headerInfo.add(Box.createHorizontalGlue());
 
-      //ici on ajoutait le bouton le mettre ailleurs (fin du scrool panel)
-       // headerInfo.add(addButton);
+
+        headerInfo.add(addButton);
         headerInfo.add(Box.createHorizontalGlue());
 
         headerInfo.add(headDeparture);
@@ -333,6 +346,8 @@ public class TourView implements Observer {
         headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headDuration);
         headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.revalidate();
+        headerInfo.repaint();
     }
 
 
@@ -402,7 +417,6 @@ public class TourView implements Observer {
         String scheduleString = dateFormat3.format(req.getListePoint().get(id).getSchedule());
 
         point.removeAll();
-        point.validate();
 
         point.setBackground(new Color(61,61,61));
         point.setName(String.valueOf(1)); //jsp à quoi ça sert
@@ -465,7 +479,7 @@ public class TourView implements Observer {
         adressPanel.add(fieldLocation,BorderLayout.WEST);
 
         confirmEdit.setUI(new BasicButtonUI());
-        confirmEdit.setPreferredSize(new Dimension(50,55));
+        confirmEdit.setPreferredSize(new Dimension(50,50));
         confirmEdit.setBackground(new Color(116, 69, 206));
         confirmEdit.setOpaque(true);
 
@@ -500,7 +514,7 @@ public class TourView implements Observer {
 
         image.setVisible(true);
         point.revalidate();
-        //point.repaint();
+        point.repaint();
         scheduleString = dateFormat3.format(req.getListePoint().get(id).getSchedule());
         System.out.println("------------->TourView.scheduleString : " + scheduleString);
         return scheduleString;
@@ -518,7 +532,7 @@ public class TourView implements Observer {
 
         JPanel point = jpanelList.get(id);
 
-        String heure = "22h22";
+        String heure = "00:00:00";
         String type;
 
         point.removeAll();
@@ -617,6 +631,9 @@ public class TourView implements Observer {
         image.setVisible(true);
         imageDelete.setVisible(true);
         imageEdit.setVisible(true);
+
+        point.revalidate();
+        point.repaint();
     }
 
     public void confirmDelete(String id) {
@@ -648,9 +665,33 @@ public class TourView implements Observer {
         // TODO : code pour display
     }
 
+
+    public void drawpoint(String idPickup) {
+
+        mapView.getMap().setDrawpointBool(true);
+        mapView.getMap().setIdPickup(idPickup);
+
+        mapView.getMap().repaint();
+    }
+
+    public void sortirdeADD() {
+
+        setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+
+
+    }
+
+    public void drawpoint2(String idPickup,String idDelivery) {
+        mapView.getMap().setDrawpointBool(false);
+        mapView.getMap().setDrawpointBool2(true);
+        mapView.getMap().setIdPickup(idPickup);
+        mapView.getMap().setIdDelivery(idDelivery);
+        mapView.getMap().repaint();
+    }
     public String getTourPath() {return this.tourPath;
     }
 
     public Request getRequest() {return this.req;
+
     }
 }

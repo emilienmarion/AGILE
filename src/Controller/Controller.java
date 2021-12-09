@@ -20,6 +20,9 @@ public class Controller {
     private Request loadRequest;
     private boolean firstLoadTour = false;
     private Tour tour;
+    private int i=0;
+    private Model.Point pickUp;
+    private Model.Point delivery;
 
 
 
@@ -159,12 +162,51 @@ public class Controller {
         System.out.println("Controller.addRequest ");
         frame.addRequest();
     }
-     public void addNewRequest(int x,int y){
+     public void addNewRequest(int x,int y)  {
 
-       Intersection inter= md.findIntersection(x,y);
+
+         if (i > 1) {  //sortir du mode ajout
+             frame.sortirdeADD();
+         } else {
+             Intersection inter = md.findIntersection(x, y);
+             System.out.println("inter" + inter);
+             if (inter != null) {
+
+
+                 if (i == 0) {
+                      pickUp = new Model.Point(inter, 0, "pickUp");
+                     System.out.println("i first"+i);
+                     drawpoint(pickUp.getId());
+                 } else if (i == 1) {
+                      delivery = new Model.Point(inter, 0, "delivery");
+                      System.out.println("i"+i);
+                     drawpoint2(pickUp.getId(),delivery.getId());
+                     pickUp.setIdAssociated(delivery.getId());
+                     delivery.setIdAssociated(pickUp.getId());
+                     System.out.println("Id du pidckUp ajouté "+pickUp.getId());
+                     System.out.println("Id du delivery ajouté "+delivery.getId());
+                     tour.addRequest(this.pickUp,this.delivery);
+                     try {
+                         frame.getTourView().loadRequest(frame.getTourView().getTourPath());
+                        // frame.getMapView(). mettre à jour la map
+                     } catch (ParseException e) {
+                         e.printStackTrace();
+                     }
+                 }
+
+                 i++;
+             }
+
+         }
 
      }
 
+    public void drawpoint2(String idPickup,String idDelivery){
+        frame.drawpoint2( idPickup,idDelivery);
+    }
+     public void drawpoint(String id){
+        frame.drawpoint(id);
+     }
 
     public MapData getMd() {
         return md;

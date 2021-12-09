@@ -355,7 +355,28 @@ public class Tour
         return points;
     }
 
+
     public ArrayList<Path> getPathPointsDef() {
         return pathPointsDef;
+}
+
+    public void addRequest(Point pickUp, Point delivery) {
+        System.out.println("je suis dans Tour.addRequest ");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Date datePickup= null;
+        Date dateDelivery= null;
+        try {
+            datePickup = sdf.parse("17:09:33");
+            dateDelivery=sdf.parse("17:39:33");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        pickUp.setSchedule(datePickup);
+        delivery.setSchedule(dateDelivery);
+        pointsDef.add(pickUp);
+        pointsDef.add(delivery);
+        for(Point p:pointsDef){
+            System.out.println(p.getId());
+        }
     }
 }

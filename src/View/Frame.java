@@ -29,7 +29,6 @@ public class Frame {
     protected Tour tour;
 
 
-
     public Frame(MapData md, String mapath) {
         controller = new Controller(this);
         controller.setMd(md);
@@ -40,13 +39,16 @@ public class Frame {
         initLoaderSide();
         tour = new Tour(mapView);
         this.controller.setTourObject(this.tour);
+
+        md.setController(this.controller);
+
         this.mapView.setTourObject(this.tour);
+
 
     }
 
 
-    private void initFrame()
-    {
+    private void initFrame() {
         // Window design
         frame = new JFrame("UberIf");
         frame.setResizable(false);
@@ -95,26 +97,24 @@ public class Frame {
 
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
-        rightPanel.setBackground(new Color(40,40,40));
+        rightPanel.setBackground(new Color(40, 40, 40));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(loadMapButton);
-        rightPanel.add(Box.createRigidArea(new Dimension(0,20)));
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         rightPanel.add(loadTourButton);
         rightPanel.add(Box.createVerticalGlue());
     }
 
 
-    public void display()
-    {
+    public void display() {
         System.out.println("Frame.display");
         frame.pack();
         frame.setVisible(true);
     }
 
-    public void switchToTourView(Request req, String tp)throws ParseException
-    {
+    public void switchToTourView(Request req, String tp) throws ParseException {
 
         System.out.println("Frame.switchToTourView");
         this.TourPath = tp;
@@ -126,8 +126,10 @@ public class Frame {
     }
 
     public void loadTour(Request req) throws ParseException {
+
         tourView.loadRequest(this.TourPath);
         mapView.loadRequest(req);
+
     }
 
     public void loadMap(MapData loadedMap, String mapath) {
@@ -140,13 +142,15 @@ public class Frame {
         return schedule;
     }
 
-    public void addRequest(){
+    public void addRequest() {
         tourView.addRequest();
     }
 
-    public void confirmEdit(String i) {tourView.confirmEdit(i);}
+    public void confirmEdit(String i) {
+        tourView.confirmEdit(i);
+    }
 
-    public void deletePoint( String id) {
+    public void deletePoint(String id) {
         tourView.deletePoint(id);
     }
 
@@ -158,12 +162,28 @@ public class Frame {
         tourView.highlight(id);
     }
 
+
     public TourView getTourView() {return this.tourView;
     }
 
     public MapView getMapView() {return this.mapView;
     }
 
+
+
+
+
+    public void drawpoint(String idPickup) {
+        tourView.drawpoint(idPickup);
+    }
+
+    public void sortirdeADD(){
+
+
+      tourView.sortirdeADD();
+    }
+
+    public void drawpoint2(String idPickup, String idDelivery) {
+        tourView.drawpoint2(idPickup,idDelivery);
+    }
 }
-
-

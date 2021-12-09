@@ -22,9 +22,12 @@ public class Map extends JPanel {
     private Graph graph;
     private String curentid;
 
-
+    private String idPickup;
+    private String idDelivery;
     boolean test;
     private Request req;
+    boolean drawpointBool;
+    boolean drawpointBool2;
 
     protected Controller controller;
 
@@ -44,7 +47,33 @@ public class Map extends JPanel {
 
         this.curentid = null;
         test = false;
+        drawpointBool=false;
+        drawpointBool2=false;
         //System.out.println("je suis null"+ curentid);
+    }
+
+    public String getIdPickup() {
+        return idPickup;
+    }
+
+    public void setIdPickup(String idPickup) {
+        this.idPickup = idPickup;
+    }
+
+    public String getIdDelivery() {
+        return idDelivery;
+    }
+
+    public void setIdDelivery(String idDelivery) {
+        this.idDelivery = idDelivery;
+    }
+
+    public boolean isDrawpointBool2() {
+        return drawpointBool2;
+    }
+
+    public void setDrawpointBool2(boolean drawpointBool2) {
+        this.drawpointBool2 = drawpointBool2;
     }
 
     public boolean isTest() {
@@ -177,6 +206,11 @@ public class Map extends JPanel {
                 float destinationLongitude = intersections.get(neighborId).getLongitude();
                 int originC[] = getCoords(originLongitude, originLatitude);
                 int destinationC[] = getCoords(destinationLongitude, destinationLatitude);
+                currentIntersection.setLatitudeSurPanel(originC[0]);
+                currentIntersection.setLongitudeSurPanel(originC[1]);
+                intersections.get(neighborId).setLatitudeSurPanel(destinationC[0]);
+                intersections.get(neighborId).setLongitudeSurPanel(destinationC[1]);
+
                 g.setColor(Color.black);
                 g.drawLine(originC[0], originC[1], destinationC[0], destinationC[1]);
             }
@@ -186,7 +220,47 @@ public class Map extends JPanel {
             if (test) {
                 grossir(this.curentid, g,true);
             }
+            if (drawpointBool) {
+                drawpoint(this.idPickup,g);
+            }
+            if (drawpointBool2) {
+                drawpoint2(this.idPickup,this.idDelivery,g);
+            }
+
         }
 
+    }
+
+    public void drawpoint (String idPickup,Graphics g){
+
+        System.out.println("idPi"+idPickup);
+        int lat = (int) mapData.getIntersections().get(idPickup).getLatitudeSurPanel();
+        int longi = (int) mapData.getIntersections().get(idPickup).getLongitudeSurPanel();
+
+        g.setColor(Color.blue);
+        g.fillRect(lat, longi, 10, 10);
+    }
+
+    public void drawpoint2 (String idPickup,String idDelivery,Graphics g){
+
+        int lat1 = (int) mapData.getIntersections().get(idPickup).getLatitudeSurPanel();
+        int longi1 = (int) mapData.getIntersections().get(idPickup).getLongitudeSurPanel();
+
+        int lat2 = (int) mapData.getIntersections().get(idDelivery).getLatitudeSurPanel();
+        int longi2 = (int) mapData.getIntersections().get(idDelivery).getLongitudeSurPanel();
+        g.setColor(Color.green);
+
+        g.fillRect(lat1, longi1, 10, 10);
+        g.fillRect(lat2, longi2, 10, 10);
+    }
+
+
+
+    public boolean isDrawpointBool() {
+        return drawpointBool;
+    }
+
+    public void setDrawpointBool(boolean drawpointBool) {
+        this.drawpointBool = drawpointBool;
     }
 }
