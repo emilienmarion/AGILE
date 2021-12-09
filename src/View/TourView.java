@@ -280,16 +280,18 @@ public class TourView implements Observer {
                     }
                     if (!point.getId().equals(req.getDepot().getId())) {
 
+                       // jpanelList.get(req.getListePoint().get(point.getId()).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
+                       // tour.getPointsDef().indexOf(point);
+                        jpanelList.get(tour.getPointsDef().get(tour.getPointsDef().indexOf(point)).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
 
-                        jpanelList.get(req.getListePoint().get(point.getId()).getIdAssociated()).setBackground(new Color(116, 69, 206, 136));
                     }
                     row.setBackground(new Color(116, 69, 206));
 
                     Map m = mapView.getMap();
 
-                    m.setTest(true);
-                    m.setCurentid(point.getId());
-                    m.repaint();
+                   // m.setTest(true);
+                   // m.setCurentid(point.getId());
+                   // m.repaint();
                 }
             });
         }

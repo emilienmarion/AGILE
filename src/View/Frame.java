@@ -178,7 +178,7 @@ public class Frame {
     }
 
     public void sortirdeADD(){
-      System.out.println("je suis supérizeur à 2");
+
 
       tourView.sortirdeADD();
     }

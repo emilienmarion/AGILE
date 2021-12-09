@@ -162,7 +162,7 @@ public class Controller {
         System.out.println("Controller.addRequest ");
         frame.addRequest();
     }
-     public void addNewRequest(int x,int y) {
+     public void addNewRequest(int x,int y)  {
 
 
          if (i > 1) {  //sortir du mode ajout
@@ -181,10 +181,24 @@ public class Controller {
                       delivery = new Model.Point(inter, 0, "delivery");
                       System.out.println("i"+i);
                      drawpoint2(pickUp.getId(),delivery.getId());
+                     pickUp.setIdAssociated(delivery.getId());
+                     delivery.setIdAssociated(pickUp.getId());
+                     System.out.println("Id du pidckUp ajouté "+pickUp.getId());
+                     System.out.println("Id du delivery ajouté "+delivery.getId());
+                     tour.addRequest(this.pickUp,this.delivery);
+                     try {
+                         frame.getTourView().loadRequest(frame.getTourView().getTourPath());
+                        // frame.getMapView(). mettre à jour la map
+                     } catch (ParseException e) {
+                         e.printStackTrace();
+                     }
                  }
+
                  i++;
              }
+
          }
+
      }
 
     public void drawpoint2(String idPickup,String idDelivery){
