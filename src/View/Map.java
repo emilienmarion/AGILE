@@ -8,6 +8,7 @@ import Model.Point;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
