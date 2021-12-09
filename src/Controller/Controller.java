@@ -199,6 +199,7 @@ public class Controller {
 
                          frame.getMapView().loadRequest(tour);
                          frame.getTourView().loadRequest(frame.getTourView().getTourPath());
+                         frame.getTourView().updateHeader();
                         // frame.getMapView(). mettre à jour la map
                      } catch (ParseException e) {
                          e.printStackTrace();
@@ -241,7 +242,7 @@ public class Controller {
         // Actualisation des IHM
         try {
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
-            frame.getMapView().loadRequest(frame.getTourView().getRequest());
+            frame.getMapView().loadRequest(tour);
             frame.getTourView().updateHeader();
         } catch (ParseException e) {
             e.printStackTrace();

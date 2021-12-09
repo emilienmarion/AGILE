@@ -483,7 +483,7 @@ private void displayArray(ArrayList<Point> ap){
         pickUp.setSchedule(datePickup);
         delivery.setSchedule(dateDelivery);
         FinaleDepot.setSchedule(finalDepot);
-
+        this.arrivalTime = finalDepot;
 
 
         pathPointsDef.remove(pathPointsDef.size()-1);
