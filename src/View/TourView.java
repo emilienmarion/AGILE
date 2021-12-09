@@ -134,7 +134,7 @@ public class TourView implements Observer {
          DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
        // setHeaderTour(addButton, req.getDepartureTime(), dateFormat.format(listePointDef.get(listePointDef.size()-1).getSchedule()), "");
    
-        setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+        setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
 
     }
 
@@ -313,7 +313,7 @@ public class TourView implements Observer {
 
     //private void setHeaderTour(JButton addButton, String V2, String V3, String V4 ) {
 
-    private void setHeaderTour(String V2, String V3, String V4 ) {
+    private void setHeaderTour(JButton addButton,String V2, String V3, String V4 ) {
 
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
@@ -326,7 +326,7 @@ public class TourView implements Observer {
         headerInfo.setMaximumSize(new Dimension(1000, 100));
 
 
-        headDate = new HeadInfo("Ajoutez une demande","");
+        headExp = new HeadInfo("Pour ajouter une requête, cliquez une première fois pour choisir le pickup et une 2ème fois pour choisir le Delivery");
 
         headDeparture = new HeadInfo("Depature", V2);
         headETA = new HeadInfo("ETA", V3);
@@ -334,8 +334,8 @@ public class TourView implements Observer {
 
         headerInfo.add(Box.createHorizontalGlue());
 
-      //ici on ajoutait le bouton le mettre ailleurs (fin du scrool panel)
-       // headerInfo.add(addButton);
+
+        headerInfo.add(addButton);
         headerInfo.add(Box.createHorizontalGlue());
 
 
@@ -674,4 +674,25 @@ System.out.println("je suis laaa");
         // TODO : code pour display
     }
 
+    public void drawpoint(String idPickup) {
+
+        mapView.getMap().setDrawpointBool(true);
+        mapView.getMap().setIdPickup(idPickup);
+
+        mapView.getMap().repaint();
+    }
+
+    public void sortirdeADD() {
+
+
+
+    }
+
+    public void drawpoint2(String idPickup,String idDelivery) {
+        mapView.getMap().setDrawpointBool(false);
+        mapView.getMap().setDrawpointBool2(true);
+        mapView.getMap().setIdPickup(idPickup);
+        mapView.getMap().setIdDelivery(idDelivery);
+        mapView.getMap().repaint();
+    }
 }
