@@ -54,6 +54,7 @@ public class TourView implements Observer {
     protected String filename;
     protected ImageIcon icon;
     protected Tour tour;
+    protected JButton addButton;
 
     protected PointLocater pointLocater;
 
@@ -105,7 +106,7 @@ public class TourView implements Observer {
         imageAdd.setBackground(new Color(86, 86, 86));
         imageAdd.setOpaque(true);
 
-        JButton addButton = new JButton();
+         addButton = new JButton();
         addButton.setUI(new BasicButtonUI());
         addButton.setBackground(new Color(86, 86, 86));
         addButton.setOpaque(true);
@@ -315,7 +316,10 @@ public class TourView implements Observer {
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
+
+
         headerInfo.removeAll();
+        headerInfo.validate();
 
         headerInfo.setBackground(new Color(86,86,86));
         headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
@@ -340,6 +344,8 @@ public class TourView implements Observer {
         headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headDuration);
         headerInfo.add(Box.createHorizontalGlue());
+        headerInfo.revalidate();
+        headerInfo.repaint();
     }
 
 
@@ -668,6 +674,7 @@ public class TourView implements Observer {
 
     public void sortirdeADD() {
 
+        setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
 
 
     }
@@ -678,7 +685,7 @@ public class TourView implements Observer {
         mapView.getMap().setIdPickup(idPickup);
         mapView.getMap().setIdDelivery(idDelivery);
         mapView.getMap().repaint();
-
+    }
     public String getTourPath() {return this.tourPath;
     }
 

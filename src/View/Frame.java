@@ -169,7 +169,7 @@ public class Frame {
     public MapView getMapView() {return this.mapView;
     }
 
-}
+
 
 
 
