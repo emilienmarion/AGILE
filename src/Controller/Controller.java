@@ -154,9 +154,7 @@ public class Controller {
         System.out.println("Controller.deleteRow : "+i);
         frame.deletePoint(i);
         frame.display();
-
     }
-
 
     public void addRequest( ) {
         System.out.println("Controller.addRequest ");
