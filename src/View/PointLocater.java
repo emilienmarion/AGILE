@@ -24,6 +24,7 @@ public class PointLocater extends MouseAdapter {
         map = map1;
         addPoint = false;
 
+
     }
 
     public Point getPcurent() {
@@ -39,8 +40,9 @@ public class PointLocater extends MouseAdapter {
     }
 
     public void mousePressed(MouseEvent e) {
-        if (map.getReq() != null) {
+        if (map.getTour() != null) {
             Point p = e.getPoint();
+
 
             if (addPoint) {
 
@@ -49,7 +51,7 @@ public class PointLocater extends MouseAdapter {
 
             }
 
-
+/*
             float latitudeDep = map.getReq().getDepot().getLatitudeSurPanel();
             float longiteDep = map.getReq().getDepot().getLongitudeSurPanel();
             // System.out.println("Latitude "+latitudeDep);
@@ -58,11 +60,20 @@ public class PointLocater extends MouseAdapter {
                 // System.out.println("je suis dans ce coordonée");
                 controller.highLight(map.getReq().getDepot().getId());
             }
+*/
 
-            HashMap<String, Model.Point> listePoint = map.getReq().getListePoint();
+              ArrayList<Model.Point> pointsDef= map.getTour().getPointsDef();
 
+              for(Model.Point point : pointsDef){
+                  float latitude = point.getLatitudeSurPanel();
+                  float longitude = point.getLongitudeSurPanel();
+                  if (p.getX() < latitude + 30 && p.getX() > latitude - 30 && p.getY() < longitude + 30 && p.getY() > longitude - 30) {
+                      controller.highLight(point.getId());
 
-            //Parcourir les point de la requete et comparer les coordonées du point cliqué pour voir si elle corespond
+                  }
+            }
+
+           /* //Parcourir les point de la requete et comparer les coordonées du point cliqué pour voir si elle corespond
             for (String s : listePoint.keySet()) {
                 float latitude = listePoint.get(s).getLatitudeSurPanel();
                 float longitude = listePoint.get(s).getLongitudeSurPanel();
@@ -70,8 +81,9 @@ public class PointLocater extends MouseAdapter {
 
                 if (p.getX() < latitude + 30 && p.getX() > latitude - 30 && p.getY() < longitude + 30 && p.getY() > longitude - 30) {
                     controller.highLight(s);
+
                 }
-            }
+            }*/
         }
     }
 }

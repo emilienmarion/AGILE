@@ -37,7 +37,7 @@ public class Frame {
         initFrame();
         mapView = new MapView(leftPanel, mapSquare, mapPath, md, mapath, controller); // Call the constructor and init this side
         initLoaderSide();
-        tour = new Tour(mapView);
+        tour = new Tour(mapView,controller);
         this.controller.setTourObject(this.tour);
 
         md.setController(this.controller);
@@ -122,13 +122,13 @@ public class Frame {
         rightPanel.removeAll();
         // Setup with the new design
         tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath, this.tour);
-        loadTour(req);
+        loadTour(tour);
     }
 
-    public void loadTour(Request req) throws ParseException {
+    public void loadTour(Tour tour) throws ParseException {
 
         tourView.loadRequest(this.TourPath);
-        mapView.loadRequest(req);
+        mapView.loadRequest(tour);
 
     }
 

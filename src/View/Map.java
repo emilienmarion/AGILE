@@ -21,6 +21,7 @@ public class Map extends JPanel {
     private MapData mapData;
     private Graph graph;
     private String curentid;
+    private Tour tour;
 
     private String idPickup;
     private String idDelivery;
@@ -50,6 +51,14 @@ public class Map extends JPanel {
         drawpointBool=false;
         drawpointBool2=false;
         //System.out.println("je suis null"+ curentid);
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
     }
 
     public String getIdPickup() {
@@ -108,15 +117,26 @@ public class Map extends JPanel {
 
 
     private void grossir(String curentid, Graphics g,boolean isdep) {
-        int lat = (int) req.getListePoint().get(curentid).getLatitudeSurPanel();
-        int longi = (int) req.getListePoint().get(curentid).getLongitudeSurPanel();
+
+        int lat =0;
+        int longi=0 ;
+
+        for ( Point p: tour.getPointsDef() ){
+            if(p.getId().equals(curentid)){
+               lat = (int)p.getLatitudeSurPanel();
+                longi=(int)p.getLongitudeSurPanel();
+            }
+
+        }
+
+        //int longi = (int) req.getListePoint().get(curentid).getLongitudeSurPanel();
 
         g.setColor(Color.red);
         g.fillRect(lat, longi, 20, 20);
     }
 
     private void drawGraph(Graph graph,Graphics g){
-        ArrayList<Path> way=graph.getSolution();
+        ArrayList<Path> way= getTour().getPathPointsDef();
         int length=graph.getListePoint().size();
         int index=0;
         ArrayList<Color> ac=new ArrayList<Color>();
@@ -143,7 +163,9 @@ public class Map extends JPanel {
         g.setColor(ac.get(index));
         for (Path p : way) {
             Node n = p.getPath();
-            Point start = graph.getListePoint().get(n.getIntersection().getId());
+           // getTour().getGraph().ge
+            Point start = getTour().getGraph().getListePoint().get(n.getIntersection().getId());
+
             int[] coordA = getCoords(start.getLongitude(), start.getLatitude());
             if (start.getType().equals("delivery")) g.fillRect(coordA[0], coordA[1], 10, 10);
             else g.fillOval(coordA[0], coordA[1], 10, 10);
@@ -215,6 +237,7 @@ public class Map extends JPanel {
                 g.drawLine(originC[0], originC[1], destinationC[0], destinationC[1]);
             }
             if (graph != null) {
+
                 drawGraph(graph, g);
             }
             if (test) {
@@ -248,7 +271,7 @@ public class Map extends JPanel {
 
         int lat2 = (int) mapData.getIntersections().get(idDelivery).getLatitudeSurPanel();
         int longi2 = (int) mapData.getIntersections().get(idDelivery).getLongitudeSurPanel();
-        g.setColor(Color.green);
+        g.setColor(Color.orange);
 
         g.fillRect(lat1, longi1, 10, 10);
         g.fillRect(lat2, longi2, 10, 10);

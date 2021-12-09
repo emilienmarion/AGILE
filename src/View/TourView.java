@@ -76,6 +76,7 @@ public class TourView implements Observer {
         this.tourPath = TourPath;
 
         Map map = mapView.getMap();
+
         pointLocater = new PointLocater(map, controller);
         map.addMouseListener(pointLocater);
 
@@ -289,9 +290,9 @@ public class TourView implements Observer {
 
                     Map m = mapView.getMap();
 
-                   // m.setTest(true);
-                   // m.setCurentid(point.getId());
-                   // m.repaint();
+                    m.setTest(true);
+                    m.setCurentid(point.getId());
+                    m.repaint();
                 }
             });
         }
@@ -356,13 +357,13 @@ public class TourView implements Observer {
         headerInfo.removeAll();
         headerInfo.validate();
 
-        System.out.println("je suis laaa");
+
         headerInfo.setBackground(new Color(86,86,86));
         // headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
 
-        headExp = new HeadInfo("Pour ajoutez une nouvelle requets à cette tournée cliquez une première fois pour désigner le pickUp et une deuxième fois pour chosir le delivery");
+        headExp = new HeadInfo("Pour ajoutez une nouvelle requête à cette tournée cliquez une première fois pour désigner le pickUp et une deuxième fois pour chosir le delivery");
 
        // headerInfo.add(Box.createHorizontalGlue());
         headerInfo.add(headExp);
@@ -677,6 +678,9 @@ public class TourView implements Observer {
     public void sortirdeADD() {
 
         setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+
+        mapView.getMap().setDrawpointBool(false);
+        mapView.getMap().setDrawpointBool2(false);
 
 
     }
