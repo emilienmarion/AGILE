@@ -92,6 +92,7 @@ public class Algorithm {
         for (String pointId:pointListKeySet) {
             Point p=pointList.get(pointId);
             HashMap<String, Node> result = dijkstra(loadedMap.getIntersections(), p);
+
             for (String s : pointListKeySet) {
                 g.addVertice(Algorithm.getPath(result.get(s)).toVertice());
             }

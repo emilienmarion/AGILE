@@ -362,6 +362,8 @@ public class Tour
 
     public void addRequest(Point pickUp, Point delivery) {
         System.out.println("je suis dans Tour.addRequest ");
+
+        /*
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         Date datePickup= null;
         Date dateDelivery= null;
@@ -373,10 +375,57 @@ public class Tour
         }
         pickUp.setSchedule(datePickup);
         delivery.setSchedule(dateDelivery);
-        pointsDef.add(pickUp);
-        pointsDef.add(delivery);
-        for(Point p:pointsDef){
-            System.out.println(p.getId());
+
+
+         */
+        calculechemin(pickUp,delivery);
+
+
+
+
+    }
+
+    public void calculechemin(Point pickUp,Point delivery){
+
+
+        System.out.print("pu=");
+        System.out.println(pickUp);
+        Point pointPrecedent=pointsDef.get(pointsDef.size()-2);
+        Point FinaleDepot=pointsDef.get(pointsDef.size()-1);
+
+        HashMap<String, Node> result1 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), pointPrecedent);
+        Path p1=Algorithm.getPath(result1.get(pickUp.getId()));
+
+        HashMap<String, Node> result2 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), pickUp);
+        Path p2=Algorithm.getPath(result2.get(delivery.getId()));
+
+        System.out.println(pointsDef.get(pointsDef.size()-1));
+        HashMap<String, Node> result3 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), delivery);
+
+        Path p3=Algorithm.getPath(result3.get(pointsDef.get(pointsDef.size()-1).getId()));
+
+        Date datePickup=null;
+        Date dateDelivery=null;
+        Date finalDepot=null;
+        try {
+         datePickup=  XmlUtils.findSchedule(pointPrecedent.getSchedule(),p1.getPath().getCost(),0);
+            dateDelivery=  XmlUtils.findSchedule(datePickup,p2.getPath().getCost(),0);
+            finalDepot=  XmlUtils.findSchedule(dateDelivery,p3.getPath().getCost(),0);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+
+        pickUp.setSchedule(datePickup);
+        delivery.setSchedule(dateDelivery);
+        FinaleDepot.setSchedule(finalDepot);
+
+
+        pathPointsDef.add(p1);
+        pathPointsDef.add(p2);
+        pathPointsDef.add(p3);
+
+        pointsDef.add(pointsDef.size()-1, pickUp);
+        pointsDef.add(pointsDef.size()-1,delivery);
+
     }
 }
