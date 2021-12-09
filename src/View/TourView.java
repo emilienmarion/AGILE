@@ -149,6 +149,12 @@ public class TourView implements Observer {
         System.out.println("TourView.displayTour EXIT");
     }
 
+    public void updateHeader(){
+        setHeaderTour(addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+        System.out.println(this.tour.getDepartureTime() +" "+ this.tour.getArrivalTime() +" "+ this.tour.getTotalDuration());
+        System.out.println("TourView.updateHeader");
+    }
+
 
     protected void createJPanelPoint(Point point) {
         System.out.println("CREATE -- " + point.getId()+" at "+point.getSchedule()+" >> "+ point.getIdAssociated());
@@ -252,7 +258,6 @@ public class TourView implements Observer {
             gbc.weightx = 1;
             row.add(adressPanel, gbc);
 
-
             gbc.gridx = 2;
             gbc.gridy = 0;
             gbc.gridwidth = GridBagConstraints.RELATIVE;
@@ -268,8 +273,8 @@ public class TourView implements Observer {
             image.setVisible(true);
             imageDelete.setVisible(true);
             imageEdit.setVisible(true);
-
         }
+
         if(point.getType() != "depot") {
             row.addMouseListener(new MouseAdapter() {
                 @Override
@@ -319,18 +324,12 @@ public class TourView implements Observer {
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
         headerInfo.setPreferredSize(new Dimension(100, 100));
-
-
         headerInfo.removeAll();
         headerInfo.validate();
-
         headerInfo.setBackground(new Color(86,86,86));
         headerInfo.setLayout(new BoxLayout(headerInfo, BoxLayout.X_AXIS));
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
-
-
-
         headDeparture = new HeadInfo("Depature", V2);
         headETA = new HeadInfo("ETA", V3);
         headDuration = new HeadInfo("Duration", V4);
@@ -405,8 +404,6 @@ public class TourView implements Observer {
         JPanel point = jpanelList.get(id);
         point.setBackground(new Color(116, 69, 206));
     }
-
-
 
     
     public String editPoint(String id) {

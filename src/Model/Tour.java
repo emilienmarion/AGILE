@@ -113,6 +113,7 @@ public class Tour
         }
 
         // Vérification of the pointDefs ArrayList
+
         for (Point p: pointsDef){
             System.out.print(p.getId());
             System.out.print("-->");
@@ -350,48 +351,82 @@ public class Tour
         });
     }
 
-
+private int getIndexPointById(String idPoint){
+    boolean flag=true;
+    int index=-1;
+    while (flag){
+        index++;
+        if (pointsDef.get(index).getId().equals(idPoint)) flag=false;
+    }
+    return index;
+}
+private void displayArray(ArrayList<Point> ap){
+    for (Point p:ap){
+        System.out.print(p.getId());
+        System.out.print(" -> ");
+        System.out.print(p.getCostToReach());
+        System.out.print(", ");
+        System.out.println(p.getSchedule());
+    }
+}
     public void editPoint(String idPoint, String nvSchedule) throws ParseException {
         System.out.println("Tour.editPoint");
+        displayArray(pointsDef);
+        //recuperer notre point cible
+        int index=getIndexPointById(idPoint);
+        Point target=pointsDef.get(index);
+        System.out.print("TARGET=");
+        System.out.println(target);
+        //recuperer le dernier point avant le depot
+        Point lastest=pointsDef.get(pointsDef.size()-2);
+        HashMap<String, Integer> tableIndex=graph.getTableIndex();
+        int indexLastest=tableIndex.get(lastest.getId());
+        int indexTarget=tableIndex.get(target.getId());
+        Path pathBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget).getAssociatedPath();
+        //verifier que l'horaire correspond cad si du dernier on peu aller a la target dans le temps imparti
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        Date newScheduleDate = sdf.parse(nvSchedule);
-        //float costToReach = tour.get(tour.size()-1).getCostToReach(); //this.graph.getContent();
-
-        /*System.out.println(graph.toString());
-        for(int j = 0; j<graph.getContent().size(); j ++){
-            //System.out.println(tour.get(tour.size()-1)));
-           if(graph.getContent().get(j).get(0).getIdOrigin().equals(tour.get(tour.size()-1).getId())){
-                for(int k = 0; k<graph.getContent().get(j).size();k++){
-                    System.out.println("je suis rentrer dans le premier if");
-                    System.out.println(graph.getContent().get(j).get(k));
-                    if(graph.getContent().get(j).get(k).getIdDestination().equals(idPoint) && !graph.getContent().get(j).get(k).equals(null)){
-                        System.out.println("je suis rentrer dans le deuxieme if");
-                        costToReach = graph.getContent().get(j).get(k).getLength();
-                        costToReach = (float)(costToReach / (3.6 * 15));
-                        break;
-                    }
-                }
+        float costTargetLastest=pathBetweenTargetLastest.getPath().getCost();
+        Date dateToCompare = XmlUtils.findSchedule(lastest.getSchedule(), pathBetweenTargetLastest.getPath().getCost(), lastest.getDuration());
+        Date newSchedule = sdf.parse(nvSchedule);
+        boolean dateCheck = newSchedule.after(dateToCompare);
+        if (dateCheck){
+            Point newLastest=null;
+            Date newLastestSchedule=null;
+            System.out.println("Modif!!!!");
+            pointsDef.remove(index);
+            target.setCostToReach(costTargetLastest);
+            target.setSchedule(newSchedule);
+            pointsDef.add(pointsDef.size()-1,target);
+            newLastest=target;
+            newLastestSchedule=newSchedule;
+            if (target.getType().equals("pickUp")){
+                //si c'est un pick up on s'occupe du delivery associé
+                String idTargetDelivery=target.getIdAssociated();
+                int indexDelivery=getIndexPointById(idTargetDelivery);
+                Point delivery=pointsDef.get(indexDelivery);
+                int indexTargetDelivery=tableIndex.get(idTargetDelivery);
+                Path pathBetweenTargetDelivery=graph.getContent().get(indexTarget).get(indexTargetDelivery).getAssociatedPath();
+                float costTargetDelivery=pathBetweenTargetDelivery.getPath().getCost();
+                Date newScheduleDelivery = XmlUtils.findSchedule(newSchedule, costTargetDelivery, 0);
+                pointsDef.remove(indexDelivery);
+                delivery.setSchedule(newScheduleDelivery);
+                delivery.setCostToReach(costTargetDelivery);
+                pointsDef.add(pointsDef.size()-1,delivery);
+                newLastest=delivery;
+                newLastestSchedule=newScheduleDelivery;
             }
-        }*/
-      //  System.out.println("******************" + tour.get(tour.size()-2).getSchedule());
-       // Date scheduleToCompare = XmlUtils.findSchedule(tour.get(tour.size()-2).getSchedule(), costToReach, tour.get(tour.size()-2).getDuration()); //pas sur le -1
-      // System.out.println("-------------------> cout calcule :" + scheduleToCompare);
-        Point pointToChange = new Point();
-       // if(scheduleToCompare.before(newScheduleDate)){
-            for(int i=0; i<pointsDef.size(); i++){
-                if(idPoint.equals(pointsDef.get(i).getId())){
-                    pointToChange = pointsDef.get(i);
-                    pointsDef.remove(i);
-                    pointToChange.setSchedule(newScheduleDate);
-                }
-            }
-       // }
+            Point depot = pointsDef.get(pointsDef.size()-1);
+            int indexDepot=tableIndex.get(depot.getId());
+            int indexNewLastest=tableIndex.get(newLastest.getId());
 
-
-        pointsDef.add(pointToChange);
-        System.out.println("Point modifié : " + pointToChange);
-        System.out.println("nouveau tour : " + pointsDef);
-        System.out.println("------------->nvSchedule point to change : " + pointToChange.getSchedule());
+            Path pathBetweenNewLastestDepot = graph.getContent().get(indexNewLastest).get(indexDepot).getAssociatedPath();
+            float costNewLastestDepot=pathBetweenNewLastestDepot.getPath().getCost();
+            Date newDepotSchedule = XmlUtils.findSchedule(newLastestSchedule, costNewLastestDepot, 0);
+            depot.setCostToReach(costNewLastestDepot);
+            depot.setSchedule(newDepotSchedule);
+            this.arrivalTime = newDepotSchedule;
+        }
+        displayArray(pointsDef);
     }
 
 
