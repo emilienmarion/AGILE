@@ -6,10 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 
-import Model.Intersection;
-import Model.MapData;
-import Model.Request;
-import Model.Tour;
+import Model.*;
 import Utils.XmlUtils;
 import View.Frame;
 import View.TourView;
@@ -55,9 +52,12 @@ public class Controller {
                 loadRequest = XmlUtils.ReadRequest(Firm, this.md.getIntersections());
                 tour.loadNewRequest(loadRequest);
                 if (!firstLoadTour) {
+                    frame.getMapView().getMap().setTour(tour);
                     frame.switchToTourView(loadRequest, Firm);
                 } else {
-                    frame.loadTour(loadRequest);
+                    frame.getMapView().getMap().setTour(tour);
+                    //frame.getMapView().loadRequest(tour);
+                    frame.loadTour(tour);
                 }
                 frame.display();
                 return true;
@@ -132,7 +132,7 @@ public class Controller {
         // Actualisation des IHM
         try {
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
-            frame.getMapView().loadRequest(frame.getTourView().getRequest());
+            frame.getMapView().loadRequest(tour);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -169,24 +169,25 @@ public class Controller {
              frame.sortirdeADD();
          } else {
              Intersection inter = md.findIntersection(x, y);
-             System.out.println("inter" + inter);
+
              if (inter != null) {
 
 
                  if (i == 0) {
                       pickUp = new Model.Point(inter, 0, "pickUp");
-                     System.out.println("i first"+i);
+
                      drawpoint(pickUp.getId());
                  } else if (i == 1) {
                       delivery = new Model.Point(inter, 0, "delivery");
-                      System.out.println("i"+i);
+
                      drawpoint2(pickUp.getId(),delivery.getId());
                      pickUp.setIdAssociated(delivery.getId());
                      delivery.setIdAssociated(pickUp.getId());
-                     System.out.println("Id du pidckUp ajouté "+pickUp.getId());
-                     System.out.println("Id du delivery ajouté "+delivery.getId());
+
                      tour.addRequest(this.pickUp,this.delivery);
                      try {
+
+                         frame.getMapView().loadRequest(tour);
                          frame.getTourView().loadRequest(frame.getTourView().getTourPath());
                         // frame.getMapView(). mettre à jour la map
                      } catch (ParseException e) {
@@ -231,6 +232,11 @@ public class Controller {
     public void setTourObject(Tour tour) {
         System.out.println("Controller.setTourObject");
         this.tour = tour;
+    }
+
+
+    public void refreshMap(Graph graph ){
+
     }
 }
 

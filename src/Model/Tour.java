@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Controller;
 import Utils.Algorithm;
 import Utils.Array;
 import Utils.XmlUtils;
@@ -25,10 +26,12 @@ public class Tour
     private MapView mapView;
     private Request req;
     private Graph graph;
+    private Controller controller;
 
 
-    public Tour(MapView mv){
+    public Tour(MapView mv,Controller controller){
         this.mapView = mv;
+        this.controller=controller;
         pointsDef = new ArrayList<Point>();
         pathPointsDef = new ArrayList<>();
         freeSchedule = new ArrayList<>();
@@ -398,24 +401,7 @@ public class Tour
     public void addRequest(Point pickUp, Point delivery) {
         System.out.println("je suis dans Tour.addRequest ");
 
-        /*
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        Date datePickup= null;
-        Date dateDelivery= null;
-        try {
-            datePickup = sdf.parse("17:09:33");
-            dateDelivery=sdf.parse("17:39:33");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        pickUp.setSchedule(datePickup);
-        delivery.setSchedule(dateDelivery);
-
-
-         */
         calculechemin(pickUp,delivery);
-
-
 
 
     }
@@ -437,6 +423,7 @@ public class Tour
         System.out.println(pointsDef.get(pointsDef.size()-1));
         HashMap<String, Node> result3 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), delivery);
 
+
         Path p3=Algorithm.getPath(result3.get(pointsDef.get(pointsDef.size()-1).getId()));
 
         Date datePickup=null;
@@ -455,12 +442,26 @@ public class Tour
         FinaleDepot.setSchedule(finalDepot);
 
 
+
+        pathPointsDef.remove(pathPointsDef.size()-1);
         pathPointsDef.add(p1);
         pathPointsDef.add(p2);
         pathPointsDef.add(p3);
 
         pointsDef.add(pointsDef.size()-1, pickUp);
         pointsDef.add(pointsDef.size()-1,delivery);
+
+
+        this.graph.getListePoint().put(pickUp.getId(),pickUp);
+        this.graph.getListePoint().put(delivery.getId(),delivery);
+
+        this.graph.setSolution(pathPointsDef);
+
+
+       // controller.refreshMap();
+
+       // this.mapView.getMap().setGraph(this.graph);
+       // this.mapView.getMap().repaint();
 
     }
 }
