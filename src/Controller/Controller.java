@@ -165,7 +165,7 @@ public class Controller {
      public void addNewRequest(int x,int y) {
 
 
-         if (i > 2) {  //sortir du mode ajout
+         if (i > 1) {  //sortir du mode ajout
              frame.sortirdeADD();
          } else {
              Intersection inter = md.findIntersection(x, y);
