@@ -376,52 +376,9 @@ private void displayArray(ArrayList<Point> ap){
             Date newDepotSchedule = XmlUtils.findSchedule(newLastestSchedule, costNewLastestDepot, 0);
             depot.setCostToReach(costNewLastestDepot);
             depot.setSchedule(newDepotSchedule);
+            this.arrivalTime = newDepotSchedule;
         }
         displayArray(pointsDef);
-        /*SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        Date newScheduleDate = sdf.parse(nvSchedule);
-
-        Point pointToChange1 = new Point();
-        Point pointToChange2 = new Point();
-        int placePoint1 = 0;
-        int placePoint2 = 0;
-
-            for(int i=0; i<pointsDef.size(); i++) {
-                if (idPoint.equals(pointsDef.get(i).getId())) {
-                    pointToChange1 = pointsDef.get(i);
-                    placePoint1 = i;
-                    for (int j = 0; j < pointsDef.size(); j++) {
-                        if (pointToChange1.getIdAssociated().equals(pointsDef.get(j).getId())) {
-                            pointToChange2 = pointsDef.get(j);
-                            placePoint2 = j;
-                            break;
-                        }
-                    }
-                }
-            }
-            System.out.println("date à comparer : " + pointsDef.get(placePoint1-1).getSchedule());
-            Date dateToCompare = XmlUtils.findSchedule(pointsDef.get(placePoint1-1).getSchedule(), 0,pointsDef.get(placePoint1-1).getDuration());
-            if(pointToChange1.getType().equals("delivery") && newScheduleDate.after(dateToCompare)){
-                System.out.println("je passe dans la boucle ");
-                pointsDef.remove(placePoint1);
-                pointToChange1.setSchedule(newScheduleDate);
-                pointToChange1.setCostToReach(pointsDef.get(pointsDef.size()-1).getCostToReach());
-                pointsDef.add(pointsDef.size()-1, pointToChange1);
-            }else if(pointToChange1.getType().equals("pickUp")) {
-                pointsDef.remove(placePoint1);
-                pointsDef.remove(placePoint2);
-                pointToChange1.setSchedule(newScheduleDate);
-                pointsDef.add(pointsDef.size()-1, pointToChange2);
-                pointsDef.add(pointsDef.size()-2, pointToChange1);
-
-            }
-
-
-        System.out.println("Point modifié : " + pointToChange1.getId() + " " + placePoint1);
-        System.out.println("Point associé : " + pointToChange2.getId() + " " + placePoint2);
-        System.out.println("nouveau tour : " + pointsDef);
-        System.out.println("------------->nvSchedule point to change : " + pointToChange1.getSchedule());
-        System.out.println("date à comparer : " + pointsDef.get(placePoint1-1).getSchedule());*/
     }
 
 

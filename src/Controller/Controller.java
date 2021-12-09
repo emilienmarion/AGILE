@@ -147,6 +147,9 @@ public class Controller {
         String nvSchedule = frame.editPoint(id);
         System.out.println("------------->nvSchedule : " + nvSchedule);
         tour.editPoint(id, nvSchedule);
+
+
+
         frame.display();
     }
 
@@ -223,7 +226,17 @@ public class Controller {
         System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
         frame.confirmEdit(id);
         tour.editPoint(id, hour);
+        System.out.println("tour.getArrivalTime()" + tour.getArrivalTime());
         // TODO : appel des méthodes du modèle de données avec des arguments fictifs
+        // Actualisation des IHM
+        try {
+            frame.getTourView().loadRequest(frame.getTourView().getTourPath());
+            frame.getMapView().loadRequest(frame.getTourView().getRequest());
+            frame.getTourView().updateHeader();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        frame.display();
     }
 
     public void setTourObject(Tour tour) {
