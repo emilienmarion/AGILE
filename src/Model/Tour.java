@@ -1,6 +1,7 @@
 package Model;
 
 import Utils.Algorithm;
+import Utils.Array;
 import Utils.XmlUtils;
 import View.MapView;
 
@@ -10,12 +11,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+
 public class Tour
 {
-    private ArrayList<Point> pointsDef;
-    private HashMap<String, Point> points;
-    private Date departureTime;
-    private Date arrivalTime;
+    private ArrayList<Point> pointsDef; // Final list of points composing the tour
+    private ArrayList<Path> pathPointsDef; // Pathes from the pointDef list
+    private HashMap<String, Point> points; // Primary points from the XML request
+    private ArrayList<ArrayList<Date>> freeSchedule; // List of time slot available for addition or modification
+    private Date departureTime; // Of the final tour
+    private Date arrivalTime; // Of the final tour
+
     private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     private MapView mapView;
     private Request req;
@@ -24,7 +29,9 @@ public class Tour
 
     public Tour(MapView mv){
         this.mapView = mv;
-        pointsDef=new ArrayList<Point>();
+        pointsDef = new ArrayList<Point>();
+        pathPointsDef = new ArrayList<>();
+        freeSchedule = new ArrayList<>();
     }
 
     public void loadNewRequest(Request r) throws ParseException {
@@ -76,13 +83,13 @@ public class Tour
         System.out.println("Tour.computeTheFinalPointList");
 
         this.graph = Algorithm.createGraph(this.points, this.mapView.getMap().getMapData(), this.req.getDepot());
-        ArrayList<Path> tspResult = Algorithm.TSP(this.graph);
+        pathPointsDef = Algorithm.TSP(this.graph);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         Date currentDate = sdf.parse(req.getDepartureTime());
         int durationPrec;
         int compteur=0;
-        for (Path p:tspResult){
+        for (Path p:pathPointsDef){
             Node n=p.getPath();
             if (compteur==0){
                 Point depot=req.getDepot();
@@ -114,8 +121,8 @@ public class Tour
         System.out.println("DEPARTURE : "+ this.departureTime);
         this.arrivalTime = this.pointsDef.get(pointsDef.size()-1).getSchedule();
         System.out.println("arrival : "+ this.arrivalTime);
-
     }
+
 
     public void deletePoint(String idPoint){
         System.out.println("Tour.deletePoint");
@@ -142,12 +149,39 @@ public class Tour
             changeArrival = true;
         }
 
-        // Delete from the data structure
-        if(firstToDelete!=null && secondToDelete!=null)
-        {
+        if(firstToDelete!=null && secondToDelete!=null) {
+            // Free the schedule for avalaible new schedule in case of modification or addition
+            // for the first point to delete
+
+            ArrayList<Date> couple = new ArrayList<>();
+            // Add the departure time from the point just before the deleted one
+            int position1 = pointsDef.indexOf(firstToDelete);
+            Date leavingDate = pointsDef.get(position1 - 1).getSchedule();
+            couple.add(leavingDate);
+            // Add the expected arrival time to the point just after the deleted one (except if it's the entrepot)
+            Date arrivalDate = pointsDef.get(position1 + 1).getSchedule();
+            couple.add(arrivalDate);
+            freeSchedule.add(couple);
+            System.out.println("Tour : new free schedule from " + leavingDate + " to " + arrivalDate);
+
+            // For the second point to delete (associated)
+            ArrayList<Date> couple2 = new ArrayList<>();
+            // Add the departure time from the point just before the deleted one
+            int position2 = pointsDef.indexOf(secondToDelete);
+            Date leavingDate2 = pointsDef.get(position2 - 1).getSchedule();
+            couple2.add(leavingDate2);
+            // Add the expected arrival time to the point just after the deleted one (except if it's the entrepot)
+            Date arrivalDate2 = pointsDef.get(position2 + 1).getSchedule();
+            couple2.add(arrivalDate2);
+            freeSchedule.add(couple2);
+            System.out.println("Tour : new free schedule from " + leavingDate2 + " to " + arrivalDate2);
+
+            // And delete on the data structure
             pointsDef.remove(firstToDelete);
             pointsDef.remove(secondToDelete);
+            glueFreeScheduleList();
         }
+
 
         // Change the arrival time
         try {
@@ -160,6 +194,112 @@ public class Tour
         }catch (Exception e){
             System.out.println("Tour.deletePoint ERROR : "+e);
         }
+    }
+
+    /**
+     *  Check if in the free time list, a range is separated in two and glue them together
+     */
+    private void glueFreeScheduleList(){
+        ArrayList<ArrayList<Date>> coupleToDelete = new ArrayList<>();
+        ArrayList<Date> newCouple = new ArrayList<>();
+
+        Date currentDeparture = new Date();
+        Date currentArrival = new Date();
+        Date nextDeparture = new Date();
+        Date nextArrival = new Date();
+
+        if(freeSchedule.size()>2) {
+
+
+            for (int i = 0; i < freeSchedule.size()-1; i++) {
+                // One range is across the other
+                currentDeparture = freeSchedule.get(i).get(0);
+                currentArrival = freeSchedule.get(i).get(1);
+                nextDeparture = freeSchedule.get(i + 1).get(0);
+                nextArrival = freeSchedule.get(i + 1).get(1);
+
+                System.out.println("GLUE line " + i);
+                System.out.println("      current Departure " + currentDeparture);
+                System.out.println("      current Arrival   " + currentArrival);
+                System.out.println("      next Departure    " + nextDeparture);
+                System.out.println("      next Arrival      " + nextArrival);
+
+
+                if (currentArrival.getHours() > nextDeparture.getHours()
+                        || currentArrival.getHours() >= nextDeparture.getHours()
+                        && currentArrival.getMinutes() > nextDeparture.getMinutes()
+                        ||currentArrival.getHours() >= nextDeparture.getHours()
+                        && currentArrival.getMinutes() >= nextDeparture.getMinutes()
+                        && currentArrival.getSeconds() >= nextDeparture.getSeconds()) {
+                    System.out.println("a1 > d2");
+                    newCouple.add(freeSchedule.get(i).get(0));
+                    newCouple.add(freeSchedule.get(i + 1).get(1));
+                    coupleToDelete.add(freeSchedule.get(i));
+                    coupleToDelete.add(freeSchedule.get(i + 1));
+                    freeSchedule.add(newCouple);
+                } else if (currentDeparture.getHours() < nextArrival.getHours()
+                        || currentDeparture.getHours() <= nextArrival.getHours()
+                        && currentDeparture.getMinutes() < nextArrival.getMinutes()
+                        ||currentDeparture.getHours() <= nextArrival.getHours()
+                        && currentDeparture.getMinutes() <= nextArrival.getMinutes()
+                        && currentDeparture.getSeconds() <= nextArrival.getSeconds()) {
+                    System.out.println("d1 < a2");
+                    newCouple.add(freeSchedule.get(i + 1).get(0));
+                    newCouple.add(freeSchedule.get(i).get(1));
+                    coupleToDelete.add(freeSchedule.get(i));
+                    coupleToDelete.add(freeSchedule.get(i + 1));
+                    freeSchedule.add(newCouple);
+                }
+            }
+        } else if (freeSchedule.size()>1) {
+            // One range is across the other
+            currentDeparture = freeSchedule.get(0).get(0);
+            currentArrival = freeSchedule.get(0).get(1);
+            nextDeparture = freeSchedule.get(1).get(0);
+            nextArrival = freeSchedule.get(1).get(1);
+
+            System.out.println("GLUE line " + 0);
+            System.out.println("      current Departure " + currentDeparture);
+            System.out.println("      current Arrival   " + currentArrival);
+            System.out.println("      next Departure    " + nextDeparture);
+            System.out.println("      next Arrival      " + nextArrival);
+
+
+            if (currentArrival.getHours() > nextDeparture.getHours()
+                || currentArrival.getHours() >= nextDeparture.getHours()
+                    && currentArrival.getMinutes() > nextDeparture.getMinutes()
+                ||currentArrival.getHours() >= nextDeparture.getHours()
+                    && currentArrival.getMinutes() >= nextDeparture.getMinutes()
+                    && currentArrival.getSeconds() >= nextDeparture.getSeconds()) {
+                System.out.println("a1 > d2");
+                newCouple.add(freeSchedule.get(0).get(0));
+                newCouple.add(freeSchedule.get(1).get(1));
+                coupleToDelete.add(freeSchedule.get(0));
+                coupleToDelete.add(freeSchedule.get(1));
+                freeSchedule.add(newCouple);
+            } else if (currentDeparture.getHours() < nextArrival.getHours()
+                || currentDeparture.getHours() <= nextArrival.getHours()
+                    && currentDeparture.getMinutes() < nextArrival.getMinutes()
+                ||currentDeparture.getHours() <= nextArrival.getHours()
+                    && currentDeparture.getMinutes() <= nextArrival.getMinutes()
+                    && currentDeparture.getSeconds() <= nextArrival.getSeconds()) {
+                System.out.println("d1 < a2");
+                newCouple.add(freeSchedule.get(0 + 1).get(0));
+                newCouple.add(freeSchedule.get(0).get(1));
+                coupleToDelete.add(freeSchedule.get(0));
+                coupleToDelete.add(freeSchedule.get(0 + 1));
+                freeSchedule.add(newCouple);
+            }
+        }
+        // Delete useless ones
+        for (ArrayList<Date> toDelete : coupleToDelete) {
+            freeSchedule.remove(freeSchedule.indexOf(toDelete));
+        }
+
+        // Display the final free ranges
+        freeSchedule.forEach((couple) -> {
+            System.out.println(" FREE couple : " + couple.get(0) + " to " + couple.get(1));
+        });
     }
 
 
@@ -215,6 +355,11 @@ public class Tour
         return points;
     }
 
+
+    public ArrayList<Path> getPathPointsDef() {
+        return pathPointsDef;
+}
+
     public void addRequest(Point pickUp, Point delivery) {
         System.out.println("je suis dans Tour.addRequest ");
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -233,7 +378,5 @@ public class Tour
         for(Point p:pointsDef){
             System.out.println(p.getId());
         }
-
-
     }
 }
