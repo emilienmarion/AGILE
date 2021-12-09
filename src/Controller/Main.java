@@ -29,9 +29,9 @@ public class Main {
     public static void main(String[] args) {
 
 
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/mediumMap.xml");
+        MapData loadedMap = XmlUtils.readMap("xmlFiles/largeMap.xml");
        Window frame=new Window(1000,700,loadedMap);
-        Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsMedium5.xml",loadedMap.getIntersections());
+        Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsLarge8.xml",loadedMap.getIntersections());
         //System.out.println(loadRequest);
         HashMap<String,Point> pointList=loadRequest.getListePoint();
         Point depot=loadRequest.getDepot();

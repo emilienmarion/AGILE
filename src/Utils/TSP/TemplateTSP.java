@@ -73,7 +73,7 @@ public abstract class TemplateTSP implements TSP {
      */
     private void branchAndBound(int currentVertex, Collection<Integer> unvisited,
                                 Collection<Integer> visited,boolean[][] isUnlocked, float currentCost){
-        Array.display(isUnlocked,g.getNbVertices());
+        //Array.display(isUnlocked,g.getNbVertices());
         nbConfig++;
         if (System.currentTimeMillis() - startTime > timeLimit) return;
         if (unvisited.size() == 0){
@@ -90,10 +90,10 @@ public abstract class TemplateTSP implements TSP {
             int compteur=0;
             while (it.hasNext()){
                 Integer nextVertex = it.next();
-                System.out.print("currentVertex=");
+                /*System.out.print("currentVertex=");
                 System.out.println(currentVertex);
                 System.out.print("nextVertex=");
-                System.out.println(nextVertex);
+                System.out.println(nextVertex);*/
                 if (isUnlocked[currentVertex][nextVertex]) {
                     visited.add(nextVertex);
                     unvisited.remove(nextVertex);
