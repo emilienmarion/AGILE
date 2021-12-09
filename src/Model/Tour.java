@@ -188,12 +188,15 @@ public class Tour
             if (changeArrival) {
                 Point lastDepot = pointsDef.get(pointsDef.size() - 1);
                 Point previousPoint = pointsDef.get(pointsDef.size() - 2);
+                // TODO : le getCostToReach n'est plus juste car le point précédent le dépot n'est plus celui du TSP
                 Date newDate = XmlUtils.findSchedule(previousPoint.getSchedule(), lastDepot.getCostToReach(), previousPoint.getDuration());
                 lastDepot.setSchedule(newDate);
+                this.arrivalTime = newDate;
             }
         }catch (Exception e){
             System.out.println("Tour.deletePoint ERROR : "+e);
         }
+
     }
 
     /**
@@ -202,16 +205,20 @@ public class Tour
     private void glueFreeScheduleList(){
         ArrayList<ArrayList<Date>> coupleToDelete = new ArrayList<>();
         ArrayList<Date> newCouple = new ArrayList<>();
-
         Date currentDeparture = new Date();
         Date currentArrival = new Date();
         Date nextDeparture = new Date();
         Date nextArrival = new Date();
 
+        // Display the initial free ranges
+        freeSchedule.forEach((couple) -> {
+            System.out.println(" initial FREE couple : " + couple.get(0) + " to " + couple.get(1));
+        });
+
         if(freeSchedule.size()>2) {
-
-
-            for (int i = 0; i < freeSchedule.size()-1; i++) {
+            int limit = freeSchedule.size();
+            System.out.println("FreeScheduleList size : "+freeSchedule.size() );
+            for (int i = 0; i < limit-1; i++) {
                 // One range is across the other
                 currentDeparture = freeSchedule.get(i).get(0);
                 currentArrival = freeSchedule.get(i).get(1);
@@ -225,25 +232,39 @@ public class Tour
                 System.out.println("      next Arrival      " + nextArrival);
 
 
-                if (currentArrival.getHours() > nextDeparture.getHours()
+                if ((currentArrival.getHours() > nextDeparture.getHours()
                         || currentArrival.getHours() >= nextDeparture.getHours()
                         && currentArrival.getMinutes() > nextDeparture.getMinutes()
                         ||currentArrival.getHours() >= nextDeparture.getHours()
                         && currentArrival.getMinutes() >= nextDeparture.getMinutes()
-                        && currentArrival.getSeconds() >= nextDeparture.getSeconds()) {
+                        && currentArrival.getSeconds() >= nextDeparture.getSeconds())
+                        &&(nextDeparture.getHours() > currentDeparture.getHours()
+                        || nextDeparture.getHours() >= currentDeparture.getHours()
+                        && nextDeparture.getMinutes() > currentDeparture.getMinutes()
+                        ||nextDeparture.getHours() >= currentDeparture.getHours()
+                        && nextDeparture.getMinutes() >= currentDeparture.getMinutes()
+                        && nextDeparture.getSeconds() >= currentDeparture.getSeconds())) {
                     System.out.println("a1 > d2");
+                    newCouple.clear();
                     newCouple.add(freeSchedule.get(i).get(0));
                     newCouple.add(freeSchedule.get(i + 1).get(1));
                     coupleToDelete.add(freeSchedule.get(i));
                     coupleToDelete.add(freeSchedule.get(i + 1));
                     freeSchedule.add(newCouple);
-                } else if (currentDeparture.getHours() < nextArrival.getHours()
+                } else if ((currentDeparture.getHours() < nextArrival.getHours()
                         || currentDeparture.getHours() <= nextArrival.getHours()
                         && currentDeparture.getMinutes() < nextArrival.getMinutes()
                         ||currentDeparture.getHours() <= nextArrival.getHours()
                         && currentDeparture.getMinutes() <= nextArrival.getMinutes()
-                        && currentDeparture.getSeconds() <= nextArrival.getSeconds()) {
+                        && currentDeparture.getSeconds() <= nextArrival.getSeconds())
+                        &&(nextDeparture.getHours() < currentDeparture.getHours()
+                        || nextDeparture.getHours() <= currentDeparture.getHours()
+                        && nextDeparture.getMinutes() < currentDeparture.getMinutes()
+                        ||nextDeparture.getHours() <= currentDeparture.getHours()
+                        && nextDeparture.getMinutes() <= currentDeparture.getMinutes()
+                        && nextDeparture.getSeconds() <= currentDeparture.getSeconds())) {
                     System.out.println("d1 < a2");
+                    newCouple.clear();
                     newCouple.add(freeSchedule.get(i + 1).get(0));
                     newCouple.add(freeSchedule.get(i).get(1));
                     coupleToDelete.add(freeSchedule.get(i));
@@ -265,36 +286,50 @@ public class Tour
             System.out.println("      next Arrival      " + nextArrival);
 
 
-            if (currentArrival.getHours() > nextDeparture.getHours()
+            if ((currentArrival.getHours() > nextDeparture.getHours()
                 || currentArrival.getHours() >= nextDeparture.getHours()
                     && currentArrival.getMinutes() > nextDeparture.getMinutes()
                 ||currentArrival.getHours() >= nextDeparture.getHours()
                     && currentArrival.getMinutes() >= nextDeparture.getMinutes()
-                    && currentArrival.getSeconds() >= nextDeparture.getSeconds()) {
-                System.out.println("a1 > d2");
+                    && currentArrival.getSeconds() >= nextDeparture.getSeconds())
+            &&(nextDeparture.getHours() > currentDeparture.getHours()
+                    || nextDeparture.getHours() >= currentDeparture.getHours()
+                    && nextDeparture.getMinutes() > currentDeparture.getMinutes()
+                    ||nextDeparture.getHours() >= currentDeparture.getHours()
+                    && nextDeparture.getMinutes() >= currentDeparture.getMinutes()
+                    && nextDeparture.getSeconds() >= currentDeparture.getSeconds())) {
+                System.out.println("d1 < d2 < a1");
                 newCouple.add(freeSchedule.get(0).get(0));
                 newCouple.add(freeSchedule.get(1).get(1));
                 coupleToDelete.add(freeSchedule.get(0));
                 coupleToDelete.add(freeSchedule.get(1));
                 freeSchedule.add(newCouple);
-            } else if (currentDeparture.getHours() < nextArrival.getHours()
+            } else if ((currentDeparture.getHours() < nextArrival.getHours()
                 || currentDeparture.getHours() <= nextArrival.getHours()
                     && currentDeparture.getMinutes() < nextArrival.getMinutes()
                 ||currentDeparture.getHours() <= nextArrival.getHours()
                     && currentDeparture.getMinutes() <= nextArrival.getMinutes()
-                    && currentDeparture.getSeconds() <= nextArrival.getSeconds()) {
-                System.out.println("d1 < a2");
-                newCouple.add(freeSchedule.get(0 + 1).get(0));
+                    && currentDeparture.getSeconds() <= nextArrival.getSeconds())
+            &&(nextDeparture.getHours() < currentDeparture.getHours()
+                    || nextDeparture.getHours() <= currentDeparture.getHours()
+                    && nextDeparture.getMinutes() < currentDeparture.getMinutes()
+                    ||nextDeparture.getHours() <= currentDeparture.getHours()
+                    && nextDeparture.getMinutes() <= currentDeparture.getMinutes()
+                    && nextDeparture.getSeconds() <= currentDeparture.getSeconds())) {
+                System.out.println("d2< d1 < a2");
+                newCouple.add(freeSchedule.get(1).get(0));
                 newCouple.add(freeSchedule.get(0).get(1));
                 coupleToDelete.add(freeSchedule.get(0));
-                coupleToDelete.add(freeSchedule.get(0 + 1));
+                coupleToDelete.add(freeSchedule.get(1));
                 freeSchedule.add(newCouple);
             }
         }
         // Delete useless ones
         for (ArrayList<Date> toDelete : coupleToDelete) {
-            freeSchedule.remove(freeSchedule.indexOf(toDelete));
+            if(freeSchedule.indexOf(toDelete) != -1)
+                freeSchedule.remove(freeSchedule.indexOf(toDelete));
         }
+        coupleToDelete.clear();
 
         // Display the final free ranges
         freeSchedule.forEach((couple) -> {
