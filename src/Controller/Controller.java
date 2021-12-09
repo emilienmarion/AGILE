@@ -66,19 +66,9 @@ public class Controller {
             System.out.println("File chooser closed or an error hapenned");
             return false;
         }
-
-
     }
 
-
-    public void highLight(String i){
-
-        frame.highlight(i);
-
-
-    }
-
-    public MapData loadMap() {
+    public boolean loadMap() {
         System.out.println("Controller.loadMap");
         String Firm="";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
@@ -92,13 +82,27 @@ public class Controller {
             }catch (Exception e){
                 System.out.println("Error : " + e);
             }
-        }
-        MapData loadedMap = XmlUtils.readMap(Firm);
-        this.md=loadedMap;
-        frame.loadMap(loadedMap, Firm);
-        frame.display();
 
-        return loadedMap;
+            if(!verifXml(Firm)){
+                System.out.println("File type is not xml");
+                return false;
+            }else {
+
+                MapData loadedMap = XmlUtils.readMap(Firm);
+                this.md=loadedMap;
+                frame.loadMap(loadedMap, Firm);
+                frame.display();
+
+                return true;
+            }
+        }else{
+            System.out.println("File chooser closed or an error hapenned");
+            return false;
+        }
+    }
+
+    public void highLight(String i){
+        frame.highlight(i);
     }
 
     /**
@@ -130,14 +134,19 @@ public class Controller {
         tour.deletePoint(i);
 
         // Actualisation des IHM
+        displayMapView();
+        //frame.confirmDeleteRow(i);
+        frame.display();
+    }
+
+    public void displayMapView()
+    {
         try {
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
             frame.getMapView().loadRequest(tour);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //frame.confirmDeleteRow(i);
-        frame.display();
     }
 
     public void editPoint(String id) throws ParseException {

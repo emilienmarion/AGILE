@@ -45,9 +45,15 @@ public class ButtonListener extends JFrame implements ActionListener {
                controller.addRequest();
                 break;
 
+            case "back":
+                controller.displayMapView();
 
             case "confirmDelete":
                 controller.confirmDeleteRow(e.getActionCommand().subSequence(13, e.getActionCommand().length()).toString());
+
+            case "Exit":
+                System.exit(0);
+                break;
 
             default:
                 if (e.getActionCommand().contains("deleteRow")) {

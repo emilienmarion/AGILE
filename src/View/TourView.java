@@ -532,9 +532,19 @@ public class TourView implements Observer {
     public void deletePoint(String id) {
 
         JPanel point = jpanelList.get(id);
-
         String heure = "00:00:00";
-        String type;
+        String type = "depot";
+        System.out.println("ID to delete : " + id);
+        for(Point p : tour.getPointsDef()){
+            System.out.println("    "+p.getId());
+            if(p.getId().equals(id)){
+                DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+                heure = dateFormat.format(p.getSchedule());
+                type = p.getType();
+                break;
+            }
+        }
+        System.out.println("TourView.deletePoint "+type+" at "+heure);
 
         point.removeAll();
 
@@ -577,7 +587,15 @@ public class TourView implements Observer {
         JLabel duration = new JLabel(String.valueOf(heure + " "));
         duration.setForeground(Color.WHITE);
 
-        JLabel image = new JLabel(icon);
+        ImageIcon iconPoint;
+        if ( type.equals("depot")) {
+            iconPoint = new ImageIcon(new ImageIcon("./img/iconDepot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        } else if (type.equals("pickUp")) {
+            iconPoint = new ImageIcon(new ImageIcon("./img/iconPickUp.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        } else {
+            iconPoint = new ImageIcon(new ImageIcon("./img/iconDelivery.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        }
+        JLabel image = new JLabel(iconPoint);
 
         //Gestion bouton edit et delete
 
@@ -596,12 +614,15 @@ public class TourView implements Observer {
         editButton.addActionListener(buttonListener);
 
         //Gestion bouton delete
-        JButton deleteButton = new JButton();
+        JButton deleteButton = new JButton("back");
         deleteButton.setUI(new BasicButtonUI());
         deleteButton.setBackground(new Color(198,52,52));
         deleteButton.setOpaque(true);
+        /*
         deleteButton.add(imageDelete);
-        deleteButton.setActionCommand("deleteRow" + id);
+        deleteButton.setActionCommand("deleteRow" + id);*/
+        deleteButton.setForeground(Color.WHITE);
+        //deleteButton.add(cancel);
         deleteButton.addActionListener(buttonListener);
 
         buttonBlock.add(editButton);
