@@ -39,12 +39,8 @@ public class Frame {
         initLoaderSide();
         tour = new Tour(mapView);
         this.controller.setTourObject(this.tour);
-
         md.setController(this.controller);
-
         this.mapView.setTourObject(this.tour);
-
-
     }
 
 
@@ -53,7 +49,6 @@ public class Frame {
         frame = new JFrame("UberIf");
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         menuBar = new MenuBar(buttonListener);
         //add menubar to the frame
         frame.setJMenuBar(menuBar);
@@ -78,7 +73,6 @@ public class Frame {
         mainPanel.add(splitPanel);
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
     }
-
 
     private void initLoaderSide() {
         loadMapButton = new JButton("Load map");
@@ -178,12 +172,12 @@ public class Frame {
     }
 
     public void sortirdeADD(){
-
-
       tourView.sortirdeADD();
     }
 
     public void drawpoint2(String idPickup, String idDelivery) {
         tourView.drawpoint2(idPickup,idDelivery);
     }
+
+
 }
