@@ -1,5 +1,8 @@
 package Model;
 
+import Controller.Controller;
+import View.Map;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,6 +13,7 @@ public class MapData {
     private float maxX;
     private float minY;
     private float maxY;
+    private Controller controller;
     public MapData() {
     }
 
@@ -19,6 +23,14 @@ public class MapData {
         this.maxX = maxX;
         this.minY = minY;
         this.maxY = maxY;
+    }
+
+    public Controller getController() {
+        return controller;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 
     public void setIntersections(HashMap<String,Intersection> intersections) {
@@ -75,13 +87,26 @@ public class MapData {
 
 
     public Intersection findIntersection(int x,int y){
-        System.out.println("abcd"+x);
-        for(String s: intersections.keySet()){
 
-            System.out.println( intersections.get(s).getLatitude());
+        for(String s: intersections.keySet()){
+ float latitude=intersections.get(s).getLatitudeSurPanel();
+ float longitude =intersections.get(s).getLongitudeSurPanel();
+            if (x<latitude+20 && x>latitude-20 &&  y<longitude+20 && y>longitude-20){
+               // controller.drawpoint((int)latitude,(int)longitude);
+
+                System.out.println("point req"+intersections.get(s).getId());
+                return intersections.get(s);
+            }
+
+
         }
 
 
         return null;
     }
+
+
+
+
+
 }

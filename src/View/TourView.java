@@ -133,10 +133,17 @@ public class TourView implements Observer {
         rightPanel.add(pathPanel);
         rightPanel.add(Box.createVerticalGlue());
 
+
+         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+      
+   
+        setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+
         rightPanel.repaint();
 
+
         // Afficher le header avec les informations du modèle de donnée
-        setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
+       // setHeaderTour(this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
         System.out.println("TourView.displayTour EXIT");
     }
 
@@ -303,7 +310,7 @@ public class TourView implements Observer {
 
     //private void setHeaderTour(JButton addButton, String V2, String V3, String V4 ) {
 
-    private void setHeaderTour(String V2, String V3, String V4 ) {
+    private void setHeaderTour(JButton addButton,String V2, String V3, String V4 ) {
 
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
 
@@ -315,7 +322,7 @@ public class TourView implements Observer {
         headerInfo.setPreferredSize(new Dimension(1000, 100));
         headerInfo.setMaximumSize(new Dimension(1000, 100));
 
-        headDate = new HeadInfo("Ajoutez une demande","");
+
 
         headDeparture = new HeadInfo("Depature", V2);
         headETA = new HeadInfo("ETA", V3);
@@ -323,8 +330,8 @@ public class TourView implements Observer {
 
         headerInfo.add(Box.createHorizontalGlue());
 
-      //ici on ajoutait le bouton le mettre ailleurs (fin du scrool panel)
-       // headerInfo.add(addButton);
+
+        headerInfo.add(addButton);
         headerInfo.add(Box.createHorizontalGlue());
 
         headerInfo.add(headDeparture);
@@ -650,9 +657,32 @@ public class TourView implements Observer {
         // TODO : code pour display
     }
 
+
+    public void drawpoint(String idPickup) {
+
+        mapView.getMap().setDrawpointBool(true);
+        mapView.getMap().setIdPickup(idPickup);
+
+        mapView.getMap().repaint();
+    }
+
+    public void sortirdeADD() {
+
+
+
+    }
+
+    public void drawpoint2(String idPickup,String idDelivery) {
+        mapView.getMap().setDrawpointBool(false);
+        mapView.getMap().setDrawpointBool2(true);
+        mapView.getMap().setIdPickup(idPickup);
+        mapView.getMap().setIdDelivery(idDelivery);
+        mapView.getMap().repaint();
+
     public String getTourPath() {return this.tourPath;
     }
 
     public Request getRequest() {return this.req;
+
     }
 }

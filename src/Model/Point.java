@@ -24,6 +24,7 @@ public class Point extends Intersection{
         this.duration = duration;
         this.type = type;
     }
+
     public Point(Point p){
         this.id=p.id;
         this.type=p.type;

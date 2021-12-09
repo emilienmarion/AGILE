@@ -16,12 +16,14 @@ public class PointLocater extends MouseAdapter {
     private Map map;
     private Controller controller;
     private Point pcurent;
-    private  boolean addPoint;
+    private boolean addPoint;
+
 
     public PointLocater(Map map1, Controller controller) {
-       this.controller=controller;
+        this.controller = controller;
         map = map1;
-        addPoint=false;
+        addPoint = false;
+
     }
 
     public Point getPcurent() {
@@ -40,17 +42,20 @@ public class PointLocater extends MouseAdapter {
         if (map.getReq() != null) {
             Point p = e.getPoint();
 
-            if(addPoint) {
-                controller.addNewRequest((int)p.getX(),(int)p.getY());
-                System.out.println("coordonne maman"+p);
+            if (addPoint) {
+
+
+                controller.addNewRequest((int) p.getX(), (int) p.getY());
 
             }
-            float latitudeDep=map.getReq().getDepot().getLatitudeSurPanel();
-            float longiteDep= map.getReq().getDepot().getLongitudeSurPanel();
-           // System.out.println("Latitude "+latitudeDep);
+
+
+            float latitudeDep = map.getReq().getDepot().getLatitudeSurPanel();
+            float longiteDep = map.getReq().getDepot().getLongitudeSurPanel();
+            // System.out.println("Latitude "+latitudeDep);
             //System.out.println("Longitude : "+longiteDep);
-            if (p.getX()<latitudeDep+15 && p.getX()>latitudeDep-15 &&  p.getY()<longiteDep+20 && p.getY()>longiteDep-20){
-               // System.out.println("je suis dans ce coordonée");
+            if (p.getX() < latitudeDep + 15 && p.getX() > latitudeDep - 15 && p.getY() < longiteDep + 20 && p.getY() > longiteDep - 20) {
+                // System.out.println("je suis dans ce coordonée");
                 controller.highLight(map.getReq().getDepot().getId());
             }
 
@@ -59,20 +64,21 @@ public class PointLocater extends MouseAdapter {
 
             //Parcourir les point de la requete et comparer les coordonées du point cliqué pour voir si elle corespond
             for (String s : listePoint.keySet()) {
-                float latitude=listePoint.get(s).getLatitudeSurPanel();
-                float longitude= listePoint.get(s).getLongitudeSurPanel();
+                float latitude = listePoint.get(s).getLatitudeSurPanel();
+                float longitude = listePoint.get(s).getLongitudeSurPanel();
 
-                
-                if (p.getX()<latitude+30 && p.getX()>latitude-30 &&  p.getY()<longitude+30 && p.getY()>longitude-30){
+
+                if (p.getX() < latitude + 30 && p.getX() > latitude - 30 && p.getY() < longitude + 30 && p.getY() > longitude - 30) {
                     controller.highLight(s);
                 }
             }
         }
     }
-
-
-
 }
+
+
+
+
 
 
 
