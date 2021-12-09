@@ -2,14 +2,17 @@ package View;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 
 import Controller.*;
 import Model.MapData;
 import Model.Request;
+import Model.Tour;
 
 public class Frame {
 
     protected JFrame frame;
+    protected MenuBar menuBar;
     protected JButton loadMapButton;
     protected JButton loadTourButton;
     protected JLabel mapPath;
@@ -18,57 +21,40 @@ public class Frame {
     protected JPanel mainPanel;
     protected JPanel splitPanel;
     protected JPanel headerInfo;
-    private final int mapSquare=500;
     protected MapView mapView;
     protected TourView tourView;
     protected Controller controller;
     protected ButtonListener buttonListener;
+    protected String TourPath;
+    protected Tour tour;
 
 
-    public Frame(MapData md) {
+    public Frame(MapData md, String mapath) {
         controller = new Controller(this);
         controller.setMd(md);
         buttonListener = new ButtonListener(controller, this);
+        int mapSquare = 450;
         initFrame();
-        mapView = new MapView(leftPanel, mapSquare, mapPath, md); // Call the constructor and init this side
+        mapView = new MapView(leftPanel, mapSquare, mapPath, md, mapath, controller); // Call the constructor and init this side
         initLoaderSide();
+        tour = new Tour(mapView);
+        this.controller.setTourObject(this.tour);
+
+        md.setController(this.controller);
+
+        this.mapView.setTourObject(this.tour);
+
+
     }
 
 
-    private void initFrame()
-    {
+    private void initFrame() {
         // Window design
         frame = new JFrame("UberIf");
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //create a menu bar
-        final JMenuBar menuBar = new JMenuBar();
-        //create menus
-        JMenu fileMenu = new JMenu("File");
-        //create menu items
-        JMenuItem loadTourMenuItem = new JMenuItem("Load tour");
-        loadTourMenuItem.setActionCommand("Load tour");
-        loadTourMenuItem.addActionListener(buttonListener);
-        JMenuItem loadMapMenuItem = new JMenuItem("Load map");
-        loadMapMenuItem.setActionCommand("Load map");
-        loadMapMenuItem.addActionListener(buttonListener);
-        JMenuItem saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.setActionCommand("Save");
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.setActionCommand("Exit");
-
-
-        //add menu items to menus
-        fileMenu.add(loadTourMenuItem);
-        fileMenu.add(loadMapMenuItem);
-        fileMenu.add(saveMenuItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitMenuItem);
-
-        //add menu to menubar
-        menuBar.add(fileMenu);
-
+        menuBar = new MenuBar(buttonListener);
         //add menubar to the frame
         frame.setJMenuBar(menuBar);
 
@@ -98,54 +84,106 @@ public class Frame {
         loadMapButton = new JButton("Load map");
         loadMapButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loadMapButton.addActionListener(buttonListener);
+        loadMapButton.setBackground(new Color(61, 61, 61));
+        //loadMapButton.setBorder(BorderFactory.createEmptyBorder(70, 40, 70, 40));
+        loadMapButton.setForeground(Color.WHITE);
+        //loadMapButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loadTourButton.addActionListener(buttonListener);
+        loadTourButton.setBackground(new Color(61, 61, 61));
+        loadTourButton.setForeground(Color.WHITE);
 
 
         rightPanel.setPreferredSize(new Dimension(400, 400));
-        rightPanel.setBackground(new Color(40,40,40));
+        rightPanel.setBackground(new Color(40, 40, 40));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 
         rightPanel.add(Box.createVerticalGlue());
         rightPanel.add(loadMapButton);
-        rightPanel.add(Box.createRigidArea(new Dimension(0,20)));
+        rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         rightPanel.add(loadTourButton);
         rightPanel.add(Box.createVerticalGlue());
     }
 
 
-    public void display()
-    {
+    public void display() {
         System.out.println("Frame.display");
         frame.pack();
         frame.setVisible(true);
     }
 
-    public void PlacerPoint()
-    {
-        //map.drawPickUp();
+    public void switchToTourView(Request req, String tp) throws ParseException {
 
-    }
-
-
-    public void switchToTourView(Request req)
-    {
         System.out.println("Frame.switchToTourView");
+        this.TourPath = tp;
         // Reset right panel
         rightPanel.removeAll();
         // Setup with the new design
-        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller);
-        tourView.loadRequest(req);
+        tourView = new TourView(rightPanel, headerInfo, buttonListener, this.mapView, req, this.controller, this.TourPath, this.tour);
+        loadTour(req);
     }
 
-    public void loadMap(MapData loadedMap) {
-        mapView.loadMap(loadedMap);
+    public void loadTour(Request req) throws ParseException {
+
+        tourView.loadRequest(this.TourPath);
+        mapView.loadRequest(req);
+
     }
 
-    public void editPoint(String id) {
-        tourView.editPoint(id);}
+    public void loadMap(MapData loadedMap, String mapath) {
+        mapView.loadMap(loadedMap, mapath);
+    }
 
-    public void confirmEdit(String i) {tourView.confirmEdit(i);}
+    public String editPoint(String id) {
+        String schedule = tourView.editPoint(id);
+        System.out.println("Frame.editPoint : " + schedule);
+        return schedule;
+    }
+
+    public void addRequest() {
+        tourView.addRequest();
+    }
+
+    public void confirmEdit(String i) {
+        tourView.confirmEdit(i);
+    }
+
+    public void deletePoint(String id) {
+        tourView.deletePoint(id);
+    }
+
+    public void confirmDeleteRow(String id) {
+        tourView.confirmDelete(id);
+    }
+
+    public void highlight(String id) {
+        tourView.highlight(id);
+    }
+
+
+    public TourView getTourView() {return this.tourView;
+    }
+
+    public MapView getMapView() {return this.mapView;
+    }
+
+
+
+
+
+    public void drawpoint(String idPickup) {
+        tourView.drawpoint(idPickup);
+    }
+
+    public void sortirdeADD(){
+
+
+      tourView.sortirdeADD();
+    }
+
+    public void drawpoint2(String idPickup, String idDelivery) {
+        tourView.drawpoint2(idPickup,idDelivery);
+    }
 }

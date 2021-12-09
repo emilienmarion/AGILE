@@ -24,6 +24,7 @@ public class Algorithm {
         }
         return index;
     }
+
     //algorithme dijkstra qui charge toute la map en calculant que le cout pour le moment
     //-->Amelioration, Rajouter des attributs dans path avec une linked list d'intersection pour pouvoir printer
     //Remarque: dans notre cas on part d'un Point donné
@@ -71,6 +72,7 @@ public class Algorithm {
         }
         return paths;
     }
+
     public static Path getPath(Node n){
         String idDestination=n.getIntersection().getId();
         String idOrigin=new String();

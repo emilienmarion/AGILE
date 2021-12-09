@@ -13,6 +13,7 @@ import View.*;
 import View.Map;
 
 
+import java.text.ParseException;
 import java.util.*;
 
 import java.util.HashMap;
@@ -26,35 +27,32 @@ import javax.swing.*;
 
 public class Main {
 
+
     public static void main(String[] args) {
+        String mapPath = "xmlFiles/smallMap.xml";
+        MapData loadedMap = XmlUtils.readMap(mapPath);
+        Frame frame = new Frame(loadedMap,mapPath);
+
+        try {
+            // Set cross-platform Java L&F (also called "Metal")
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (UnsupportedLookAndFeelException e) {
+            // handle exception
+        }
+        catch (ClassNotFoundException e) {
+            // handle exception
+        }
+        catch (InstantiationException e) {
+            // handle exception
+        }
+        catch (IllegalAccessException e) {
+            // handle exception
+        }
+        frame.display();
 
 
-        MapData loadedMap = XmlUtils.readMap("xmlFiles/mediumMap.xml");
-       Window frame=new Window(1000,700,loadedMap);
-        Request loadRequest=XmlUtils.ReadRequest("xmlFiles/requestsMedium5.xml",loadedMap.getIntersections());
-        //System.out.println(loadRequest);
-        HashMap<String,Point> pointList=loadRequest.getListePoint();
-        Point depot=loadRequest.getDepot();
-        System.out.print("depotId=");
-        System.out.println(depot.getId());
-        pointList.put(depot.getId(),depot);
-        Graph g=Algorithm.createGraph(pointList,loadedMap,depot);
-        System.out.println(g);
-        g.setSolution(Algorithm.TSP(g));
-        System.out.println(g.getSolution());
-        Map m=frame.getMap();
-        m.setGraph(g);
-        m.repaint();
-        System.out.println(g);
-        Graph g2=Algorithm.createGraph(pointList,loadedMap,depot);
-       /* ArrayList<Integer> ai=new ArrayList<>();
-        ai.add(9);
-        int i=0;
-        ai.add(i);
-        ai.add(6);
-        ai.add(5);
-        Collections.sort(ai);
-        System.out.println(ai);
-        System.out.println(i);*/
+
     }
 }

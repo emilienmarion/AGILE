@@ -11,6 +11,7 @@ public class Graph {
     private int compteurPickUp;
     private int compteurDelivery;
     private ArrayList<Path> solution;
+
     public Graph(int dimension,HashMap<String,Point> listePoint,Point depot) {
         content=new ArrayList<ArrayList<Vertice>>();
         tableIndex=new HashMap<String,Integer>();
@@ -66,6 +67,7 @@ public class Graph {
     public void setContent(ArrayList<ArrayList<Vertice>> content) {
         this.content = content;
     }
+
     public void addVertice(Vertice v){
         if (v!=null) {
             String idOrigin = v.getIdOrigin();
@@ -90,6 +92,10 @@ public class Graph {
             }
             int indexOrigin = tableIndex.get(idOrigin);
             int indexDestination = tableIndex.get(idDestination);
+            System.out.print("indexOrigin=");
+            System.out.println(indexOrigin);
+            System.out.print("indexDestination=");
+            System.out.println(indexDestination);
             content.get(indexOrigin).set(indexDestination, v);
         }
     }
