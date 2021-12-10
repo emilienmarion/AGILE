@@ -369,7 +369,7 @@ private void displayArray(ArrayList<Point> ap){
         System.out.println(p.getSchedule());
     }
 }
-    public void editPoint(String idPoint, String nvSchedule) throws ParseException {
+    public void editPoint(String idPoint, String nvSchedule, boolean undo) throws ParseException {
         System.out.println("Tour.editPoint");
         displayArray(pointsDef);
         //recuperer notre point cible
@@ -387,9 +387,11 @@ private void displayArray(ArrayList<Point> ap){
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         float costTargetLastest=pathBetweenTargetLastest.getPath().getCost();
         Date dateToCompare = XmlUtils.findSchedule(lastest.getSchedule(), pathBetweenTargetLastest.getPath().getCost(), lastest.getDuration());
+        System.out.println(nvSchedule);
         Date newSchedule = sdf.parse(nvSchedule);
+
         boolean dateCheck = newSchedule.after(dateToCompare);
-        if (dateCheck){
+        if (dateCheck || undo){
             Point newLastest=null;
             Date newLastestSchedule=null;
             System.out.println("Modif!!!!");
