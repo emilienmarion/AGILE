@@ -37,9 +37,8 @@ public class Point extends Intersection{
         this.longitude=p.longitude;
         this.latitudeSurPanel=p.longitudeSurPanel;
         this.longitudeSurPanel=p.longitudeSurPanel;
-
-
     }
+
     public int getDuration() {
         return duration;
     }

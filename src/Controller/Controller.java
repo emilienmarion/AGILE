@@ -135,6 +135,13 @@ public class Controller {
         l.add(drc);
         drc.doCommand();
 
+        // Actualisation des IHM
+        displayMapView();
+        frame.getMapView().loadRequest(tour);
+
+        //frame.confirmDeleteRow(i);
+        frame.display();
+
     }
 
     public void displayMapView()

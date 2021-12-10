@@ -186,8 +186,10 @@ public class Tour
             freeSchedule.add(couple2);
             System.out.println("Tour : new free schedule from " + leavingDate2 + " to " + arrivalDate2);
 
-            // And delete on the data structure
+            // And delete on the data structure, recompute the graph
+            computePathDeletedPoint(firstToDelete);
             pointsDef.remove(firstToDelete);
+            computePathDeletedPoint(secondToDelete);
             pointsDef.remove(secondToDelete);
             glueFreeScheduleList();
         }
@@ -209,6 +211,35 @@ public class Tour
         }catch (Exception e){
             System.out.println("Tour.deletePoint ERROR : "+e);
         }
+
+    }
+
+    private void computePathDeletedPoint(Point p){
+
+        int actualIndex = getIndexPointById(p.getId());
+        Point base = pointsDef.get(actualIndex-1);
+        Point target = pointsDef.get(actualIndex+1);
+        System.out.println("Actual : "+ actualIndex+" | base : "+base.getId()+" | target : "+target.getId());
+        String baseId=base.getId();
+        if (actualIndex==1) baseId=baseId.substring(0,baseId.length()-5);
+        //calculechemin(base, target);
+        HashMap<String,Integer> tableIndex=graph.getTableIndex();
+        System.out.println(tableIndex);
+        System.out.println(baseId);
+        int indexBase = tableIndex.get(baseId); //index dans la matrice
+        int indexTarget = tableIndex.get(target.getId()); //pareil
+        int indexCurrent = tableIndex.get(p.getId()); //pareil
+        //shortcut between base and target
+        Path shortcutPath = graph.getContent().get(indexBase).get(indexTarget).getAssociatedPath();
+        pathPointsDef.remove(actualIndex-1);
+        pathPointsDef.remove(actualIndex-1);
+        pathPointsDef.add(actualIndex-1,shortcutPath);
+        graph.setSolution(pathPointsDef);
+        /*ArrayList<Path> tempSolution = graph.getSolution();
+        // Trouver le path d'un point
+        tempSolution.remove(indexCurrent);*/
+
+
 
     }
 
@@ -545,7 +576,6 @@ public class Tour
         FinaleDepot.setSchedule(finalDepot);
         this.arrivalTime = finalDepot;
 
-
         pathPointsDef.remove(pathPointsDef.size()-1);
         pathPointsDef.add(p1);
         pathPointsDef.add(p2);
@@ -553,7 +583,6 @@ public class Tour
 
         pointsDef.add(pointsDef.size()-1, pickUp);
         pointsDef.add(pointsDef.size()-1,delivery);
-
 
         this.graph.getListePoint().put(pickUp.getId(),pickUp);
         this.graph.getListePoint().put(delivery.getId(),delivery);
