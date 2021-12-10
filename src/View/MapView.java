@@ -38,6 +38,7 @@ public class MapView {
      */
     public void loadMap(MapData mdT, String mps)
     {
+        this.mdT=mdT;
         leftPanel.removeAll();
 
         float diffX=mdT.getMaxX()-mdT.getMinX();

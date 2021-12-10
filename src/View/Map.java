@@ -142,7 +142,7 @@ public class Map extends JPanel {
         ArrayList<Color> ac=new ArrayList<Color>();
 
         ac.add(Color.blue);
-        ac.add(Color.red);
+       // ac.add(Color.red);
         ac.add(Color.pink);
         ac.add(Color.green);
         ac.add(Color.yellow);
@@ -168,7 +168,12 @@ public class Map extends JPanel {
 
             int[] coordA = getCoords(start.getLongitude(), start.getLatitude());
             if (start.getType().equals("delivery")) g.fillRect(coordA[0], coordA[1], 10, 10);
-            else g.fillOval(coordA[0], coordA[1], 10, 10);
+            else if(start.getType().equals("pickUp")){
+                g.fillOval(coordA[0], coordA[1], 10, 10);
+            }else{
+                g.setColor( new Color(226, 12, 12));
+                g.fillOval(coordA[0], coordA[1], 20, 20);
+            }
             Node n2 = n.getPredecessor();
             while (n2 != null) {
                 Intersection i1 = n.getIntersection();
@@ -189,7 +194,12 @@ public class Map extends JPanel {
             end.setLatitudeSurPanel(coordB[0]);
             end.setLongitudeSurPanel(coordB[1]);
             if (end.getType().equals("delivery")) g.fillRect(coordB[0], coordB[1], 10, 10);
-            else g.fillOval(coordB[0], coordB[1], 10, 10);
+            else if(end.getType().equals("pickUp")){
+                g.fillOval(coordB[0], coordB[1], 10, 10);
+            }else{
+                g.setColor( new Color(226, 12, 12));
+                g.fillOval(coordB[0], coordB[1], 20, 20);
+            }
             g.setColor(ac.get(index));
             if (index != 17) index++;
         }
