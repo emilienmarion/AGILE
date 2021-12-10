@@ -15,8 +15,8 @@ public class HeadInfo extends JPanel {
         JLabel expJ = new JLabel(exp);
 
         this.setBackground(new Color(40,40,40));
-        this.setPreferredSize(new Dimension(900, 70));
-        this.setMaximumSize(new Dimension(900, 70));
+        this.setPreferredSize(new Dimension(1000, 70));
+        this.setMaximumSize(new Dimension(1000, 70));
         //this.setBorder(new RoundedBorder(20));
         expJ.setForeground(new Color(140,140,140));
 

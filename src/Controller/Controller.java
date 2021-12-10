@@ -169,6 +169,7 @@ public class Controller {
 
     public void addRequest( ) {
         System.out.println("Controller.addRequest ");
+        i=0;
         frame.addRequest();
     }
      public void addNewRequest(int x,int y)  {
@@ -180,7 +181,7 @@ public class Controller {
              Intersection inter = md.findIntersection(x, y);
 
              if (inter != null) {
-
+System.out.println("i est égale à"+i);
 
                  if (i == 0) {
                       pickUp = new Model.Point(inter, 0, "pickUp");
@@ -256,6 +257,13 @@ public class Controller {
         l.redo();
     }
 
+    public int getI() {
+        return i;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
 
     public void refreshMap(Graph graph ){
 
