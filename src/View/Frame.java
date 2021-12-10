@@ -174,7 +174,9 @@ public class Frame {
     }
 
     public void sortirdeADD(){
+        controller.setI(0);
       tourView.sortirdeADD();
+
     }
 
     public void drawpoint2(String idPickup, String idDelivery) {
