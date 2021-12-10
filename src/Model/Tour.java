@@ -221,14 +221,12 @@ public class Tour
         Point target = pointsDef.get(actualIndex+1);
         System.out.println("Actual : "+ actualIndex+" | base : "+base.getId()+" | target : "+target.getId());
         String baseId=base.getId();
-        if (actualIndex==1) baseId=baseId.substring(0,baseId.length()-5);
-        //calculechemin(base, target);
+        if (actualIndex==1) baseId=baseId.substring(0,baseId.length()-5); // Delete the "string" in the id for the first depot
         HashMap<String,Integer> tableIndex=graph.getTableIndex();
         System.out.println(tableIndex);
         System.out.println(baseId);
         int indexBase = tableIndex.get(baseId); //index dans la matrice
         int indexTarget = tableIndex.get(target.getId()); //pareil
-        int indexCurrent = tableIndex.get(p.getId()); //pareil
         //shortcut between base and target
         Path shortcutPath = graph.getContent().get(indexBase).get(indexTarget).getAssociatedPath();
         pathPointsDef.remove(actualIndex-1);
