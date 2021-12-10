@@ -30,6 +30,14 @@ public class MenuBar extends JMenuBar {
         exitMenuItem.setActionCommand("Exit");
         exitMenuItem.addActionListener(buttonListener);
 
+        JMenuItem undoMenuItem = new JMenuItem("Undo");
+        undoMenuItem.setActionCommand("Undo");
+        undoMenuItem.addActionListener(buttonListener);
+
+        JMenuItem redoMenuItem = new JMenuItem("Redo");
+        redoMenuItem.setActionCommand("Redo");
+        redoMenuItem.addActionListener(buttonListener);
+
 
         fileMenu.setForeground(Color.WHITE);
         fileMenu.setBackground(new Color(61, 61, 61));
@@ -60,6 +68,9 @@ public class MenuBar extends JMenuBar {
          */
         //fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
+        fileMenu.add(undoMenuItem);
+        fileMenu.add(redoMenuItem);
+
 
         //add menu to menubar
         this.add(fileMenu);

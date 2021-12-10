@@ -369,6 +369,9 @@ public class Tour
             System.out.println(p.getSchedule());
         }
     }
+
+
+
     private void displayArrayPath(ArrayList<Path> ap){
         for (Path p:ap){
             System.out.print(p.getId());
@@ -380,7 +383,7 @@ public class Tour
     // modifier les couts pour les path ou on a deplacé un point FAIT
     // et aussi set les paths associé FAIT
     // et les afficher NON
-    public void editPoint(String idPoint, String nvSchedule) throws ParseException {
+    public void editPoint(String idPoint, String nvSchedule, boolean undo) throws ParseException {
         System.out.println("Tour.editPoint");
         //recuperer notre point cible
         int index=getIndexPointById(idPoint);
@@ -398,11 +401,17 @@ public class Tour
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         float costTargetLastest=pathBetweenTargetLastest.getPath().getCost();
         Date dateToCompare = XmlUtils.findSchedule(lastest.getSchedule(), pathBetweenTargetLastest.getPath().getCost(), lastest.getDuration());
+        System.out.println(nvSchedule);
         Date newSchedule = sdf.parse(nvSchedule);
+
         boolean dateCheck = newSchedule.after(dateToCompare);
-        if (dateCheck){
+
+        if (dateCheck || undo){
+
+       
             //dans le cas ou l'horaire correspond
             //variable qui permet de contenir dans tous les cas le delivery du couple (vu que on va les mettres a la fin)
+
             Point newLastest=null;
             Date newLastestSchedule=null;
             System.out.println("Modif!!!!");
