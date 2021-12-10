@@ -85,7 +85,7 @@ public class Point extends Intersection{
                 ",\nduration=" + duration +
                 ",\ntype='" + type + '\'' +
                 ",\nidAssociated='" + idAssociated + '\'' +
-                ",\ncostToReach=" + costToReach + '\'' +
+                ",\ncostToReach=" + costToReach +
                 ",\nschedule= " + schedule +
                 '}';
     }
