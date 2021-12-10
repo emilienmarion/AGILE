@@ -303,27 +303,37 @@ public class Tour
         });
     }
 
-private int getIndexPointById(String idPoint){
-    boolean flag=true;
-    int index=-1;
-    while (flag){
-        index++;
-        if (pointsDef.get(index).getId().equals(idPoint)) flag=false;
+    private int getIndexPointById(String idPoint){
+        boolean flag=true;
+        int index=-1;
+        while (flag){
+            index++;
+            if (pointsDef.get(index).getId().equals(idPoint)) flag=false;
+        }
+        return index;
     }
-    return index;
-}
-private void displayArray(ArrayList<Point> ap){
-    for (Point p:ap){
-        System.out.print(p.getId());
-        System.out.print(" -> ");
-        System.out.print(p.getCostToReach());
-        System.out.print(", ");
-        System.out.println(p.getSchedule());
+    private void displayArrayPoint(ArrayList<Point> ap){
+        for (Point p:ap){
+            System.out.print(p.getId());
+            System.out.print(" -> ");
+            System.out.print(p.getCostToReach());
+            System.out.print(", ");
+            System.out.println(p.getSchedule());
+        }
     }
-}
+    private void displayArrayPath(ArrayList<Path> ap){
+        for (Path p:ap){
+            System.out.print(p.getId());
+            System.out.print(" -> ");
+            System.out.println(p.getPath().getCost());
+        }
+    }
+    //attention on va devoir :
+    // modifier les couts pour les path ou on a deplacé un point FAIT
+    // et aussi set les paths associé FAIT
+    // et les afficher NON
     public void editPoint(String idPoint, String nvSchedule) throws ParseException {
         System.out.println("Tour.editPoint");
-        displayArray(pointsDef);
         //recuperer notre point cible
         int index=getIndexPointById(idPoint);
         Point target=pointsDef.get(index);
@@ -332,9 +342,10 @@ private void displayArray(ArrayList<Point> ap){
         //recuperer le dernier point avant le depot
         Point lastest=pointsDef.get(pointsDef.size()-2);
         HashMap<String, Integer> tableIndex=graph.getTableIndex();
-        int indexLastest=tableIndex.get(lastest.getId());
-        int indexTarget=tableIndex.get(target.getId());
-        Path pathBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget).getAssociatedPath();
+        int indexLastest=tableIndex.get(lastest.getId()); //index dans la matrice des arcs du dernier sommet
+        int indexTarget=tableIndex.get(target.getId()); //index dans la matrice des arcs de la cible
+        //path entre le dernier et la target (on le prend dans la matrice)
+        Path pathBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget).getAssociatedPath();//<---
         //verifier que l'horaire correspond cad si du dernier on peu aller a la target dans le temps imparti
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         float costTargetLastest=pathBetweenTargetLastest.getPath().getCost();
@@ -342,43 +353,83 @@ private void displayArray(ArrayList<Point> ap){
         Date newSchedule = sdf.parse(nvSchedule);
         boolean dateCheck = newSchedule.after(dateToCompare);
         if (dateCheck){
+            //dans le cas ou l'horaire correspond
+            //variable qui permet de contenir dans tous les cas le delivery du couple (vu que on va les mettres a la fin)
             Point newLastest=null;
             Date newLastestSchedule=null;
             System.out.println("Modif!!!!");
-            pointsDef.remove(index);
-            target.setCostToReach(costTargetLastest);
-            target.setSchedule(newSchedule);
-            pointsDef.add(pointsDef.size()-1,target);
+            //avoir les points autours de notre point cible
+            Point targetBefore=pointsDef.get(index-1);
+            Point targetAfter=pointsDef.get(index+1);
+            String idTargetBefore=targetBefore.getId();
+            if (index==1) idTargetBefore=idTargetBefore.substring(0,idTargetBefore.length()-5);
+            int indexTargetBefore=tableIndex.get(idTargetBefore);
+            int indexTargetAfter=tableIndex.get(targetAfter.getId());
+            Path pathBeforeAfter=graph.getContent().get(indexTargetBefore).get(indexTargetAfter).getAssociatedPath();
+            float costBeforeAfter=pathBeforeAfter.getPath().getCost();
+            System.out.print("costBeforeAfter=");
+            System.out.println(costBeforeAfter);
+            targetAfter.setCostToReach(costBeforeAfter);
+            System.out.println(targetAfter);
+            System.out.println(pointsDef.get(index+1));
+            pointsDef.remove(index); //on enleve la cible de pointsDef
+            pathPointsDef.remove(index-1);
+            pathPointsDef.remove(index-1);
+            target.setCostToReach(costTargetLastest); //on change le cout pour arriver a la cible que l'on va placer a la fin
+            target.setSchedule(newSchedule); //on change l'heure aussi
+            pointsDef.add(pointsDef.size()-1,target); //on ajoute a la fin juste devant le depot
+            pathPointsDef.add(index-1,pathBeforeAfter); //path entre les deux
+            pathPointsDef.add(pathPointsDef.size()-1,pathBetweenTargetLastest); //entre le dernier et la cible
             newLastest=target;
             newLastestSchedule=newSchedule;
             if (target.getType().equals("pickUp")){
                 //si c'est un pick up on s'occupe du delivery associé
-                String idTargetDelivery=target.getIdAssociated();
-                int indexDelivery=getIndexPointById(idTargetDelivery);
-                Point delivery=pointsDef.get(indexDelivery);
-                int indexTargetDelivery=tableIndex.get(idTargetDelivery);
+                String idTargetDelivery=target.getIdAssociated(); //get l'id du delivery associé a la cible
+                int indexDelivery=getIndexPointById(idTargetDelivery); //avoir l'index de la cible dans pointsDef
+                Point delivery=pointsDef.get(indexDelivery); //get le devivery associé
+                int indexTargetDelivery=tableIndex.get(idTargetDelivery); //obtenir l'index dans la matrice des arcs pour le delivery
+                //path entre la target et la delivery associée
                 Path pathBetweenTargetDelivery=graph.getContent().get(indexTarget).get(indexTargetDelivery).getAssociatedPath();
+                //cout de ce trajet
                 float costTargetDelivery=pathBetweenTargetDelivery.getPath().getCost();
+                //on en deduit le nouvel horaire
                 Date newScheduleDelivery = XmlUtils.findSchedule(newSchedule, costTargetDelivery, 0);
+                //on enleve le delivery
+                //avoir les points autours de notre point cible
+                Point deliveryBefore=pointsDef.get(indexDelivery-1);
+                Point deliveryAfter=pointsDef.get(indexDelivery+1);
+                int indexDeliveryBefore=tableIndex.get(deliveryBefore.getId());
+                int indexDeliveryAfter=tableIndex.get(deliveryAfter.getId());
+                Path pathBeforeAfterDelivery=graph.getContent().get(indexDeliveryBefore).get(indexDeliveryAfter).getAssociatedPath();
+                float costBeforeAfterDelivery=pathBeforeAfterDelivery.getPath().getCost();
+                deliveryAfter.setCostToReach(costBeforeAfterDelivery);
                 pointsDef.remove(indexDelivery);
+                pathPointsDef.remove(indexDelivery-1); // on enleve le delivery
+                pathPointsDef.remove(indexDelivery-1); // pareil
+                //on set les changements dans le point
                 delivery.setSchedule(newScheduleDelivery);
                 delivery.setCostToReach(costTargetDelivery);
+                //on le place juste avant le depot
                 pointsDef.add(pointsDef.size()-1,delivery);
+                pathPointsDef.add(indexDelivery-1,pathBeforeAfterDelivery);
+                pathPointsDef.add(pathPointsDef.size()-1,pathBetweenTargetDelivery);
                 newLastest=delivery;
                 newLastestSchedule=newScheduleDelivery;
             }
+            //partie relative au depot a la fin
             Point depot = pointsDef.get(pointsDef.size()-1);
             int indexDepot=tableIndex.get(depot.getId());
             int indexNewLastest=tableIndex.get(newLastest.getId());
-
+            pathPointsDef.remove(pathPointsDef.size()-1);
             Path pathBetweenNewLastestDepot = graph.getContent().get(indexNewLastest).get(indexDepot).getAssociatedPath();
+            pathPointsDef.add(pathBetweenNewLastestDepot);
             float costNewLastestDepot=pathBetweenNewLastestDepot.getPath().getCost();
             Date newDepotSchedule = XmlUtils.findSchedule(newLastestSchedule, costNewLastestDepot, 0);
             depot.setCostToReach(costNewLastestDepot);
             depot.setSchedule(newDepotSchedule);
             this.arrivalTime = newDepotSchedule;
         }
-        displayArray(pointsDef);
+        graph.setSolution(pathPointsDef);
     }
 
 
