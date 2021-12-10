@@ -127,7 +127,9 @@ public class Frame {
     }
 
     public void loadMap(MapData loadedMap, String mapath) {
+
         mapView.loadMap(loadedMap, mapath);
+
     }
 
     public String editPoint(String id) {
