@@ -77,12 +77,11 @@ public class MapView {
 
     public void loadRequest(Tour tour) {
         System.out.println("MapView.loadRequest");
-this.tour=tour;
+        this.tour=tour;
         if(tour == null){
             System.out.println("TourView.loadRequest : tour is null");
         }
         else {
-
 
             map.addMouseListener(new PointLocater(map, controller));
 

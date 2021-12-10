@@ -135,6 +135,8 @@ public class Controller {
 
         // Actualisation des IHM
         displayMapView();
+        frame.getMapView().loadRequest(tour);
+
         //frame.confirmDeleteRow(i);
         frame.display();
     }

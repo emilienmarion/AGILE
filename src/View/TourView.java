@@ -391,7 +391,6 @@ public class TourView implements Observer {
     }
 
 
-
     public void highlight(String id){
 
         for (String j :jpanelList.keySet()){
@@ -409,10 +408,19 @@ public class TourView implements Observer {
     public String editPoint(String id) {
         JPanel point = jpanelList.get(id);
 
-        int type;
+        String type = "entrepot";
         String location = "location";
         DateFormat dateFormat3 = new SimpleDateFormat("HH:mm:ss");
+
         String scheduleString = dateFormat3.format(req.getListePoint().get(id).getSchedule());
+        for(Point p : tour.getPointsDef()){
+            System.out.println("    "+p.getId());
+            if(p.getId().equals(id)){
+                type = p.getType();
+                location = p.getId();
+                break;
+            }
+        }
 
         point.removeAll();
 
@@ -442,8 +450,7 @@ public class TourView implements Observer {
 
         JButton confirmEdit = new JButton(iconValide);
         //confirmEdit.setUI(new BasicButtonUI());
-        // Ici on squiz le button listener car j'ai pas trouvé comment passer des variables en paramètre pour donner
-        // au controller les données à persister dans le modèle de donnée.
+
         confirmEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -467,7 +474,16 @@ public class TourView implements Observer {
             }
         });
 
-        JLabel image = new JLabel(icon);
+
+        ImageIcon iconPoint;
+        if ( type.equals("depot")) {
+            iconPoint = new ImageIcon(new ImageIcon("./img/iconDepot.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        } else if (type.equals("pickUp")) {
+            iconPoint = new ImageIcon(new ImageIcon("./img/iconPickUp.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        } else {
+            iconPoint = new ImageIcon(new ImageIcon("./img/iconDelivery.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+        }
+        JLabel image = new JLabel(iconPoint);
 
         JPanel adressPanel = new JPanel();
         adressPanel.setLayout(new BoxLayout(adressPanel, BoxLayout.X_AXIS));
@@ -516,7 +532,6 @@ public class TourView implements Observer {
         scheduleString = dateFormat3.format(req.getListePoint().get(id).getSchedule());
         System.out.println("------------->TourView.scheduleString : " + scheduleString);
         return scheduleString;
-
     }
 
     public void confirmEdit(String id) {
