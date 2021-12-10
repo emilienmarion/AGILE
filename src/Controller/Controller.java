@@ -20,12 +20,12 @@ public class Controller {
     private int i=0;
     private Model.Point pickUp;
     private Model.Point delivery;
-
-
+    private ListOfCommands l;
 
     public Controller(Frame frame) {
         System.out.println("Controller.CONSTRUCTOR");
         this.frame = frame;
+        this.l = new ListOfCommands();
     }
 
 
@@ -131,7 +131,9 @@ public class Controller {
         System.out.println("Controller.confirmDeleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         // Suppression dans le modèle de données
-        tour.deletePoint(i);
+        DeleteRowCommand drc = new DeleteRowCommand(i, tour, frame);
+        l.add(drc);
+        drc.doCommand();
 
         // Actualisation des IHM
         displayMapView();
@@ -139,6 +141,7 @@ public class Controller {
 
         //frame.confirmDeleteRow(i);
         frame.display();
+
     }
 
     public void displayMapView()
@@ -155,9 +158,10 @@ public class Controller {
         System.out.println("Controller.editRow : "+id);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
 
+
         String nvSchedule = frame.editPoint(id);
         System.out.println("------------->nvSchedule : " + nvSchedule);
-        tour.editPoint(id, nvSchedule);
+        tour.editPoint(id, nvSchedule, false);
 
 
 
@@ -237,24 +241,26 @@ public class Controller {
     public void confirmPointEdition(String id, int type, String location, String hour) throws ParseException {
         System.out.println("Controller.confirmEdit");
         System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
-        frame.confirmEdit(id);
-        tour.editPoint(id, hour);
-        System.out.println("tour.getArrivalTime()" + tour.getArrivalTime());
-        // TODO : appel des méthodes du modèle de données avec des arguments fictifs
-        // Actualisation des IHM
-        try {
-            frame.getTourView().loadRequest(frame.getTourView().getTourPath());
-            frame.getMapView().loadRequest(tour);
-            frame.getTourView().updateHeader();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        frame.display();
+        EditPointCommand edc = new EditPointCommand(frame, tour, id, type, location, hour);
+        l.add(edc);
+        edc.doCommand();
+
     }
 
     public void setTourObject(Tour tour) {
         System.out.println("Controller.setTourObject");
         this.tour = tour;
+    }
+
+    public void undo(){
+
+        System.out.println("UNDO");
+        l.undo();
+    }
+
+    public void redo(){
+        System.out.println("REDO");
+        l.redo();
     }
 
 

@@ -55,6 +55,14 @@ public class ButtonListener extends JFrame implements ActionListener {
                 System.exit(0);
                 break;
 
+            case "Undo":
+                controller.undo();
+                break;
+
+            case "Redo":
+                controller.redo();
+                break;
+
             default:
                 if (e.getActionCommand().contains("deleteRow")) {
                     controller.deletePoint(e.getActionCommand().subSequence(9, e.getActionCommand().length()).toString());
