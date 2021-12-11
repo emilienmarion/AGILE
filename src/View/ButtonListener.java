@@ -21,6 +21,10 @@ public class ButtonListener extends JFrame implements ActionListener {
         this.controller = controller;
     }
 
+    /**
+     * Listen buttons calls implememted with this ButtonListener class and link them to the controller
+     * @param e Action listened
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 

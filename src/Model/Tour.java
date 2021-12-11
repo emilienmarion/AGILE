@@ -39,6 +39,9 @@ public class Tour
 
     public void loadNewRequest(Request r) throws ParseException {
         System.out.println("Tour.CONSTRUCTOR");
+        if(points != null) this.points.clear();
+        if(pointsDef != null) this.pointsDef.clear();
+        if(pathPointsDef != null) this.pathPointsDef.clear();
         this.req = r;
         this.points = req.getListePoint();
         points.put(req.getDepot().getId(),req.getDepot());
@@ -436,25 +439,27 @@ public class Tour
         boolean dateCheck = newSchedule.after(dateToCompare);
 
         if (dateCheck || undo){
-
-       
             //dans le cas ou l'horaire correspond
             //variable qui permet de contenir dans tous les cas le delivery du couple (vu que on va les mettres a la fin)
 
             Point newLastest=null;
             Date newLastestSchedule=null;
-            System.out.println("Modif!!!!");
+            System.out.println("Tour.editPoint : Modif!!!!");
             //avoir les points autours de notre point cible
             Point targetBefore=pointsDef.get(index-1);
             Point targetAfter=pointsDef.get(index+1);
             String idTargetBefore=targetBefore.getId();
-            if (index==1) idTargetBefore=idTargetBefore.substring(0,idTargetBefore.length()-5);
-            int indexTargetBefore=tableIndex.get(idTargetBefore);
+
+            if (index==1){
+                idTargetBefore=idTargetBefore.substring(0,idTargetBefore.length()-5); //If it's the first depot
+            }
+
+            int indexTargetBefore = tableIndex.get(idTargetBefore);
             int indexTargetAfter=tableIndex.get(targetAfter.getId());
             Path pathBeforeAfter=graph.getContent().get(indexTargetBefore).get(indexTargetAfter).getAssociatedPath();
             float costBeforeAfter=pathBeforeAfter.getPath().getCost();
-            System.out.print("costBeforeAfter=");
-            System.out.println(costBeforeAfter);
+            System.out.println("costBeforeAfter = " + costBeforeAfter);
+
             targetAfter.setCostToReach(costBeforeAfter);
             System.out.println(targetAfter);
             System.out.println(pointsDef.get(index+1));
@@ -515,6 +520,7 @@ public class Tour
             depot.setSchedule(newDepotSchedule);
             this.arrivalTime = newDepotSchedule;
         }
+
         graph.setSolution(pathPointsDef);
     }
 

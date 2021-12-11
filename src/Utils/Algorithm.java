@@ -106,10 +106,12 @@ public class Algorithm {
         tsp.searchSolution(20000, cg);
         System.out.println("Solution of cost "+tsp.getSolutionCost()+" found in "
                 +(System.currentTimeMillis() - startTime)+"ms : ");
-        ArrayList<ArrayList<Vertice>> tv=g.getContent();
+        ArrayList<ArrayList<Vertice>> tv = g.getContent();
+
         int dim=g.getDimension();
         ArrayList<Path> result=new ArrayList<Path>();
         for (int i=0; i<dim-1; i++) {
+            System.out.println("Algorithm.TSP : tsp.getSolution(i) : "+tsp.getSolution(i));
             Vertice v = tv.get(tsp.getSolution(i)).get(tsp.getSolution(i + 1));
             System.out.print(v);
             System.out.print("-->");
