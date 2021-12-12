@@ -67,7 +67,30 @@ public class Graph {
     public void setContent(ArrayList<ArrayList<Vertice>> content) {
         this.content = content;
     }
-
+    public void addPointPnD(Point pickUp,Point delivery){
+        listePoint.put(pickUp.getId(),pickUp);
+        listePoint.put(delivery.getId(),delivery);
+    }
+    public void addPnD(Vertice v){
+        System.out.println(v);
+        System.out.println(tableIndex);
+        System.out.println(content);
+        addVertice(v);
+    }
+    public void adaptContentPnD(){
+        for (int i=0;i<2;i++){
+            ArrayList<Vertice> alv=new ArrayList<Vertice>();
+            for (int k=0;k<content.size();k++){
+                alv.add(null);
+            }
+            content.add(alv);
+        }
+        for (ArrayList<Vertice> alv:content){
+            for (int i=0;i<2;i++){
+                alv.add(null);
+            }
+        }
+    }
     public void addVertice(Vertice v){
         if (v!=null) {
             String idOrigin = v.getIdOrigin();

@@ -549,18 +549,27 @@ public class Tour
     public void calculechemin(Point pickUp,Point delivery){
         System.out.print("pu=");
         System.out.println(pickUp);
+        System.out.print("del=");
+        System.out.println(delivery);
         Point pointPrecedent=pointsDef.get(pointsDef.size()-2);
         Point FinaleDepot=pointsDef.get(pointsDef.size()-1);
-
+        graph.adaptContentPnD();
+        this.graph.addPointPnD(pickUp,delivery);
         HashMap<String, Node> result1 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), pointPrecedent);
         Path p1=Algorithm.getPath(result1.get(pickUp.getId()));
-
+        for (String s:this.graph.getListePoint().keySet()){
+            graph.addPnD(Algorithm.getPath(result1.get(s)).toVertice());
+        }
         HashMap<String, Node> result2 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), pickUp);
         Path p2=Algorithm.getPath(result2.get(delivery.getId()));
-
+        for (String s:this.graph.getListePoint().keySet()){
+            graph.addPnD(Algorithm.getPath(result2.get(s)).toVertice());
+        }
         System.out.println(pointsDef.get(pointsDef.size()-1));
         HashMap<String, Node> result3 = Algorithm.dijkstra(mapView.getMapData().getIntersections(), delivery);
-
+        for (String s:this.graph.getListePoint().keySet()){
+            graph.addPnD(Algorithm.getPath(result3.get(s)).toVertice());
+        }
 
         Path p3=Algorithm.getPath(result3.get(pointsDef.get(pointsDef.size()-1).getId()));
 
