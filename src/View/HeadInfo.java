@@ -9,6 +9,10 @@ public class HeadInfo extends JPanel {
     private JLabel title;
     private JLabel value;
 
+    /**
+     * setup the header content
+     * @param exp
+     */
     public HeadInfo(String exp)
     {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -25,6 +29,11 @@ public class HeadInfo extends JPanel {
         this.add(expJ);
     }
 
+    /**
+     * setup the box in the header
+     * @param title
+     * @param value
+     */
     public HeadInfo(String title, String value)
     {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -46,11 +55,19 @@ public class HeadInfo extends JPanel {
         this.add(Box.createVerticalGlue());
     }
 
+    /**
+     * setter of the title
+     * @param title
+     */
     public void setTitle(String title) {
         this.title.removeAll();
         this.title = new JLabel(title);
     }
 
+    /**
+     * getter of the title
+     * @param value
+     */
     public void setValue(String value) {
         System.out.println("HeadInfo.setvalue : "+value);
         this.value.removeAll();

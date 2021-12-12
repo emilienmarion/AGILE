@@ -62,6 +62,18 @@ public class TourView implements Observer {
     protected String tourPath;
 
 
+    /**
+     * constructor of the Class TourView
+     * @param rightPanel
+     * @param headerInfo
+     * @param buttonListener
+     * @param mapView
+     * @param req
+     * @param controller
+     * @param TourPath
+     * @param tour
+     * @throws ParseException
+     */
     public TourView(JPanel rightPanel, JPanel headerInfo, ButtonListener buttonListener, MapView mapView, Request req, Controller controller, String TourPath, Tour tour) throws ParseException {
 
         this.rightPanel = rightPanel;
@@ -149,6 +161,9 @@ public class TourView implements Observer {
         System.out.println("TourView.displayTour EXIT");
     }
 
+    /**
+     * method which update header's information
+     */
     public void updateHeader(){
         setHeaderTour(addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
         System.out.println(this.tour.getDepartureTime() +" "+ this.tour.getArrivalTime() +" "+ this.tour.getTotalDuration());
@@ -156,6 +171,10 @@ public class TourView implements Observer {
     }
 
 
+    /**
+     * method which create the row for the point
+     * @param point
+     */
     protected void createJPanelPoint(Point point) {
         System.out.println("CREATE -- " + point.getId()+" at "+point.getSchedule()+" >> "+ point.getIdAssociated());
 
@@ -319,6 +338,13 @@ public class TourView implements Observer {
 
     //private void setHeaderTour(JButton addButton, String V2, String V3, String V4 ) {
 
+    /**
+     * setter of the information in the header
+     * @param addButton
+     * @param V2
+     * @param V3
+     * @param V4
+     */
     private void setHeaderTour(JButton addButton,String V2, String V3, String V4 ) {
 
         //TODO : Déclarer panel du haut avec indices d'aide à la tournée
@@ -351,6 +377,9 @@ public class TourView implements Observer {
     }
 
 
+    /**
+     *
+     */
     private void setExpAddRequest(){
         headerInfo.setPreferredSize(new Dimension(100, 100));
         headerInfo.removeAll();
@@ -371,6 +400,11 @@ public class TourView implements Observer {
 
     }
 
+    /**
+     * method which load a tour, create a point list and display the tour
+     * @param tp
+     * @throws ParseException
+     */
     public void loadRequest(String tp) throws ParseException {
         System.out.println("TourView.loadRequest");
         // Créer la ligne pour chaque point de passage à partir du modèle de données
@@ -391,6 +425,10 @@ public class TourView implements Observer {
     }
 
 
+    /**
+     * method which allowed to highlight a row
+     * @param id
+     */
     public void highlight(String id){
 
         for (String j :jpanelList.keySet()){
@@ -404,7 +442,12 @@ public class TourView implements Observer {
         point.setBackground(new Color(116, 69, 206));
     }
 
-    
+
+    /**
+     * method which change view and create editable label to edit point
+     * @param id
+     * @return
+     */
     public String editPoint(String id) {
         JPanel point = jpanelList.get(id);
 
@@ -534,6 +577,10 @@ public class TourView implements Observer {
         return scheduleString;
     }
 
+    /**
+     * method which confirm edition
+     * @param id
+     */
     public void confirmEdit(String id) {
         System.out.println("TourPanel.confirmEdit");
         // TODO : changer aspect de la row
@@ -541,6 +588,10 @@ public class TourView implements Observer {
     }
 
 
+    /**
+     * method which change view to delete point
+     * @param id
+     */
     public void deletePoint(String id) {
 
         JPanel point = jpanelList.get(id);
@@ -670,6 +721,10 @@ public class TourView implements Observer {
         point.repaint();
     }
 
+    /**
+     * method which confirm the deletion
+     * @param id
+     */
     public void confirmDelete(String id) {
         System.out.println("TourPanel.confirmDelete");
         jpanelList.remove(id);
@@ -683,16 +738,14 @@ public class TourView implements Observer {
     }
 
 
+    /**
+     * call method to add point
+     */
      public void addRequest(){
          setExpAddRequest();
          pointLocater.setAddPoint(true);
 
      }
-
-
-
- 
-
 
     @Override
     public void update(Observable o, Object arg){
@@ -700,6 +753,10 @@ public class TourView implements Observer {
     }
 
 
+    /**
+     * call method to draw a point on the map
+     * @param idPickup
+     */
     public void drawpoint(String idPickup) {
 
         mapView.getMap().setDrawpointBool(true);
@@ -708,6 +765,9 @@ public class TourView implements Observer {
         mapView.getMap().repaint();
     }
 
+    /**
+     * method which allow to go out of add point mode
+     */
     public void sortirdeADD() {
 
         setHeaderTour(  addButton,this.tour.getDepartureTime(), this.tour.getArrivalTime(), this.tour.getTotalDuration());
@@ -718,6 +778,11 @@ public class TourView implements Observer {
 
     }
 
+    /**
+     * call method to draw a pickup point and his delivery point associate on the map
+     * @param idPickup
+     * @param idDelivery
+     */
     public void drawpoint2(String idPickup,String idDelivery) {
         mapView.getMap().setDrawpointBool(false);
         mapView.getMap().setDrawpointBool2(true);
@@ -725,10 +790,16 @@ public class TourView implements Observer {
         mapView.getMap().setIdDelivery(idDelivery);
         mapView.getMap().repaint();
     }
-    public String getTourPath() {return this.tourPath;
-    }
 
-    public Request getRequest() {return this.req;
+    /**
+     * getter of the Xml path
+     * @return tourPath
+     */
+    public String getTourPath() {return this.tourPath;}
 
-    }
+    /**
+     * getter of the request
+     * @return req
+     */
+    public Request getRequest() {return this.req;}
 }

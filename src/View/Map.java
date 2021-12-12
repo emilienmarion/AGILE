@@ -31,6 +31,15 @@ public class Map extends JPanel {
     protected Controller controller;
 
 
+    /**
+     * constructor of the Class Map
+     * @param offsetX
+     * @param offsetY
+     * @param diffX
+     * @param diffY
+     * @param echelon
+     * @param md
+     */
     public Map(int offsetX, int offsetY, float diffX, float diffY, float echelon, MapData md) {
         super();
 
@@ -51,62 +60,124 @@ public class Map extends JPanel {
         //System.out.println("je suis null"+ curentid);
     }
 
+    /**
+     * getter of the tour
+     * @return tour
+     */
     public Tour getTour() {
         return tour;
     }
 
+    /**
+     * setter of the tour
+     * @param tour
+     */
     public void setTour(Tour tour) {
         this.tour = tour;
     }
 
+    /**
+     * getter of the pickup id
+     * @return idPickup
+     */
     public String getIdPickup() {
         return idPickup;
     }
 
+    /**
+     * setter of the pickup id
+     * @param idPickup
+     */
     public void setIdPickup(String idPickup) {
         this.idPickup = idPickup;
     }
 
+    /**
+     * getter of the id Delivery
+     * @return idDelivery
+     */
     public String getIdDelivery() {
         return idDelivery;
     }
 
+    /**
+     * setter of the id Delivery
+     * @param idDelivery
+     */
     public void setIdDelivery(String idDelivery) {
         this.idDelivery = idDelivery;
     }
 
+    /**
+     * getter of the boolean which manages the point must be draw
+     * @return drawpointBool2
+     */
     public boolean isDrawpointBool2() {
         return drawpointBool2;
     }
 
+    /**
+     * setter of the boolean which manages the point must be draw
+     * @param drawpointBool2
+     */
     public void setDrawpointBool2(boolean drawpointBool2) {
         this.drawpointBool2 = drawpointBool2;
     }
 
+    /**
+     * getter of the boolean which manages the point magnification
+     * @return test
+     */
     public boolean isTest() {
         return test;
     }
 
+    /**
+     * setter of the boolean which manages the point magnification
+     * @param test
+     */
     public void setTest(boolean test) {
         this.test = test;
     }
 
+    /**
+     * getter of the graph
+     * @return graph
+     */
     public Graph getGraph() {
         return graph;
     }
 
+    /**
+     * setter of the graph
+     * @param graph
+     */
     public void setGraph(Graph graph) {
         this.graph = graph;
     }
 
+    /**
+     * getter of the current id
+     * @return curentid
+     */
     public String getCurentid() {
         return curentid;
     }
 
+    /**
+     * setter of the current id
+     * @param curentid
+     */
     public void setCurentid(String curentid) {
         this.curentid = curentid;
     }
 
+    /**
+     * getter of a point coordinates
+     * @param longitude
+     * @param latitude
+     * @return x, y the longitude and latitude
+     */
     private int[] getCoords(float longitude, float latitude) {
         int x = Math.round((longitude - mapData.getMinX()) * scale);
         int y = Math.round((latitude - mapData.getMinY()) * scale);
@@ -114,6 +185,12 @@ public class Map extends JPanel {
     }
 
 
+    /**
+     * This method makes it possible to make point bigger when it was selected on the map
+     * @param curentid
+     * @param g
+     * @param isdep
+     */
     private void grossir(String curentid, Graphics g,boolean isdep) {
 
         int lat =0;
@@ -133,6 +210,11 @@ public class Map extends JPanel {
         g.fillRect(lat, longi, 20, 20);
     }
 
+    /**
+     * Method which allowed to draw the point and the travel on the map
+     * @param graph
+     * @param g
+     */
     private void drawGraph(Graph graph,Graphics g){
         ArrayList<Path> way= getTour().getPathPointsDef();
         int length=graph.getListePoint().size();
@@ -206,23 +288,43 @@ public class Map extends JPanel {
     }
 
 
+    /**
+     * getter au the map Data
+     * @return mapData
+     */
     public MapData getMapData() {
         return mapData;
     }
 
+    /**
+     * setter of the map data
+     * @param mapData
+     */
     public void setMapData(MapData mapData) {
         this.mapData = mapData;
     }
 
+    /**
+     * getter of the request
+     * @return req
+     */
     public Request getReq() {
         return req;
     }
 
+    /**
+     * setter of the request
+     * @param req
+     */
     public void setReq(Request req) {
         this.req = req;
     }
 
 
+    /**
+     * Method which alowed to draw the map
+     * @param g
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         HashMap<String, Intersection> intersections = new HashMap<String, Intersection>(mapData.getIntersections());
@@ -262,6 +364,11 @@ public class Map extends JPanel {
 
     }
 
+    /**
+     *
+     * @param idPickup
+     * @param g
+     */
     public void drawpoint (String idPickup,Graphics g){
 
         System.out.println("idPi"+idPickup);
@@ -272,6 +379,12 @@ public class Map extends JPanel {
         g.fillRect(lat, longi, 10, 10);
     }
 
+    /**
+     *
+     * @param idPickup
+     * @param idDelivery
+     * @param g
+     */
     public void drawpoint2 (String idPickup,String idDelivery,Graphics g){
 
         int lat1 = (int) mapData.getIntersections().get(idPickup).getLatitudeOnPanel();
@@ -286,11 +399,18 @@ public class Map extends JPanel {
     }
 
 
-
+    /**
+     * getter of the boolean which manages the point must be draw
+     * @return drawpointBool
+     */
     public boolean isDrawpointBool() {
         return drawpointBool;
     }
 
+    /**
+     * setter of the boolean which manages the point must be draw
+     * @param drawpointBool
+     */
     public void setDrawpointBool(boolean drawpointBool) {
         this.drawpointBool = drawpointBool;
     }

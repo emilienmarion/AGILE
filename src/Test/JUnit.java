@@ -1,7 +1,7 @@
 package Test;
 
-public class JUnit {
 
-    //ArrayList<Path>
+
+public class JUnit {
 
 }

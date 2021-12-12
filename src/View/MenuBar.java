@@ -8,6 +8,10 @@ public class MenuBar extends JMenuBar {
     private Color bgColor=Color.WHITE;
     private final ButtonListener buttonListener;
 
+    /**
+     * constructor of the Class MenuBar
+     * @param bl
+     */
     public MenuBar(ButtonListener bl){
         this.buttonListener = bl;
         this.setBorder(BorderFactory.createEmptyBorder());
@@ -77,6 +81,10 @@ public class MenuBar extends JMenuBar {
         this.setColor(new Color(61, 61, 61));
     }
 
+    /**
+     * setter of the color
+     * @param color
+     */
     public void setColor(Color color) {
         bgColor=color;
     }

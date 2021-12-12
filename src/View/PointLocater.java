@@ -15,6 +15,11 @@ public class PointLocater extends MouseAdapter {
     private boolean addPoint;
 
 
+    /**
+     * constructor of the Class PointLocater
+     * @param map1
+     * @param controller
+     */
     public PointLocater(Map map1, Controller controller) {
         this.controller = controller;
         map = map1;
@@ -23,18 +28,34 @@ public class PointLocater extends MouseAdapter {
 
     }
 
+    /**
+     * getter of the current point
+     * @return pcurrent
+     */
     public Point getPcurent() {
         return pcurent;
     }
 
+    /**
+     * method which refers if the point must be add
+     * @return addPoint
+     */
     public boolean isAddPoint() {
         return addPoint;
     }
 
+    /**
+     * setter of the boolean add point which manage ..
+     * @param addPoint
+     */
     public void setAddPoint(boolean addPoint) {
         this.addPoint = addPoint;
     }
 
+    /**
+     * method which allowed to select point on map with a click
+     * @param e
+     */
     public void mousePressed(MouseEvent e) {
         if (map.getTour() != null) {
             Point p = e.getPoint();

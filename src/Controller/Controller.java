@@ -69,7 +69,7 @@ public class Controller {
     }
 
     /**
-     * Return
+     * method which load a map
      * @return CRE
      */
     public boolean loadMap() {
@@ -105,6 +105,10 @@ public class Controller {
         }
     }
 
+    /**
+     * call the method to highlight
+     * @param i
+     */
     public void highLight(String i){
         frame.highlight(i);
     }
@@ -127,6 +131,10 @@ public class Controller {
         System.out.println("Controller.loadEditMode");
     }
 
+    /**
+     * method which confirm the deletion, apply on data and call method which display modification
+     * @param i
+     */
     public void confirmDeleteRow (String i) {
         System.out.println("Controller.confirmDeleteRow : "+i);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
@@ -144,6 +152,9 @@ public class Controller {
 
     }
 
+    /**
+     * call method which display map view
+     */
     public void displayMapView()
     {
         try {
@@ -154,6 +165,11 @@ public class Controller {
         }
     }
 
+    /**
+     * method which read point's hour and send hour to edition
+     * @param id
+     * @throws ParseException
+     */
     public void editPoint(String id) throws ParseException {
         System.out.println("Controller.editRow : "+id);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
@@ -168,17 +184,29 @@ public class Controller {
         frame.display();
     }
 
+    /**
+     * @param i
+     */
     public void deletePoint( String i) {
         System.out.println("Controller.deleteRow : "+i);
         frame.deletePoint(i);
         frame.display();
     }
 
+    /**
+     *
+     */
     public void addRequest( ) {
         System.out.println("Controller.addRequest ");
         i=0;
         frame.addRequest();
     }
+
+    /**
+     * method which manage
+     * @param x
+     * @param y
+     */
      public void addNewRequest(int x,int y)  {
 
 
@@ -220,17 +248,35 @@ System.out.println("i est égale à"+i);
 
      }
 
+    /**
+     * call the methode to display point on map
+     * @param idPickup
+     * @param idDelivery
+     */
     public void drawpoint2(String idPickup,String idDelivery){
         frame.drawpoint2( idPickup,idDelivery);
     }
+
+    /**
+     * call the methode to display point on map
+     * @param id
+     */
      public void drawpoint(String id){
         frame.drawpoint(id);
      }
 
+    /**
+     * getter of the map data
+     * @return md
+     */
     public MapData getMd() {
         return md;
     }
 
+    /**
+     * setter of the map data
+     * @param md
+     */
     public void setMd(MapData md) {
         this.md = md;
     }
@@ -238,7 +284,14 @@ System.out.println("i est égale à"+i);
     public void placerPoint(Request req) {}
 
 
-
+    /**
+     * method which confirm edition and call method to apply edition
+     * @param id
+     * @param type
+     * @param location
+     * @param hour
+     * @throws ParseException
+     */
     public void confirmPointEdition(String id, int type, String location, String hour) throws ParseException {
         System.out.println("Controller.confirmEdit");
         System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
@@ -248,26 +301,44 @@ System.out.println("i est égale à"+i);
 
     }
 
+    /**
+     * setter of the tour
+     * @param tour
+     */
     public void setTourObject(Tour tour) {
         System.out.println("Controller.setTourObject");
         this.tour = tour;
     }
 
+    /**
+     * method which manage undo
+     */
     public void undo(){
 
         System.out.println("UNDO");
         l.undo();
     }
 
+    /**
+     * method which manage redo
+     */
     public void redo(){
         System.out.println("REDO");
         l.redo();
     }
 
+    /**
+     * getter of the click counter
+     * @return i, number of click
+     */
     public int getI() {
         return i;
     }
 
+    /**
+     * setter of the click counter on map
+     * @param i
+     */
     public void setI(int i) {
         this.i = i;
     }

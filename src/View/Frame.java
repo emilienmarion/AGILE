@@ -29,6 +29,11 @@ public class Frame {
     protected Tour tour;
 
 
+    /**
+     *  constructor of the Class Frame
+     * @param md
+     * @param mapath
+     */
     public Frame(MapData md, String mapath) {
         controller = new Controller(this);
         controller.setMd(md);
@@ -44,6 +49,9 @@ public class Frame {
     }
 
 
+    /**
+     *  generator of the init content in the frame
+     */
     private void initFrame() {
         // Window design
         frame = new JFrame("UberIf");
@@ -74,6 +82,9 @@ public class Frame {
         frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
     }
 
+    /**
+     *  generate button load map and load request in IHM
+     */
     private void initLoaderSide() {
         loadMapButton = new JButton("Load map");
         loadMapButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -102,12 +113,21 @@ public class Frame {
     }
 
 
+    /**
+     * display the frame
+     */
     public void display() {
         System.out.println("Frame.display");
         frame.pack();
         frame.setVisible(true);
     }
 
+    /**
+     * call the generator of tourView to display a view with the tour
+     * @param req
+     * @param tp
+     * @throws ParseException
+     */
     public void switchToTourView(Request req, String tp) throws ParseException {
 
         System.out.println("Frame.switchToTourView");
@@ -119,6 +139,11 @@ public class Frame {
         loadTour(tour);
     }
 
+    /**
+     * call the method which display the tour on the map and the point in the list of point
+     * @param tour
+     * @throws ParseException
+     */
     public void loadTour(Tour tour) throws ParseException {
 
         tourView.loadRequest(this.TourPath);
@@ -126,26 +151,46 @@ public class Frame {
 
     }
 
+    /**
+     * call a method which display a new map
+     * @param loadedMap
+     * @param mapath
+     */
     public void loadMap(MapData loadedMap, String mapath) {
 
         mapView.loadMap(loadedMap, mapath);
 
     }
 
+    /**
+     * method call during edition of point and return the new hour of point
+     * @param id
+     * @return schedule
+     */
     public String editPoint(String id) {
         String schedule = tourView.editPoint(id);
         System.out.println("Frame.editPoint : " + schedule);
         return schedule;
     }
-
-    public void addRequest() {
-        tourView.addRequest();
-    }
-
+    /**
+     *  call a method which confirm the edit and apply the update
+     * @param i
+     */
     public void confirmEdit(String i) {
         tourView.confirmEdit(i);
     }
 
+    /**
+     * call method which setup the add point view and a click listener
+     */
+    public void addRequest() {
+        tourView.addRequest();
+    }
+
+    /**
+     * call method which setup the delete point view
+     * @param id
+     */
     public void deletePoint(String id) {
         tourView.deletePoint(id);
     }
@@ -154,31 +199,52 @@ public class Frame {
         tourView.confirmDelete(id);
     }
 
+    /**
+     * call a method which highligh a row in point list
+     * @param id
+     */
     public void highlight(String id) {
         tourView.highlight(id);
     }
 
 
+    /**
+     * getter of the tourView
+     * @return tourView
+     */
     public TourView getTourView() {return this.tourView;
     }
 
+    /**
+     * getter of the mapView
+     * @return mapView
+     */
     public MapView getMapView() {return this.mapView;
     }
 
 
-
-
-
+    /**
+     * call method which draw pickup point
+     * @param idPickup
+     */
     public void drawpoint(String idPickup) {
         tourView.drawpoint(idPickup);
     }
 
+    /**
+     * call methods which get out the add point mode
+     */
     public void sortirdeADD(){
         controller.setI(0);
       tourView.sortirdeADD();
 
     }
 
+    /**
+     * call method which draw pickup and delivery point
+     * @param idPickup
+     * @param idDelivery
+     */
     public void drawpoint2(String idPickup, String idDelivery) {
         tourView.drawpoint2(idPickup,idDelivery);
     }

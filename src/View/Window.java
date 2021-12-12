@@ -12,6 +12,13 @@ public class Window extends JFrame {
     private JPanel mapZone;
     private final Map map;
     private final int mapSquare=500;
+
+    /**
+     * constructor of the Class Windows
+     * @param X
+     * @param Y
+     * @param md
+     */
     public Window(int X,int Y,MapData md) {
         super("Uber IF");
         WindowListener l = new WindowAdapter() {
@@ -31,6 +38,9 @@ public class Window extends JFrame {
         this.setResizable(false);
     }
 
+    /** getter of the map
+     * @return map
+     */
     public Map getMap() {
         return map;
     }

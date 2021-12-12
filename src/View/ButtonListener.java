@@ -15,6 +15,11 @@ public class ButtonListener extends JFrame implements ActionListener {
     private String XMlMapPath;
     private final Frame frame;
 
+    /**
+     * constructor of the Class ButtonListener
+     * @param controller
+     * @param frame
+     */
     public ButtonListener(Controller controller, Frame frame) {
         System.out.println("ButtonListener.CONSTRUCTOR");
         this.frame = frame;
