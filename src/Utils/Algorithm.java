@@ -8,6 +8,12 @@ import Utils.TSP.TSPGraph;
 import java.util.*;
 
 public class Algorithm {
+
+    /**
+     * Find the index of  the Minimum of the List
+     * @param queueKeys
+     * @return index du minimum
+     */
     private static int min(ArrayList<Float> queueKeys){
         float minima=-1;
         int index=-1;
@@ -25,9 +31,12 @@ public class Algorithm {
         return index;
     }
 
-    //algorithme dijkstra qui charge toute la map en calculant que le cout pour le moment
-    //-->Amelioration, Rajouter des attributs dans path avec une linked list d'intersection pour pouvoir printer
-    //Remarque: dans notre cas on part d'un Point donné
+    /**
+     * Apply the dijkstra alorithm starting from a Point
+     * @param intersections
+     * @param point
+     * @return  Hasmhpap de Node du graph
+     */
     public static HashMap<String, Node> dijkstra(HashMap<String, Intersection> intersections, Point point){
         HashMap<String, Node> paths=new HashMap<String, Node>();
         //on init avec le premier path qui a un cout de 0 car on y est deja
@@ -73,6 +82,11 @@ public class Algorithm {
         return paths;
     }
 
+    /**
+     * Create with the data contained in an Node
+     * @param  n (Node)
+     * @return  Path
+     */
     public static Path getPath(Node n){
         String idDestination=n.getIntersection().getId();
         String idOrigin= "";
@@ -85,6 +99,14 @@ public class Algorithm {
         p.setId(idOrigin+"-"+idDestination);
         return p;
     }
+
+    /**
+     * Create the Object Graph from a request and the entire Map
+     * @param pointList
+     * @param loadedMap
+     * @param depot
+     * @return Graph
+     */
     public static Graph createGraph(HashMap<String,Point> pointList,MapData loadedMap,Point depot){
         Set<String> pointListKeySet=pointList.keySet();
         int length=pointListKeySet.size();
@@ -99,6 +121,12 @@ public class Algorithm {
         }
         return g;
     }
+
+    /**
+     *  Solves the problem of the travelling salesman from the Entire Graph
+     * @param g
+     * @return List of Path
+     */
     public static ArrayList<Path> TSP(Graph g){
         TSPGraph cg= GraphConverter.toTSPGraph(g);
         TSP tsp=new TSP1();

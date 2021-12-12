@@ -8,6 +8,13 @@ import java.util.Collection;
 import java.util.Collections;
 
 public class Array {
+
+    /**
+     *  Create a Copy of a tab of boolean
+     * @param origin
+     * @param length
+     * @return
+     */
     public static boolean[][] getCopy(boolean[][] origin,int length){
         boolean[][] copy=new boolean[length][length];
         for (int i=0;i<length;i++){
@@ -19,6 +26,14 @@ public class Array {
         }
         return copy;
     }
+
+    /**
+     *
+     * @param isUnlocked
+     * @param index
+     * @param indexDestination
+     * @param length
+     */
     public static void allowDelivery(boolean[][] isUnlocked,int index,int indexDestination,int length){
         for (int i=0;i<length;i++){
             if (i != indexDestination+1) {
@@ -33,6 +48,13 @@ public class Array {
             isUnlocked[indexDestination][indexDestination + 1] = false;
         }
     }
+
+
+    /**
+     *
+     * @param isUnlocked
+     * @param length
+     */
     public static void display(boolean[][] isUnlocked,int length){
         System.out.println("display");
         for (int i=0;i<length;i++){
