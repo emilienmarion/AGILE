@@ -12,10 +12,10 @@ public class Request {
     }
 
     /**
-     *
-     * @param depot
-     * @param departureTime
-     * @param listePoint
+     * Constructor of the class Request
+     * @param depot  intersection which is the started Point
+     * @param departureTime  departureTime of the query
+     * @param listePoint  list of the point in the request
      */
     public Request(Point depot, String departureTime, HashMap<String,Point> listePoint) {
         this.depot = depot;
@@ -24,15 +24,15 @@ public class Request {
     }
 
     /**
-     *
-     * @return
+     * get the depot
+     * @return depot
      */
     public Point getDepot() {
         return depot;
     }
 
     /**
-     *
+     * set the depot
      * @param depot
      */
     public void setDepot(Point depot) {
@@ -40,15 +40,15 @@ public class Request {
     }
 
     /**
-     *
-     * @return
+     * get the DepartureTime
+     * @return DepartureTime
      */
     public String getDepartureTime() {
         return departureTime;
     }
 
     /**
-     *
+     * set the DepartureTime
      * @param departureTime
      */
     public void setDepartureTime(String departureTime) {
@@ -56,15 +56,15 @@ public class Request {
     }
 
     /**
-     *
-     * @return
+     * get the list of the point of the request
+     * @return listePoint
      */
     public HashMap<String,Point> getListePoint() {
         return listePoint;
     }
 
     /**
-     *
+     *Set the list of the point of the request
      * @param listePoint
      */
     public void setListePoint(HashMap<String,Point> listePoint) {
