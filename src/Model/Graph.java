@@ -14,9 +14,9 @@ public class Graph {
 
     /**
      *  constructor of the Class Graph
-     * @param dimension
-     * @param listePoint
-     * @param depot
+     * @param dimension  (Number of Point in the query)
+     * @param listePoint point in the query
+     * @param depot   starting Point in the tour
      */
     public Graph(int dimension,HashMap<String,Point> listePoint,Point depot) {
         content=new ArrayList<ArrayList<Vertice>>();
@@ -35,16 +35,7 @@ public class Graph {
         tableIndex.put(depot.getId(),0);
     }
 
-    /**
-     *
-     * @param content
-     */
-    public Graph(ArrayList<ArrayList<Vertice>> content) {
-        this.content = content;
-        tableIndex=new HashMap<String,Integer>();
-        compteurPickUp=0;
-        compteurDelivery=1;
-    }
+
 
     /**
      *
@@ -55,7 +46,7 @@ public class Graph {
     }
 
     /**
-     *
+     *  set the list of path which is the TSP solution
      * @param solution
      */
     public void setSolution(ArrayList<Path> solution) {
@@ -63,7 +54,7 @@ public class Graph {
     }
 
     /**
-     *
+     * get  the list of all the vertice in the graph
      * @return
      */
     public ArrayList<ArrayList<Vertice>> getContent() {
@@ -71,15 +62,15 @@ public class Graph {
     }
 
     /**
-     *
-     * @return
+     * get the point list of the request
+     * @return listePoint
      */
     public HashMap<String, Point> getListePoint() {
         return listePoint;
     }
 
     /**
-     *
+     * Set the List of the oint in the request
      * @param listePoint
      */
     public void setListePoint(HashMap<String, Point> listePoint) {
@@ -96,7 +87,7 @@ public class Graph {
 
     /**
      *
-     * @param dimension
+     * @param dimension  
      */
     public void setDimension(int dimension) {
         this.dimension = dimension;
@@ -111,7 +102,7 @@ public class Graph {
     }
 
     /**
-     *
+     * add a vertice to the graph
      * @param v
      */
     public void addVertice(Vertice v){
@@ -147,7 +138,7 @@ public class Graph {
     }
 
     /**
-     *
+     * get the TableIndex
      * @return
      */
     public HashMap<String, Integer> getTableIndex() {
@@ -155,7 +146,7 @@ public class Graph {
     }
 
     /**
-     *
+     * Set the TableIndex
      * @param tableIndex
      */
     public void setTableIndex(HashMap<String, Integer> tableIndex) {

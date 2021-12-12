@@ -9,7 +9,7 @@ public class Vertice {
     }
 
     /**
-     *
+     * Constructor of the Class Vertice
      * @param idOrigin
      * @param idDestination
      * @param length
@@ -23,15 +23,15 @@ public class Vertice {
     }
 
     /**
-     *
-     * @return
+     * get the Id of the origin point of the Vertice
+     * @return  idOrigin
      */
     public String getIdOrigin() {
         return idOrigin;
     }
 
     /**
-     *
+     *set the Id of the origin point of the Vertice
      * @param idOrigin
      */
     public void setIdOrigin(String idOrigin) {
@@ -39,15 +39,15 @@ public class Vertice {
     }
 
     /**
-     *
-     * @return
+     * get the Id of the destination point of the Vertice
+     * @return  idOrigin
      */
     public String getIdDestination() {
         return idDestination;
     }
 
     /**
-     *
+     *set the Id of the destination point of the Vertice
      * @param idDestination
      */
     public void setIdDestination(String idDestination) {
@@ -55,15 +55,15 @@ public class Vertice {
     }
 
     /**
-     *
-     * @return
+     * get the Length of the Vertice
+     * @return length
      */
     public float getLength() {
         return length;
     }
 
     /**
-     *
+     * set the Length of the Vertice
      * @param length
      */
     public void setLength(float length) {
@@ -71,7 +71,7 @@ public class Vertice {
     }
 
     /**
-     *
+     * get the path associated to  the Vertice
      * @return
      */
     public Path getAssociatedPath() {
@@ -79,7 +79,7 @@ public class Vertice {
     }
 
     /**
-     *
+     * set  the path  of the Vertice
      * @param associatedPath
      */
     public void setAssociatedPath(Path associatedPath) {
@@ -87,7 +87,7 @@ public class Vertice {
     }
 
     /**
-     * 
+     *
      * @return
      */
     @Override
