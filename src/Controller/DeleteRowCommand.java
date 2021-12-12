@@ -8,11 +8,11 @@ import View.Frame;
 import java.text.ParseException;
 
 public class DeleteRowCommand implements Command{
-    private String id;
-    private Tour tour;
-    private Frame frame;
-    private Point pickUp;
-    private Point delivery;
+    private final String id;
+    private final Tour tour;
+    private final Frame frame;
+    private final Point pickUp;
+    private final Point delivery;
     public DeleteRowCommand(String id, Tour tour, Frame frame){
         this.id = id;
         this.tour = tour;

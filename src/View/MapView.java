@@ -18,7 +18,7 @@ public class MapView {
     private MapData mdT;
     protected String mapPathString;
     private Tour tour;
-    private Controller controller;
+    private final Controller controller;
 
     public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT, String mp, Controller controller){
         this.leftPanel = leftPanel;

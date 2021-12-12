@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class MenuBar extends JMenuBar {
     private Color bgColor=Color.WHITE;
-    private ButtonListener buttonListener;
+    private final ButtonListener buttonListener;
 
     public MenuBar(ButtonListener bl){
         this.buttonListener = bl;

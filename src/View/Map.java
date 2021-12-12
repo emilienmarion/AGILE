@@ -8,16 +8,14 @@ import Model.Point;
 
 import javax.swing.*;
 import java.awt.*;
-import java.lang.reflect.Array;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
 public class Map extends JPanel {
-    private float scale;
-    private int sizeX;
-    private int sizeY;
+    private final float scale;
+    private final int sizeX;
+    private final int sizeY;
     private MapData mapData;
     private Graph graph;
     private String curentid;
@@ -37,8 +35,8 @@ public class Map extends JPanel {
         super();
 
         mapData = md;
-        sizeX = (int) Math.round(diffX * echelon);
-        sizeY = (int) Math.round(diffY * echelon);
+        sizeX = Math.round(diffX * echelon);
+        sizeY = Math.round(diffY * echelon);
         scale = echelon;
         System.out.println(sizeX);
         System.out.println(sizeY);
@@ -123,8 +121,8 @@ public class Map extends JPanel {
 
         for ( Point p: tour.getPointsDef() ){
             if(p.getId().equals(curentid)){
-               lat = (int)p.getLatitudeSurPanel();
-                longi=(int)p.getLongitudeSurPanel();
+               lat = (int)p.getLatitudeOnPanel();
+                longi=(int)p.getLongitudeOnPanel();
             }
 
         }
@@ -191,8 +189,8 @@ public class Map extends JPanel {
             }
             Point end = graph.getListePoint().get(n.getIntersection().getId());
             int[] coordB = getCoords(end.getLongitude(), end.getLatitude());
-            end.setLatitudeSurPanel(coordB[0]);
-            end.setLongitudeSurPanel(coordB[1]);
+            end.setLatitudeOnPanel(coordB[0]);
+            end.setLongitudeOnPanel(coordB[1]);
             if (end.getType().equals("delivery")) g.fillRect(coordB[0], coordB[1], 10, 10);
             else if(end.getType().equals("pickUp")){
                 g.fillOval(coordB[0], coordB[1], 10, 10);
@@ -236,12 +234,12 @@ public class Map extends JPanel {
                 float originLongitude = currentIntersection.getLongitude();
                 float destinationLatitude = intersections.get(neighborId).getLatitude();
                 float destinationLongitude = intersections.get(neighborId).getLongitude();
-                int originC[] = getCoords(originLongitude, originLatitude);
-                int destinationC[] = getCoords(destinationLongitude, destinationLatitude);
-                currentIntersection.setLatitudeSurPanel(originC[0]);
-                currentIntersection.setLongitudeSurPanel(originC[1]);
-                intersections.get(neighborId).setLatitudeSurPanel(destinationC[0]);
-                intersections.get(neighborId).setLongitudeSurPanel(destinationC[1]);
+                int[] originC = getCoords(originLongitude, originLatitude);
+                int[] destinationC = getCoords(destinationLongitude, destinationLatitude);
+                currentIntersection.setLatitudeOnPanel(originC[0]);
+                currentIntersection.setLongitudeOnPanel(originC[1]);
+                intersections.get(neighborId).setLatitudeOnPanel(destinationC[0]);
+                intersections.get(neighborId).setLongitudeOnPanel(destinationC[1]);
 
                 g.setColor(Color.black);
                 g.drawLine(originC[0], originC[1], destinationC[0], destinationC[1]);
@@ -267,8 +265,8 @@ public class Map extends JPanel {
     public void drawpoint (String idPickup,Graphics g){
 
         System.out.println("idPi"+idPickup);
-        int lat = (int) mapData.getIntersections().get(idPickup).getLatitudeSurPanel();
-        int longi = (int) mapData.getIntersections().get(idPickup).getLongitudeSurPanel();
+        int lat = (int) mapData.getIntersections().get(idPickup).getLatitudeOnPanel();
+        int longi = (int) mapData.getIntersections().get(idPickup).getLongitudeOnPanel();
 
         g.setColor(Color.blue);
         g.fillRect(lat, longi, 10, 10);
@@ -276,11 +274,11 @@ public class Map extends JPanel {
 
     public void drawpoint2 (String idPickup,String idDelivery,Graphics g){
 
-        int lat1 = (int) mapData.getIntersections().get(idPickup).getLatitudeSurPanel();
-        int longi1 = (int) mapData.getIntersections().get(idPickup).getLongitudeSurPanel();
+        int lat1 = (int) mapData.getIntersections().get(idPickup).getLatitudeOnPanel();
+        int longi1 = (int) mapData.getIntersections().get(idPickup).getLongitudeOnPanel();
 
-        int lat2 = (int) mapData.getIntersections().get(idDelivery).getLatitudeSurPanel();
-        int longi2 = (int) mapData.getIntersections().get(idDelivery).getLongitudeSurPanel();
+        int lat2 = (int) mapData.getIntersections().get(idDelivery).getLatitudeOnPanel();
+        int longi2 = (int) mapData.getIntersections().get(idDelivery).getLongitudeOnPanel();
         g.setColor(Color.orange);
 
         g.fillRect(lat1, longi1, 10, 10);

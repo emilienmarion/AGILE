@@ -11,9 +11,9 @@ import View.*;
 
 public class ButtonListener extends JFrame implements ActionListener {
     private TourView tourView;
-    private Controller controller;
+    private final Controller controller;
     private String XMlMapPath;
-    private Frame frame;
+    private final Frame frame;
 
     public ButtonListener(Controller controller, Frame frame) {
         System.out.println("ButtonListener.CONSTRUCTOR");

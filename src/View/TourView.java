@@ -596,7 +596,7 @@ public class TourView implements Observer {
         imageDelete.setBackground(new Color(198,52,52));
         imageDelete.setOpaque(true);
 
-        JLabel duration = new JLabel(String.valueOf(heure + " "));
+        JLabel duration = new JLabel(heure + " ");
         duration.setForeground(Color.WHITE);
 
         ImageIcon iconPoint;

@@ -10,7 +10,7 @@ import java.awt.event.WindowListener;
 public class Window extends JFrame {
 
     private JPanel mapZone;
-    private Map map;
+    private final Map map;
     private final int mapSquare=500;
     public Window(int X,int Y,MapData md) {
         super("Uber IF");

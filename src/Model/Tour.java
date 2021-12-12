@@ -18,17 +18,21 @@ public class Tour
     private ArrayList<Point> pointsDef; // Final list of points composing the tour
     private ArrayList<Path> pathPointsDef; // Pathes from the pointDef list
     private HashMap<String, Point> points; // Primary points from the XML request
-    private ArrayList<ArrayList<Date>> freeSchedule; // List of time slot available for addition or modification
+    private final ArrayList<ArrayList<Date>> freeSchedule; // List of time slot available for addition or modification
     private Date departureTime; // Of the final tour
     private Date arrivalTime; // Of the final tour
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-    private MapView mapView;
+    private final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    private final MapView mapView;
     private Request req;
     private Graph graph;
-    private Controller controller;
+    private final Controller controller;
 
-
+    /**
+     * This is the constructor of the class Tour which  stores the tour information
+     * @param mv
+     * @param controller
+     */
     public Tour(MapView mv,Controller controller){
         this.mapView = mv;
         this.controller=controller;
@@ -37,6 +41,11 @@ public class Tour
         freeSchedule = new ArrayList<>();
     }
 
+    /**
+     * Set somme attributes from the information in a request
+     * @param r
+     * @throws ParseException
+     */
     public void loadNewRequest(Request r) throws ParseException {
         System.out.println("Tour.CONSTRUCTOR");
         if(points != null) this.points.clear();
@@ -48,33 +57,60 @@ public class Tour
         computeTheFinalPointList();
     }
 
-
+    /**
+     * Getteur of the list of the final Point
+     * @return  ArrayList<Point>
+     */
     public ArrayList<Point> getPointsDef() {
         return this.pointsDef;
     }
 
+    /**
+     *Setter of the list of the final Point
+     * @param pointsDef
+     */
     public void setPointsDef(ArrayList<Point> pointsDef) {
         this.pointsDef = pointsDef;
     }
 
+    /**
+     * Getter of the Departure Time
+     * @return DepartureTime
+     */
     public String getDepartureTime() {
-        String ret = Integer.toString(departureTime.getHours()) + ":" + Integer.toString(departureTime.getMinutes())+":"+Integer.toString(departureTime.getSeconds());
+        String ret = departureTime.getHours() + ":" + departureTime.getMinutes() +":"+ departureTime.getSeconds();
         return ret;
     }
 
+    /**
+     * Setter of the Departure Time
+     * @param departureTime
+     */
     public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
     }
 
+    /**
+     * Getter of the arrival Time
+     * @return ArrivalTime
+     */
     public String getArrivalTime() {
-        String ret = Integer.toString(arrivalTime.getHours()) + ":" + Integer.toString(arrivalTime.getMinutes())+":"+Integer.toString(arrivalTime.getSeconds());
+        String ret = arrivalTime.getHours() + ":" + arrivalTime.getMinutes() +":"+ arrivalTime.getSeconds();
         return ret;
     }
 
+    /**
+     *Setter of the arrival Time
+     * @param arrivalTime
+     */
     public void setArrivalTime(Date arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
+    /**
+     * Method which calculate the Total Duration of the Tour
+     * @return TotalDuration
+     */
     public String getTotalDuration() {
         int h1 = departureTime.getHours();
         int m1 = departureTime.getMinutes();
@@ -82,9 +118,13 @@ public class Tour
         int h2 = arrivalTime.getHours();
         int m2 = arrivalTime.getMinutes();
         int s2 = arrivalTime.getSeconds();
-        return Integer.toString(h2-h1)+"h "+Integer.toString(m2-m1)+"min "+Integer.toString(s2-s1)+"s";
+        return h2 - h1 +"h "+ (m2 - m1) +"min "+ (s2 - s1) +"s";
     }
 
+    /**
+     * The big Method which allowed to calculate the final point List and the associated time for each Point
+     * @throws ParseException
+     */
     public void computeTheFinalPointList() throws ParseException {
         System.out.println("Tour.computeTheFinalPointList");
 
@@ -130,7 +170,10 @@ public class Tour
         System.out.println("arrival : "+ this.arrivalTime);
     }
 
-
+    /**
+     * Delete a point fromme the final list
+     * @param idPoint
+     */
     public void deletePoint(String idPoint){
         System.out.println("Tour.deletePoint");
 
@@ -217,6 +260,10 @@ public class Tour
 
     }
 
+    /**
+     * re-arranges the path after the supersession of a point
+     * @param p (Point)
+     */
     private void computePathDeletedPoint(Point p){
 
         int actualIndex = getIndexPointById(p.getId());
@@ -245,7 +292,7 @@ public class Tour
     }
 
     /**
-     *  Check if in the free time list, a range is separated in two and glue them together
+     * Check if in the free time list, a range is separated in two and glue them together
      */
     private void glueFreeScheduleList(){
         ArrayList<ArrayList<Date>> coupleToDelete = new ArrayList<>();
@@ -373,7 +420,7 @@ public class Tour
         // Delete useless ones
         for (ArrayList<Date> toDelete : coupleToDelete) {
             if(freeSchedule.indexOf(toDelete) != -1)
-                freeSchedule.remove(freeSchedule.indexOf(toDelete));
+                freeSchedule.remove(toDelete);
         }
         coupleToDelete.clear();
 
@@ -383,6 +430,11 @@ public class Tour
         });
     }
 
+    /**
+     * get the id in the final list of one point
+     * @param idPoint
+     * @return idPoint in the list
+     */
     private int getIndexPointById(String idPoint){
         boolean flag=true;
         int index=-1;
@@ -392,6 +444,11 @@ public class Tour
         }
         return index;
     }
+
+    /**
+     * A method to display to help us during development
+     * @param ap
+     */
     private void displayArrayPoint(ArrayList<Point> ap){
         for (Point p:ap){
             System.out.print(p.getId());
@@ -403,7 +460,10 @@ public class Tour
     }
 
 
-
+    /**
+     * A method to display to help us during development
+     * @param ap
+     */
     private void displayArrayPath(ArrayList<Path> ap){
         for (Path p:ap){
             System.out.print(p.getId());
@@ -411,10 +471,14 @@ public class Tour
             System.out.println(p.getPath().getCost());
         }
     }
-    //attention on va devoir :
-    // modifier les couts pour les path ou on a deplacé un point FAIT
-    // et aussi set les paths associé FAIT
-    // et les afficher NON
+
+    /**
+     * This methods is use to edit a Point in the List ( Change the date )
+     * @param idPoint
+     * @param nvSchedule
+     * @param undo
+     * @throws ParseException
+     */
     public void editPoint(String idPoint, String nvSchedule, boolean undo) throws ParseException {
         System.out.println("Tour.editPoint");
         //recuperer notre point cible
@@ -524,28 +588,45 @@ public class Tour
         graph.setSolution(pathPointsDef);
     }
 
-
+    /**
+     * getter for the Graph
+     * @return graph
+     */
     public Graph getGraph() {
         return graph;
     }
 
+    /**
+     * getter
+     * @return points (HashMap<String, Point>)
+     */
     public HashMap<String, Point> getPoints() {
         return points;
     }
 
-
+    /**
+     *getter of the paths list
+     * @return
+     */
     public ArrayList<Path> getPathPointsDef() {
         return pathPointsDef;
 }
 
+    /**
+     * This methods add a Point choose by the user in the fianl Point List with the good time
+     * @param pickUp
+     * @param delivery
+     */
     public void addRequest(Point pickUp, Point delivery) {
         System.out.println("je suis dans Tour.addRequest ");
-
         calculechemin(pickUp,delivery);
-
-
     }
 
+    /**
+     * This methods calculate the path and the time associated to a new Couple of point and add it to lists
+     * @param pickUp
+     * @param delivery
+     */
     public void calculechemin(Point pickUp,Point delivery){
         System.out.print("pu=");
         System.out.println(pickUp);
@@ -593,11 +674,6 @@ public class Tour
 
         this.graph.setSolution(pathPointsDef);
 
-
-       // controller.refreshMap();
-
-       // this.mapView.getMap().setGraph(this.graph);
-       // this.mapView.getMap().repaint();
 
     }
 }

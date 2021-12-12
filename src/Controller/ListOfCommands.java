@@ -3,7 +3,7 @@ package Controller;
 import java.util.LinkedList;
 
 public class ListOfCommands {
-    private LinkedList<Command> l;
+    private final LinkedList<Command> l;
     private int i;
     public ListOfCommands(){
         i = -1;

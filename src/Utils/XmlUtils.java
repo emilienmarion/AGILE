@@ -36,7 +36,7 @@ public class XmlUtils {
            req=getRequest(document,intersections);
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            System.out.println("Error while opening file" + e.toString());
+            System.out.println("Error while opening file" + e);
             return null;
         }
         return req;
@@ -114,7 +114,7 @@ public class XmlUtils {
             MapData mapFormated = new MapData(intersections, mini.getLongitude(), maxi.getLongitude(), mini.getLatitude(), maxi.getLatitude());
             return mapFormated;
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            System.out.println("Error while opening file" + e.toString());
+            System.out.println("Error while opening file" + e);
             return null;
         }
     }
@@ -189,7 +189,7 @@ public class XmlUtils {
         int secondHeurePrec= heurePrec.getHours()*3600+heurePrec.getMinutes()*60+heurePrec.getSeconds();
         int secondTotal= (int)costToReach  + secondHeurePrec + duration;
 
-        Date schedule = new SimpleDateFormat("HH:mm:ss").parse("00:00:"+String.valueOf(secondTotal));
+        Date schedule = new SimpleDateFormat("HH:mm:ss").parse("00:00:"+ secondTotal);
         return schedule;
 
     }

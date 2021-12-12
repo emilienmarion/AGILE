@@ -5,16 +5,12 @@ import Controller.Controller;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.util.*;
-import java.util.List;
-import javax.swing.*;
-import java.util.HashMap;
 
 public class PointLocater extends MouseAdapter {
 
-    private Map map;
-    private Controller controller;
+    private final Map map;
+    private final Controller controller;
     private Point pcurent;
     private boolean addPoint;
 
@@ -65,8 +61,8 @@ public class PointLocater extends MouseAdapter {
               ArrayList<Model.Point> pointsDef= map.getTour().getPointsDef();
 
               for(Model.Point point : pointsDef){
-                  float latitude = point.getLatitudeSurPanel();
-                  float longitude = point.getLongitudeSurPanel();
+                  float latitude = point.getLatitudeOnPanel();
+                  float longitude = point.getLongitudeOnPanel();
                   if (p.getX() < latitude + 30 && p.getX() > latitude - 30 && p.getY() < longitude + 30 && p.getY() > longitude - 30) {
                       controller.highLight(point.getId());
 

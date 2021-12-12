@@ -75,7 +75,7 @@ public class Algorithm {
 
     public static Path getPath(Node n){
         String idDestination=n.getIntersection().getId();
-        String idOrigin=new String();
+        String idOrigin= "";
         Path p=new Path();
         p.addToPath(n);
         while (n!=null){

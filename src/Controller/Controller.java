@@ -12,15 +12,15 @@ import View.Frame;
 import View.TourView;
 
 public class Controller {
-    private Frame frame;
+    private final Frame frame;
     private MapData md;
     private Request loadRequest;
-    private boolean firstLoadTour = false;
+    private final boolean firstLoadTour = false;
     private Tour tour;
     private int i=0;
     private Model.Point pickUp;
     private Model.Point delivery;
-    private ListOfCommands l;
+    private final ListOfCommands l;
 
     public Controller(Frame frame) {
         System.out.println("Controller.CONSTRUCTOR");
@@ -68,6 +68,10 @@ public class Controller {
         }
     }
 
+    /**
+     * Return
+     * @return CRE
+     */
     public boolean loadMap() {
         System.out.println("Controller.loadMap");
         String Firm="";
@@ -112,12 +116,8 @@ public class Controller {
      */
     private boolean verifXml(String firm) {
         System.out.println("Controller.verifXml on : " + firm);
-        String chain[] = firm.split("\\.");
-        if(chain.length > 0 && chain[chain.length-1].equals("xml")){
-            return true;
-        }else{
-            return false;
-        }
+        String[] chain = firm.split("\\.");
+        return chain.length > 0 && chain[chain.length - 1].equals("xml");
     }
 
 
