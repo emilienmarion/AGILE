@@ -50,7 +50,7 @@ public class Frame {
 
 
     /**
-     *  generator of the init content in the frame
+     *  generate the init content in the frame
      */
     private void initFrame() {
         // Window design
@@ -90,9 +90,7 @@ public class Frame {
         loadMapButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         loadMapButton.addActionListener(buttonListener);
         loadMapButton.setBackground(new Color(61, 61, 61));
-        //loadMapButton.setBorder(BorderFactory.createEmptyBorder(70, 40, 70, 40));
         loadMapButton.setForeground(Color.WHITE);
-        //loadMapButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         loadTourButton = new JButton("Load Tour");
         loadTourButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -124,8 +122,8 @@ public class Frame {
 
     /**
      * call the generator of tourView to display a view with the tour
-     * @param req
-     * @param tp
+     * @param req the request
+     * @param tp the tour path
      * @throws ParseException
      */
     public void switchToTourView(Request req, String tp) throws ParseException {
@@ -172,13 +170,6 @@ public class Frame {
         System.out.println("Frame.editPoint : " + schedule);
         return schedule;
     }
-    /**
-     *  call a method which confirm the edit and apply the update
-     * @param i
-     */
-    public void confirmEdit(String i) {
-        tourView.confirmEdit(i);
-    }
 
     /**
      * call method which setup the add point view and a click listener
@@ -195,12 +186,9 @@ public class Frame {
         tourView.deletePoint(id);
     }
 
-    public void confirmDeleteRow(String id) {
-        tourView.confirmDelete(id);
-    }
 
     /**
-     * call a method which highligh a row in point list
+     * call a method which highlight a row in point list
      * @param id
      */
     public void highlight(String id) {

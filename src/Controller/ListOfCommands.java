@@ -25,7 +25,7 @@ public class ListOfCommands {
     }
 
     /**
-     * method which manage redo
+     * method which manage undo
      */
     public void undo(){
         if(i>=0){

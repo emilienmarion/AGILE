@@ -49,7 +49,6 @@ public class DeleteRowCommand implements Command{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        //frame.confirmDeleteRow(i);
         frame.display();
     }
 
@@ -64,7 +63,6 @@ public class DeleteRowCommand implements Command{
             frame.getMapView().loadRequest(tour);
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
             frame.getTourView().updateHeader();
-            // frame.getMapView(). mettre à jour la map
         } catch (ParseException e) {
             e.printStackTrace();
         }

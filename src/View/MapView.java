@@ -36,12 +36,11 @@ public class MapView {
         this.mdT = mdT;
         this.mapPathString = mp;
         this.controller = controller;
-        //System.out.println("map data : "+ mdT);
         loadMap(this.mdT, this.mapPathString);
     }
 
     /**
-     * method which setup the map and its content
+     * method which set up the map and its container
      * @param mdT map's data
      * @param mps map's path
      */
@@ -86,7 +85,7 @@ public class MapView {
     }
 
     /**
-     * getter of the map data
+     * getter of mapData
      * @return mdT
      */
     public MapData getMapData() {
@@ -94,7 +93,7 @@ public class MapView {
     }
 
     /**
-     * Method which load and setup the request
+     * Method which load and set up the request
      * @param tour
      */
     public void loadRequest(Tour tour) {

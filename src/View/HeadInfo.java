@@ -10,7 +10,7 @@ public class HeadInfo extends JPanel {
     private JLabel value;
 
     /**
-     * setup the header content
+     * set up the header container
      * @param exp
      */
     public HeadInfo(String exp)
@@ -21,7 +21,6 @@ public class HeadInfo extends JPanel {
         this.setBackground(new Color(40,40,40));
         this.setPreferredSize(new Dimension(1000, 70));
         this.setMaximumSize(new Dimension(1000, 70));
-        //this.setBorder(new RoundedBorder(20));
         expJ.setForeground(new Color(140,140,140));
 
         expJ.setLocation(35,15);
@@ -30,7 +29,7 @@ public class HeadInfo extends JPanel {
     }
 
     /**
-     * setup the box in the header
+     * set up the box in the header
      * @param title
      * @param value
      */
@@ -43,7 +42,6 @@ public class HeadInfo extends JPanel {
         this.setBackground(new Color(40,40,40));
         this.setPreferredSize(new Dimension(100, 70));
         this.setMaximumSize(new Dimension(100, 70));
-        //this.setBorder(new RoundedBorder(20));
         this.title.setForeground(new Color(140,140,140));
         this.title.setAlignmentX(Component.CENTER_ALIGNMENT);
         this.value.setForeground(Color.white);
@@ -55,22 +53,4 @@ public class HeadInfo extends JPanel {
         this.add(Box.createVerticalGlue());
     }
 
-    /**
-     * setter of the title
-     * @param title
-     */
-    public void setTitle(String title) {
-        this.title.removeAll();
-        this.title = new JLabel(title);
-    }
-
-    /**
-     * getter of the title
-     * @param value
-     */
-    public void setValue(String value) {
-        System.out.println("HeadInfo.setvalue : "+value);
-        this.value.removeAll();
-        this.value = new JLabel(value);
-    }
 }

@@ -31,7 +31,7 @@ public class Controller {
 
 
     /**
-     * Open a JFileChooser. Return true and call frame.loadTour if the file is an xml. Return false in other cases.
+     * Open a JFileChooser. Return true and call frame.loadTour if the file is a xml. Return false in other cases.
      * @return boolean
      */
     public boolean loadTour() throws ParseException{
@@ -56,7 +56,6 @@ public class Controller {
                     frame.switchToTourView(loadRequest, Firm);
                 } else {
                     frame.getMapView().getMap().setTour(tour);
-                    //frame.getMapView().loadRequest(tour);
                     frame.loadTour(tour);
                 }
                 frame.display();
@@ -124,13 +123,6 @@ public class Controller {
         return chain.length > 0 && chain[chain.length - 1].equals("xml");
     }
 
-
-
-
-    public void loadEditMode() {
-        System.out.println("Controller.loadEditMode");
-    }
-
     /**
      * method which confirm the deletion, apply on data and call method which display modification
      * @param i
@@ -147,7 +139,6 @@ public class Controller {
         displayMapView();
         frame.getMapView().loadRequest(tour);
 
-        //frame.confirmDeleteRow(i);
         frame.display();
 
     }
@@ -185,6 +176,7 @@ public class Controller {
     }
 
     /**
+     * call method to open delete mode
      * @param i
      */
     public void deletePoint( String i) {
@@ -194,7 +186,7 @@ public class Controller {
     }
 
     /**
-     *
+     * call method to open add point mode
      */
     public void addRequest( ) {
         System.out.println("Controller.addRequest ");
@@ -203,7 +195,7 @@ public class Controller {
     }
 
     /**
-     * method which manage
+     * method which confirm and apply the creation of new point
      * @param x
      * @param y
      */
@@ -235,7 +227,6 @@ System.out.println("i est égale à"+i);
                          frame.getMapView().loadRequest(tour);
                          frame.getTourView().loadRequest(frame.getTourView().getTourPath());
                          frame.getTourView().updateHeader();
-                        // frame.getMapView(). mettre à jour la map
                      } catch (ParseException e) {
                          e.printStackTrace();
                      }
@@ -249,7 +240,7 @@ System.out.println("i est égale à"+i);
      }
 
     /**
-     * call the methode to display point on map
+     * call the method to display pickup point and its delivery point on map
      * @param idPickup
      * @param idDelivery
      */
@@ -258,20 +249,12 @@ System.out.println("i est égale à"+i);
     }
 
     /**
-     * call the methode to display point on map
+     * call the method to display a point on map
      * @param id
      */
      public void drawpoint(String id){
         frame.drawpoint(id);
      }
-
-    /**
-     * getter of the map data
-     * @return md
-     */
-    public MapData getMd() {
-        return md;
-    }
 
     /**
      * setter of the map data
@@ -281,11 +264,8 @@ System.out.println("i est égale à"+i);
         this.md = md;
     }
 
-    public void placerPoint(Request req) {}
-
-
     /**
-     * method which confirm edition and call method to apply edition
+     * method which confirm edition and call the method which apply this modification
      * @param id
      * @param type
      * @param location
@@ -343,8 +323,5 @@ System.out.println("i est égale à"+i);
         this.i = i;
     }
 
-    public void refreshMap(Graph graph ){
-
-    }
 }
 

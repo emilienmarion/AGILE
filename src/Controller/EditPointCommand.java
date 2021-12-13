@@ -47,7 +47,7 @@ public class EditPointCommand implements Command {
      * method which confirm edition and display modification
      */
     public void doCommand(){
-        frame.confirmEdit(id);
+
         try {
             tour.editPoint(id, newHour, false);
         } catch (ParseException e) {
@@ -71,7 +71,7 @@ public class EditPointCommand implements Command {
      */
     public void undoCommand(){
         System.out.println("PREVIOUS HOUR" + previousHour);
-        frame.confirmEdit(id);
+
         try {
             tour.editPoint(id, previousHour, true);
         } catch (ParseException e) {
