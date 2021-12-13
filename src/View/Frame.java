@@ -183,5 +183,7 @@ public class Frame {
         tourView.drawpoint2(idPickup,idDelivery);
     }
 
-
+    public Controller getController() {
+        return this.controller;
+    }
 }
