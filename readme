@@ -11,6 +11,9 @@ Pour lancer les tests, il faut utiliser la librairie JUnit4. Veillez à l'ajoute
 
 Une fois le code éxécuté, les fichier XML pour charger des Map ou des tournées se trouvent dans le dossier xmlFiles à la racine du projet.
 
+
+Pour visuliser la javadoc ouvrir le sous dossier du même nom et ouvrir le fichier index.html
+
 Ce projet a été realisé par : 
 - Emilien MARION
 - Thomas Fabregues
