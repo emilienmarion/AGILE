@@ -432,14 +432,22 @@ public class Tour
         System.out.println(target);
         //recuperer le dernier point avant le depot
         Point lastest=pointsDef.get(pointsDef.size()-2);
+        displayArrayPoint(pointsDef);
         System.out.println(lastest);
+        System.out.println(target);
         HashMap<String, Integer> tableIndex=graph.getTableIndex();
         int indexLastest=tableIndex.get(lastest.getId()); //index dans la matrice des arcs du dernier sommet
         int indexTarget=tableIndex.get(target.getId()); //index dans la matrice des arcs de la cible
+        System.out.print("indexLastest=");
+        System.out.print(indexLastest);
+        System.out.print(" indexTarget=");
+        System.out.println(indexTarget);
+        if (indexLastest==indexTarget) indexLastest--;
         //path entre le dernier et la target (on le prend dans la matrice)
         Vertice verticeBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget);
         if (verticeBetweenTargetLastest==null){
             HashMap<String,Node> result=Algorithm.dijkstra(mapView.getMapData().getIntersections(), lastest);
+            System.out.println("result="+result.toString());
             for (String s:this.graph.getListePoint().keySet()){
                 graph.addVertice(Algorithm.getPath(result.get(s)).toVertice());
             }
