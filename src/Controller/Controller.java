@@ -342,5 +342,13 @@ public class Controller {
     public void setI(int i) {
         this.i = i;
     }
+
+    /**
+     * Getter
+     * @return the map data
+     */
+    public MapData getMd() {
+        return md;
+    }
 }
 
