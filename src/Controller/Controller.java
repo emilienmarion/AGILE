@@ -30,8 +30,7 @@ public class Controller {
 
 
     /**
-     * Open a JFileChooser. Return true and call frame.loadTour if the file is an xml. Return false in other cases.
-     *
+     * Open a JFileChooser. Return true and call frame.loadTour if the file is a xml. Return false in other cases.
      * @return boolean
      */
     public boolean loadTour() throws ParseException {
@@ -56,7 +55,6 @@ public class Controller {
                     frame.switchToTourView(loadRequest, Firm);
                 } else {
                     frame.getMapView().getMap().setTour(tour);
-                    //frame.getMapView().loadRequest(tour);
                     frame.loadTour(tour);
                 }
                 frame.display();
@@ -69,8 +67,7 @@ public class Controller {
     }
 
     /**
-     * Return
-     *
+     * method which load a map
      * @return CRE
      */
     public boolean loadMap() {
@@ -105,7 +102,13 @@ public class Controller {
         }
     }
 
-    public void highLight(String i) {
+
+    /**
+     * call the method to highlight
+     * @param i
+     */
+    public void highLight(String i){
+
         frame.highlight(i);
     }
 
@@ -122,12 +125,18 @@ public class Controller {
     }
 
 
+    /**
+     * method which confirm the deletion, apply on data and call method which display modification
+     * @param i
+     */
+
     public void loadEditMode() {
         System.out.println("Controller.loadEditMode");
     }
 
     public void confirmDeleteRow(String i) {
         System.out.println("Controller.confirmDeleteRow : " + i);
+
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         // Suppression dans le modèle de données
         DeleteRowCommand drc = new DeleteRowCommand(i, tour, frame);
@@ -138,12 +147,17 @@ public class Controller {
         displayMapView();
         frame.getMapView().loadRequest(tour);
 
-        //frame.confirmDeleteRow(i);
         frame.display();
 
     }
 
-    public void displayMapView() {
+
+    /**
+     * call method which display map view
+     */
+    public void displayMapView()
+    {
+
         try {
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
             frame.getMapView().loadRequest(tour);
@@ -152,6 +166,11 @@ public class Controller {
         }
     }
 
+    /**
+     * method which read point's hour and send hour to edition
+     * @param id
+     * @throws ParseException
+     */
     public void editPoint(String id) throws ParseException {
         System.out.println("Controller.editRow : " + id);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
@@ -165,20 +184,35 @@ public class Controller {
         frame.display();
     }
 
-    public void deletePoint(String i) {
-        System.out.println("Controller.deleteRow : " + i);
+
+    /**
+     * call method to open delete mode
+     * @param i
+     */
+    public void deletePoint( String i) {
+        System.out.println("Controller.deleteRow : "+i);
         frame.deletePoint(i);
         frame.display();
     }
 
-    public void addRequest() {
+
+    /**
+     * call method to open add point mode
+     */
+    public void addRequest( ) {
+
         System.out.println("Controller.addRequest ");
         i = 0;
         frame.addRequest();
     }
 
-    public void addNewRequest(int x, int y) {
 
+    /**
+     * method which confirm and apply the creation of new point
+     * @param x
+     * @param y
+     */
+     public void addNewRequest(int x,int y)  {
 
         if (i > 1) {  //sortir du mode ajout
             frame.sortirdeADD();
@@ -199,13 +233,12 @@ public class Controller {
                     pickUp.setIdAssociated(delivery.getId());
                     delivery.setIdAssociated(pickUp.getId());
 
+
                     tour.addRequest(this.pickUp, this.delivery);
                     try {
-
                         frame.getMapView().loadRequest(tour);
                         frame.getTourView().loadRequest(frame.getTourView().getTourPath());
                         frame.getTourView().updateHeader();
-                        // frame.getMapView(). mettre à jour la map
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -218,25 +251,42 @@ public class Controller {
 
     }
 
-    public void drawpoint2(String idPickup, String idDelivery) {
-        frame.drawpoint2(idPickup, idDelivery);
+
+    /**
+     * call the method to display pickup point and its delivery point on map
+     * @param idPickup
+     * @param idDelivery
+     */
+    public void drawpoint2(String idPickup,String idDelivery){
+        frame.drawpoint2( idPickup,idDelivery);
     }
 
-    public void drawpoint(String id) {
+    /**
+     * call the method to display a point on map
+     * @param id
+     */
+     public void drawpoint(String id){
+
         frame.drawpoint(id);
     }
 
-    public MapData getMd() {
-        return md;
-    }
-
+    /**
+     * setter of the map data
+     * @param md
+     */
     public void setMd(MapData md) {
         this.md = md;
     }
 
-    public void placerPoint(Request req) {
-    }
 
+    /**
+     * method which confirm edition and call the method which apply this modification
+     * @param id
+     * @param type
+     * @param location
+     * @param hour
+     * @throws ParseException
+     */
 
     public void confirmPointEdition(String id, int type, String location, String hour) throws ParseException {
         System.out.println("Controller.confirmEdit");
@@ -247,32 +297,50 @@ public class Controller {
 
     }
 
+    /**
+     * setter of the tour
+     * @param tour
+     */
     public void setTourObject(Tour tour) {
         System.out.println("Controller.setTourObject");
         this.tour = tour;
     }
 
-    public void undo() {
+
+    /**
+     * method which manage undo
+     */
+    public void undo(){
+
 
         System.out.println("UNDO");
         l.undo();
     }
 
-    public void redo() {
+
+    /**
+     * method which manage redo
+     */
+    public void redo(){
+
         System.out.println("REDO");
         l.redo();
     }
 
+    /**
+     * getter of the click counter
+     * @return i, number of click
+     */
     public int getI() {
         return i;
     }
 
+    /**
+     * setter of the click counter on map
+     * @param i
+     */
     public void setI(int i) {
         this.i = i;
-    }
-
-    public void refreshMap(Graph graph) {
-
     }
 }
 

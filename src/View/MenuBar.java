@@ -8,6 +8,10 @@ public class MenuBar extends JMenuBar {
     private Color bgColor=Color.WHITE;
     private final ButtonListener buttonListener;
 
+    /**
+     * constructor of the Class MenuBar
+     * @param bl
+     */
     public MenuBar(ButtonListener bl){
         this.buttonListener = bl;
         this.setBorder(BorderFactory.createEmptyBorder());
@@ -20,12 +24,7 @@ public class MenuBar extends JMenuBar {
         JMenuItem loadTourMenuItem = new JMenuItem("Load tour");
         loadTourMenuItem.setActionCommand("Load Tour");
         loadTourMenuItem.addActionListener(buttonListener);
-        /*
-        JMenuItem loadMapMenuItem = new JMenuItem("Load map");
-        loadMapMenuItem.addActionListener(buttonListener);
-        loadMapMenuItem.setActionCommand("Load map");
-        JMenuItem saveMenuItem = new JMenuItem("Save");
-        saveMenuItem.setActionCommand("Save");*/
+
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.setActionCommand("Exit");
         exitMenuItem.addActionListener(buttonListener);
@@ -46,27 +45,14 @@ public class MenuBar extends JMenuBar {
         loadTourMenuItem.setForeground(Color.WHITE);
         loadTourMenuItem.setBackground(new Color(61, 61, 61));
         loadTourMenuItem.setBorder(BorderFactory.createEmptyBorder());
-        /*
-        loadMapMenuItem.setForeground(Color.WHITE);
-        loadMapMenuItem.setBackground(new Color(61, 61, 61));
-        loadMapMenuItem.setBorder(BorderFactory.createEmptyBorder());
-        saveMenuItem.setForeground(Color.WHITE);
-        saveMenuItem.setBackground(new Color(61, 61, 61));
-        saveMenuItem.setBorder(BorderFactory.createEmptyBorder());
 
-         */
         exitMenuItem.setForeground(Color.WHITE);
         exitMenuItem.setBackground(new Color(61, 61, 61));
         exitMenuItem.setBorder(BorderFactory.createEmptyBorder());
 
         //add menu items to menus
         fileMenu.add(loadTourMenuItem);
-        /*
-        fileMenu.add(loadMapMenuItem);
-        fileMenu.add(saveMenuItem);
 
-         */
-        //fileMenu.addSeparator();
         fileMenu.add(exitMenuItem);
         fileMenu.add(undoMenuItem);
         fileMenu.add(redoMenuItem);
@@ -77,6 +63,10 @@ public class MenuBar extends JMenuBar {
         this.setColor(new Color(61, 61, 61));
     }
 
+    /**
+     * setter of the color
+     * @param color
+     */
     public void setColor(Color color) {
         bgColor=color;
     }

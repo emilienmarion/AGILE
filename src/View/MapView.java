@@ -20,6 +20,15 @@ public class MapView {
     private Tour tour;
     private final Controller controller;
 
+    /**
+     * constructor of the Class MapView
+     * @param leftPanel
+     * @param mapSquare
+     * @param mapPath
+     * @param mdT
+     * @param mp
+     * @param controller
+     */
     public MapView(JPanel leftPanel, int mapSquare, JLabel mapPath, MapData mdT, String mp, Controller controller){
         this.leftPanel = leftPanel;
         this.mapSquare = mapSquare;
@@ -27,12 +36,11 @@ public class MapView {
         this.mdT = mdT;
         this.mapPathString = mp;
         this.controller = controller;
-        //System.out.println("map data : "+ mdT);
         loadMap(this.mdT, this.mapPathString);
     }
 
     /**
-     *
+     * method which set up the map and its container
      * @param mdT map's data
      * @param mps map's path
      */
@@ -70,14 +78,26 @@ public class MapView {
 
     }
 
+    /**
+     * getter of the map
+     * @return map
+     */
     public Map getMap() {
         return this.map;
     }
 
+    /**
+     * getter of mapData
+     * @return mdT
+     */
     public MapData getMapData() {
         return this.mdT;
     }
 
+    /**
+     * Method which load and set up the request
+     * @param tour
+     */
     public void loadRequest(Tour tour) {
         System.out.println("MapView.loadRequest");
         this.tour=tour;
@@ -96,6 +116,10 @@ public class MapView {
         System.out.println("MapView.loadRequest EXIT");
     }
 
+    /**
+     * setter of the tour
+     * @param tour
+     */
     public void setTourObject(Tour tour) {
         this.tour = tour;
     }
