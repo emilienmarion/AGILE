@@ -23,11 +23,7 @@ import java.util.Set;
 
 import javax.swing.*;
 
-
-
 public class Main {
-
-
     public static void main(String[] args) {
         String mapPath = "xmlFiles/smallMap.xml";
         MapData loadedMap = XmlUtils.readMap(mapPath);
@@ -52,7 +48,8 @@ public class Main {
         }
         frame.display();
 
-
-
+        // To be used in tests
     }
+
+
 }

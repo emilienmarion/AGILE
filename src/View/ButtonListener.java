@@ -11,10 +11,15 @@ import View.*;
 
 public class ButtonListener extends JFrame implements ActionListener {
     private TourView tourView;
-    private Controller controller;
+    private final Controller controller;
     private String XMlMapPath;
-    private Frame frame;
+    private final Frame frame;
 
+    /**
+     * constructor of the Class ButtonListener
+     * @param controller
+     * @param frame
+     */
     public ButtonListener(Controller controller, Frame frame) {
         System.out.println("ButtonListener.CONSTRUCTOR");
         this.frame = frame;
@@ -22,7 +27,7 @@ public class ButtonListener extends JFrame implements ActionListener {
     }
 
     /**
-     * Listen buttons calls implememted with this ButtonListener class and link them to the controller
+     * Listen buttons calls implemented with this ButtonListener class and link them to the controller
      * @param e Action listened
      */
     @Override
@@ -39,10 +44,6 @@ public class ButtonListener extends JFrame implements ActionListener {
                 } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
-
-                break;
-            case "confirmEdition":
-                //controller.confirmPointEdition();
                 break;
 
             case "add request":
@@ -51,9 +52,6 @@ public class ButtonListener extends JFrame implements ActionListener {
 
             case "back":
                 controller.displayMapView();
-
-            case "confirmDelete":
-                controller.confirmDeleteRow(e.getActionCommand().subSequence(13, e.getActionCommand().length()).toString());
 
             case "Exit":
                 System.exit(0);

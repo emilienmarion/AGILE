@@ -10,15 +10,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditPointCommand implements Command {
-    private String id;
-    private Frame frame;
-    private Tour tour;
-    private int type;
-    private String newLocation;
-    private String newHour;
+    private final String id;
+    private final Frame frame;
+    private final Tour tour;
+    private final int type;
+    private final String newLocation;
+    private final String newHour;
     private String previousLocation;
-    private String previousHour;
+    private final String previousHour;
 
+    /**
+     * constructor of the Class EditPointCommand
+     * @param frame
+     * @param tour
+     * @param id
+     * @param type
+     * @param location
+     * @param hour
+     */
     public EditPointCommand(Frame frame, Tour tour, String id, int type, String location, String hour){
         this.id = id;
         this.frame = frame;
@@ -34,8 +43,11 @@ public class EditPointCommand implements Command {
 
     }
 
+    /**
+     * method which confirm edition and display modification
+     */
     public void doCommand(){
-        frame.confirmEdit(id);
+
         try {
             tour.editPoint(id, newHour, false);
         } catch (ParseException e) {
@@ -53,9 +65,13 @@ public class EditPointCommand implements Command {
         }
         frame.display();
     }
+
+    /**
+     * method which allowed to undo the edition
+     */
     public void undoCommand(){
         System.out.println("PREVIOUS HOUR" + previousHour);
-        frame.confirmEdit(id);
+
         try {
             tour.editPoint(id, previousHour, true);
         } catch (ParseException e) {

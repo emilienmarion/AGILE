@@ -1,0 +1,30 @@
+Bienvenue dans le Code Source du Projet Uber'IF.
+Uber'IF est un projet étudiant qui se veut être une aide pour la gestion de livraison.
+Uber'IF calculera le trajet optimal entre les points de retrait et les points de livraison de la tournée.
+Uber'IF permet à son utilisateur  de modifier les horaires de certains points de la tournée, de les supprimer ou d'en rajouter.
+
+L'exécution du Code peut se faire via le .jar, il suffit  se placer dans le terminal dans le sous dossier  PLD_AGILE_jar et de taper la commande java -jar PLD_AGILE.jar
+
+
+Pour visualiser le code ou l'exécuter à nouveau, cela se fait via un IDE (de préférence Intellij).
+Pour exécuter ce code source il vous faut compiler puis exécuter la class main qui se trouve à cette emplacement: src/Controller/Main.java
+Attention lors de la compilation par l'IDE, veillez à bien localiser le chemin du projet jusqu'au bout (myPersonnalPath\git\AGILE\AGILE).
+
+Pour lancer les tests, il faut utiliser la librairie JUnit4. Veillez à l'ajouter au projet dans l'IDE au moment de la compilation (même du main).
+
+Une fois le code exécuté, les fichier XML pour charger des Map ou des tournées se trouvent dans le dossier xmlFiles à la racine du projet.
+
+
+Pour visualiser la javadoc ouvrir le sous dossier du même nom et ouvrir le fichier index.html
+
+Ce projet a été réalisé par : 
+- Emilien MARION
+- Thomas Fabregues
+- Pauline Vilpini
+- Julien Bouvier
+- Thomas Di Bianca
+- Dimitri Jeannon
+
+
+
+

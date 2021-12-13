@@ -25,6 +25,13 @@ import org.xml.sax.SAXException;
 
 
 public class XmlUtils {
+
+    /**
+     * Build the object Request from the XML FIle and the Hashmap which contains all Intersections
+     * @param fileName
+     * @param intersections
+     * @return
+     */
     public static Request ReadRequest(String fileName,HashMap<String,Intersection> intersections){
         Request req=null;
         try {
@@ -36,12 +43,18 @@ public class XmlUtils {
            req=getRequest(document,intersections);
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            System.out.println("Error while opening file" + e.toString());
+            System.out.println("Error while opening file" + e);
             return null;
         }
         return req;
     }
 
+    /**
+     *  Build the object Request from the XML FIle and the Hashmap which contains all Intersections
+     * @param document
+     * @param intersections
+     * @return
+     */
     private static Request getRequest(Document document,HashMap<String,Intersection> intersections) {
         document.getDocumentElement().normalize();
         Point depot=null;
@@ -101,6 +114,12 @@ public class XmlUtils {
 
         return request;
     }
+
+    /**
+     * Build the Map data which contains all intersection
+     * @param fileName
+     * @return MapData
+     */
     public static MapData readMap(String fileName) {
         try {
             File file = new File(fileName);
@@ -114,11 +133,16 @@ public class XmlUtils {
             MapData mapFormated = new MapData(intersections, mini.getLongitude(), maxi.getLongitude(), mini.getLatitude(), maxi.getLatitude());
             return mapFormated;
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            System.out.println("Error while opening file" + e.toString());
+            System.out.println("Error while opening file" + e);
             return null;
         }
     }
 
+    /**
+     * Methods which allow to build segment (link between intersection)
+     * @param document
+     * @param intersections
+     */
     public static void getSegment(Document document, HashMap<String,Intersection> intersections) {
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("segment");
@@ -134,6 +158,11 @@ public class XmlUtils {
         }
     }
 
+    /**
+     * get each Intersections on the XML File
+     * @param document
+     * @return
+     */
     public static HashMap<String, Intersection> getIntersection(Document document) {
         document.getDocumentElement().normalize();
         NodeList nList = document.getElementsByTagName("intersection");
@@ -183,13 +212,21 @@ public class XmlUtils {
         return inters;
     }
 
+    /**
+     * Allow to calculte the Schedule for a point based on the previous Schedule, the cost to reach and the duration
+     * @param heurePrec
+     * @param costToReach
+     * @param duration
+     * @return Date
+     * @throws ParseException
+     */
     public static Date findSchedule(Date heurePrec, float costToReach, int duration) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
         int secondHeurePrec= heurePrec.getHours()*3600+heurePrec.getMinutes()*60+heurePrec.getSeconds();
         int secondTotal= (int)costToReach  + secondHeurePrec + duration;
 
-        Date schedule = new SimpleDateFormat("HH:mm:ss").parse("00:00:"+String.valueOf(secondTotal));
+        Date schedule = new SimpleDateFormat("HH:mm:ss").parse("00:00:"+ secondTotal);
         return schedule;
 
     }

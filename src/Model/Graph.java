@@ -12,6 +12,12 @@ public class Graph {
     private int compteurDelivery;
     private ArrayList<Path> solution;
 
+    /**
+     *  constructor of the Class Graph
+     * @param dimension  (Number of Point in the query)
+     * @param listePoint point in the query
+     * @param depot   starting Point in the tour
+     */
     public Graph(int dimension,HashMap<String,Point> listePoint,Point depot) {
         content=new ArrayList<ArrayList<Vertice>>();
         tableIndex=new HashMap<String,Integer>();
@@ -29,41 +35,68 @@ public class Graph {
         tableIndex.put(depot.getId(),0);
     }
 
-    public Graph(ArrayList<ArrayList<Vertice>> content) {
-        this.content = content;
-        tableIndex=new HashMap<String,Integer>();
-        compteurPickUp=0;
-        compteurDelivery=1;
-    }
 
+
+    /**
+     *
+     * @return
+     */
     public ArrayList<Path> getSolution() {
         return solution;
     }
 
+    /**
+     *  set the list of path which is the TSP solution
+     * @param solution
+     */
     public void setSolution(ArrayList<Path> solution) {
         this.solution = solution;
     }
 
+    /**
+     * get  the list of all the vertice in the graph
+     * @return
+     */
     public ArrayList<ArrayList<Vertice>> getContent() {
         return content;
     }
 
+    /**
+     * get the point list of the request
+     * @return listePoint
+     */
     public HashMap<String, Point> getListePoint() {
         return listePoint;
     }
 
+    /**
+     * Set the List of the oint in the request
+     * @param listePoint
+     */
     public void setListePoint(HashMap<String, Point> listePoint) {
         this.listePoint = listePoint;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDimension() {
         return dimension;
     }
 
+    /**
+     *
+     * @param dimension  
+     */
     public void setDimension(int dimension) {
         this.dimension = dimension;
     }
 
+    /**
+     *
+     * @param content
+     */
     public void setContent(ArrayList<ArrayList<Vertice>> content) {
         this.content = content;
     }
@@ -91,6 +124,11 @@ public class Graph {
             }
         }
     }
+
+    /**
+     * add a vertice to the graph
+     * @param v
+     */
     public void addVertice(Vertice v){
         if (v!=null) {
             String idOrigin = v.getIdOrigin();
@@ -123,14 +161,26 @@ public class Graph {
         }
     }
 
+    /**
+     * get the TableIndex
+     * @return
+     */
     public HashMap<String, Integer> getTableIndex() {
         return tableIndex;
     }
 
+    /**
+     * Set the TableIndex
+     * @param tableIndex
+     */
     public void setTableIndex(HashMap<String, Integer> tableIndex) {
         this.tableIndex = tableIndex;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "Graph{" +

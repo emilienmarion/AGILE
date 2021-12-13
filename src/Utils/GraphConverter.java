@@ -6,8 +6,14 @@ import Utils.TSP.CompleteGraph;
 
 import java.util.ArrayList;
 
-//class useful to convert our Graph which contains all the informations relative to the real case, to n any graph
+
 public class GraphConverter {
+
+    /**
+     * class useful to convert our Graph which contains all the informations relative to the real case, to n any graph
+     * @param g
+     * @return
+     */
     public static CompleteGraph toTSPGraph(Graph g){
         int d=g.getDimension();
         System.out.println(d);
@@ -27,12 +33,8 @@ public class GraphConverter {
                 else{
                     line[j]=v.getLength();
                     if (g.getListePoint().get(v.getIdDestination()).getType().equals("delivery")){
-                        if (i%2==1 && i==j-1){ //quand origin= destination-1 (i-->origin,j-->destination)
-                            lineUnlocked[j]=true;
-                        }
-                        else{
-                            lineUnlocked[j]=false;
-                        }
+                        //quand origin= destination-1 (i-->origin,j-->destination)
+                        lineUnlocked[j]= i % 2 == 1 && i == j - 1;
                     }
                     else{
                         lineUnlocked[j]=true;
@@ -47,6 +49,14 @@ public class GraphConverter {
         CompleteGraph cg=new CompleteGraph(d,cost,isUnlocked);
         return cg;
     }
+
+    /**
+     *
+     * @param i
+     * @param j
+     * @param isUnlocked
+     * @return
+     */
     public static boolean isArc(int i,int j,boolean[][] isUnlocked){
         //return i!=j;
         return isUnlocked[i][j];
