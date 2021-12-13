@@ -6,10 +6,10 @@ public class Node {
     private Node predecessor;
 
     /**
-     *
-     * @param cost
-     * @param intersection
-     * @param predecessor
+     * Constructor of the Class Node
+     * @param cost          Associated Cosst
+     * @param intersection  Associated Intersection
+     * @param predecessor Previous Node on the path
      */
     public Node(float cost, Intersection intersection, Node predecessor) {
         this.cost = cost;
@@ -18,37 +18,22 @@ public class Node {
     }
 
     /**
-     *
+     * empty constructor of the Class
      */
     public Node() {
     }
 
     /**
-     *
-     * @return
+     * get the previous Node in a path
+     * @return Node
      */
     public Node getPredecessor() {
         return predecessor;
     }
 
-    /**
-     *
-     * @return
-     */
-    public Intersection getIntersection() {
-        return intersection;
-    }
 
     /**
-     *
-     * @param intersection
-     */
-    public void setIntersection(Intersection intersection) {
-        this.intersection = intersection;
-    }
-
-    /**
-     *
+     * get the previous Node in a path
      * @param predecessor
      */
     public void setPredecessor(Node predecessor) {
@@ -56,15 +41,33 @@ public class Node {
     }
 
     /**
-     *
-     * @return
+     * get the Associated Intersection
+     * @return Associated Intersection
+     */
+    public Intersection getIntersection() {
+        return intersection;
+    }
+
+    /**
+     * set the Associated Intersection
+     * @param intersection
+     */
+    public void setIntersection(Intersection intersection) {
+        this.intersection = intersection;
+    }
+
+
+
+    /**
+     * get the Associated Cost
+     * @return cost
      */
     public float getCost() {
         return cost;
     }
 
     /**
-     *
+     * set the Associated Cost
      * @param cost
      */
     public void setCost(float cost) {

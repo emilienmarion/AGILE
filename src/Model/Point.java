@@ -13,7 +13,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * Constructor of Class Point (extend from Intersection)
      * @param i
      * @param duration
      * @param type
@@ -27,7 +27,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     *Constructor of Class Point (extend from Intersection) without the IdAssociated( PickUp or delivery associated)
      * @param i
      * @param duration
      * @param type
@@ -39,7 +39,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * Copy Constructor of Class Point
      * @param p
      */
     public Point(Point p){
@@ -57,7 +57,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * get the duration of the Point
      * @return
      */
     public int getDuration() {
@@ -65,7 +65,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     *  Set the Type of the point (PickUp/Delivery/depot)
      * @return
      */
     public String getType() {
@@ -73,7 +73,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * get the Id of the Associated point
      * @return
      */
     public String getIdAssociated() {
@@ -81,7 +81,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * Set the duration on this Point
      * @param duration
      */
     public void setDuration(int duration) {
@@ -89,7 +89,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * Set the Type of the point (PickUp/Delivery/depot)
      * @param type
      */
     public void setType(String type) {
@@ -97,27 +97,27 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     *get the coast to rach this point in the Tour
      * @param costToReach
      */
     public void setCostToReach(float costToReach){ this.costToReach = costToReach ;}
 
     /**
-     *
-     * @return
+     * get the coast to rach this point in the Tour
+     * @return costToReach
      */
     public float getCostToReach(){ return costToReach; }
 
     /**
      *
-     * @return
+     * @return Schedule
      */
     public Date getSchedule() {
         return schedule;
     }
 
     /**
-     *
+     * set the estimated Schedule of the point
      * @param schedule
      */
     public void setSchedule(Date schedule) {
@@ -125,7 +125,7 @@ public class Point extends Intersection{
     }
 
     /**
-     *
+     * get the Id of the Associated Point
      * @param idAssociated
      */
     public void setIdAssociated(String idAssociated) {

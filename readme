@@ -1,0 +1,20 @@
+Bienvenue dans le Code Source du Projet Uber'IF.
+Uber'IF est un projet étudiant qui se veut être une aide pour la gestion de livraison.
+Uber'IF calculera le trajet optimal entre les points de retrait et les point de livrason de la tournée.
+Uber'IF permet à son utilisateur  de modifier les horraire de certains points de la tournée, de les supprimmer ou d'en rajouter.
+
+Pour éxécuter ce code source il vous faut éxécuter la class main qui se trouve à cette emplacement: src/Controller/Main.java
+
+Une fois le code éxécuter vous pouvez trouvez les fichier XML pour charger une Map ou un Tour dans le fichier xmlFiles à la racine du projet.
+
+Ce projet a été realisé par : 
+- Emilien MARION
+- Thomas Fabregues
+- Pauline Vilpini
+- Julien Bouvier
+- Thomas Di Bianca
+- Dimitri Jeannon
+
+
+
+

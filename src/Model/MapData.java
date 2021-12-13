@@ -16,7 +16,7 @@ public class MapData {
     }
 
     /**
-     *
+     * Constructor of the class MapData which allowed to stock data of a map ( all intersection) and parameter to display it
      * @param intersections
      * @param minX
      * @param maxX
@@ -40,55 +40,17 @@ public class MapData {
     }
 
     /**
-     *
+     * Set the Controller which corresponds to the class
      * @param controller
      */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
-    /**
-     *
-     * @param intersections
-     */
-    public void setIntersections(HashMap<String,Intersection> intersections) {
-        this.intersections = intersections;
-    }
+
 
     /**
-     *
-     * @param minX
-     */
-    public void setMinX(float minX) {
-        this.minX = minX;
-    }
-
-    /**
-     *
-     * @param maxX
-     */
-    public void setMaxX(float maxX) {
-        this.maxX = maxX;
-    }
-
-    /**
-     *
-     * @param minY
-     */
-    public void setMinY(float minY) {
-        this.minY = minY;
-    }
-
-    /**
-     *
-     * @param maxY
-     */
-    public void setMaxY(float maxY) {
-        this.maxY = maxY;
-    }
-
-    /**
-     *
+     * get all the intersection on the map
      * @return
      */
     public HashMap<String,Intersection> getIntersections() {
@@ -129,7 +91,7 @@ public class MapData {
 
     /**
      *
-     * @return
+     * @return description of the object
      */
     @Override
     public String toString() {
@@ -144,10 +106,10 @@ public class MapData {
 
 
     /**
-     *
+     * This method allow us find  an intersection from  coordinate on the panel
      * @param x
      * @param y
-     * @return
+     * @return Intersection
      */
     public Intersection findIntersection(int x,int y){
         for(String s: intersections.keySet()){
