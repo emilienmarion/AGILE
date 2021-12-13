@@ -30,11 +30,10 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Model.*;
-import obs.Observable;
-import obs.Observer;
 
 
-public class TourView implements Observer {
+
+public class TourView  {
 
     protected JFrame frame;
     protected JPanel rightPanel;
@@ -689,10 +688,7 @@ public class TourView implements Observer {
 
      }
 
-    @Override
-    public void update(Observable o, Object arg){
-        // TODO : code pour display
-    }
+
 
 
     /**
