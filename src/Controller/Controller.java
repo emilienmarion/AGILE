@@ -17,7 +17,7 @@ public class Controller {
     private Request loadRequest;
     private final boolean firstLoadTour = false;
     private Tour tour;
-    private int i=0;
+    private int i = 0;
     private Model.Point pickUp;
     private Model.Point delivery;
     private final ListOfCommands l;
@@ -29,15 +29,14 @@ public class Controller {
     }
 
 
-
     /**
      * Open a JFileChooser. Return true and call frame.loadTour if the file is a xml. Return false in other cases.
      * @return boolean
      */
-    public boolean loadTour() throws ParseException{
+    public boolean loadTour() throws ParseException {
 
         System.out.println("Controller.loadTour");
-        String Firm="";
+        String Firm = "";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
         chooser.setApproveButtonText("Select"); //intitulé du bouton
 
@@ -45,10 +44,10 @@ public class Controller {
             System.out.println("Vous avez choisis : " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
             Firm = chooser.getSelectedFile().getAbsolutePath();
 
-            if(!verifXml(Firm)){
+            if (!verifXml(Firm)) {
                 System.out.println("File type is not xml");
                 return false;
-            }else {
+            } else {
                 loadRequest = XmlUtils.ReadRequest(Firm, this.md.getIntersections());
                 tour.loadNewRequest(loadRequest);
                 if (!firstLoadTour) {
@@ -61,7 +60,7 @@ public class Controller {
                 frame.display();
                 return true;
             }
-        }else{
+        } else {
             System.out.println("File chooser closed or an error hapenned");
             return false;
         }
@@ -73,62 +72,71 @@ public class Controller {
      */
     public boolean loadMap() {
         System.out.println("Controller.loadMap");
-        String Firm="";
+        String Firm = "";
         JFileChooser chooser = new JFileChooser();//création dun nouveau filechosser
         chooser.setApproveButtonText("Select"); //intitulé du bouton
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
-        {
-            System.out.println("Vous avez choisis: "+chooser.getSelectedFile().getAbsolutePath()+"\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("Vous avez choisis: " + chooser.getSelectedFile().getAbsolutePath() + "\n"); //si un fichier est selectionné, récupérer le fichier puis sont path et l'afficher dans le champs de texte
             try {
                 Firm = chooser.getSelectedFile().getAbsolutePath();
                 System.out.println(Firm);
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Error : " + e);
             }
 
-            if(!verifXml(Firm)){
+            if (!verifXml(Firm)) {
                 System.out.println("File type is not xml");
                 return false;
-            }else {
+            } else {
 
                 MapData loadedMap = XmlUtils.readMap(Firm);
-                this.md=loadedMap;
+                this.md = loadedMap;
                 frame.loadMap(loadedMap, Firm);
                 frame.display();
 
                 return true;
             }
-        }else{
+        } else {
             System.out.println("File chooser closed or an error hapenned");
             return false;
         }
     }
+
 
     /**
      * call the method to highlight
      * @param i
      */
     public void highLight(String i){
+
         frame.highlight(i);
     }
 
     /**
      * Return True if the extension's parameter "firm" equals "xml", false else.
+     *
      * @param firm
      * @return boolean
      */
-    private boolean verifXml(String firm) {
+    public boolean verifXml(String firm) {
         System.out.println("Controller.verifXml on : " + firm);
         String[] chain = firm.split("\\.");
         return chain.length > 0 && chain[chain.length - 1].equals("xml");
     }
 
+
     /**
      * method which confirm the deletion, apply on data and call method which display modification
      * @param i
      */
-    public void confirmDeleteRow (String i) {
-        System.out.println("Controller.confirmDeleteRow : "+i);
+
+    public void loadEditMode() {
+        System.out.println("Controller.loadEditMode");
+    }
+
+    public void confirmDeleteRow(String i) {
+        System.out.println("Controller.confirmDeleteRow : " + i);
+
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
         // Suppression dans le modèle de données
         DeleteRowCommand drc = new DeleteRowCommand(i, tour, frame);
@@ -143,11 +151,13 @@ public class Controller {
 
     }
 
+
     /**
      * call method which display map view
      */
     public void displayMapView()
     {
+
         try {
             frame.getTourView().loadRequest(frame.getTourView().getTourPath());
             frame.getMapView().loadRequest(tour);
@@ -162,7 +172,7 @@ public class Controller {
      * @throws ParseException
      */
     public void editPoint(String id) throws ParseException {
-        System.out.println("Controller.editRow : "+id);
+        System.out.println("Controller.editRow : " + id);
         // TODO : dans Frame, faire une map qui lie id et JPanel pour pouvoir les supprimer, modifier etc...
 
 
@@ -171,9 +181,9 @@ public class Controller {
         tour.editPoint(id, nvSchedule, false);
 
 
-
         frame.display();
     }
+
 
     /**
      * call method to open delete mode
@@ -185,14 +195,17 @@ public class Controller {
         frame.display();
     }
 
+
     /**
      * call method to open add point mode
      */
     public void addRequest( ) {
+
         System.out.println("Controller.addRequest ");
-        i=0;
+        i = 0;
         frame.addRequest();
     }
+
 
     /**
      * method which confirm and apply the creation of new point
@@ -201,43 +214,43 @@ public class Controller {
      */
      public void addNewRequest(int x,int y)  {
 
+        if (i > 1) {  //sortir du mode ajout
+            frame.sortirdeADD();
+        } else {
+            Intersection inter = md.findIntersection(x, y);
 
-         if (i > 1) {  //sortir du mode ajout
-             frame.sortirdeADD();
-         } else {
-             Intersection inter = md.findIntersection(x, y);
+            if (inter != null) {
+                System.out.println("i est égale à" + i);
 
-             if (inter != null) {
-System.out.println("i est égale à"+i);
+                if (i == 0) {
+                    pickUp = new Model.Point(inter, 0, "pickUp");
 
-                 if (i == 0) {
-                      pickUp = new Model.Point(inter, 0, "pickUp");
+                    drawpoint(pickUp.getId());
+                } else if (i == 1) {
+                    delivery = new Model.Point(inter, 0, "delivery");
 
-                     drawpoint(pickUp.getId());
-                 } else if (i == 1) {
-                      delivery = new Model.Point(inter, 0, "delivery");
+                    drawpoint2(pickUp.getId(), delivery.getId());
+                    pickUp.setIdAssociated(delivery.getId());
+                    delivery.setIdAssociated(pickUp.getId());
 
-                     drawpoint2(pickUp.getId(),delivery.getId());
-                     pickUp.setIdAssociated(delivery.getId());
-                     delivery.setIdAssociated(pickUp.getId());
 
-                     tour.addRequest(this.pickUp,this.delivery);
-                     try {
+                    tour.addRequest(this.pickUp, this.delivery);
+                    try {
+                        frame.getMapView().loadRequest(tour);
+                        frame.getTourView().loadRequest(frame.getTourView().getTourPath());
+                        frame.getTourView().updateHeader();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
 
-                         frame.getMapView().loadRequest(tour);
-                         frame.getTourView().loadRequest(frame.getTourView().getTourPath());
-                         frame.getTourView().updateHeader();
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                 }
+                i++;
+            }
 
-                 i++;
-             }
+        }
 
-         }
+    }
 
-     }
 
     /**
      * call the method to display pickup point and its delivery point on map
@@ -253,8 +266,9 @@ System.out.println("i est égale à"+i);
      * @param id
      */
      public void drawpoint(String id){
+
         frame.drawpoint(id);
-     }
+    }
 
     /**
      * setter of the map data
@@ -264,6 +278,7 @@ System.out.println("i est égale à"+i);
         this.md = md;
     }
 
+
     /**
      * method which confirm edition and call the method which apply this modification
      * @param id
@@ -272,9 +287,10 @@ System.out.println("i est égale à"+i);
      * @param hour
      * @throws ParseException
      */
+
     public void confirmPointEdition(String id, int type, String location, String hour) throws ParseException {
         System.out.println("Controller.confirmEdit");
-        System.out.println("DBG : "+id+" "+type+" "+location+" "+hour);
+        System.out.println("DBG : " + id + " " + type + " " + location + " " + hour);
         EditPointCommand edc = new EditPointCommand(frame, tour, id, type, location, hour);
         l.add(edc);
         edc.doCommand();
@@ -290,19 +306,23 @@ System.out.println("i est égale à"+i);
         this.tour = tour;
     }
 
+
     /**
      * method which manage undo
      */
     public void undo(){
 
+
         System.out.println("UNDO");
         l.undo();
     }
+
 
     /**
      * method which manage redo
      */
     public void redo(){
+
         System.out.println("REDO");
         l.redo();
     }
@@ -322,6 +342,5 @@ System.out.println("i est égale à"+i);
     public void setI(int i) {
         this.i = i;
     }
-
 }
 
