@@ -36,7 +36,7 @@ public class MapView {
      * @param mdT map's data
      * @param mps map's path
      */
-    public void loadMap(MapData mdT, String mps)
+    public boolean loadMap(MapData mdT, String mps)
     {
         this.mdT=mdT;
         leftPanel.removeAll();
@@ -65,6 +65,8 @@ public class MapView {
         leftPanel.add(map);
         leftPanel.add(mapPath);
         leftPanel.add(Box.createVerticalGlue());
+
+        return true;
 
     }
 
