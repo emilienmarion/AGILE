@@ -1,11 +1,15 @@
 Bienvenue dans le Code Source du Projet Uber'IF.
 Uber'IF est un projet étudiant qui se veut être une aide pour la gestion de livraison.
 Uber'IF calculera le trajet optimal entre les points de retrait et les point de livrason de la tournée.
-Uber'IF permet à son utilisateur  de modifier les horraire de certains points de la tournée, de les supprimmer ou d'en rajouter.
+Uber'IF permet à son utilisateur  de modifier les horaire de certains points de la tournée, de les supprimmer ou d'en rajouter.
 
-Pour éxécuter ce code source il vous faut éxécuter la class main qui se trouve à cette emplacement: src/Controller/Main.java
+L'execution du code source se fait via un IDE (de préférence Intellij).
+Pour éxécuter ce code source il vous faut compiler puis éxécuter la class main qui se trouve à cette emplacement: src/Controller/Main.java
+Attention lors de la compilation par l'IDE, veillez à avoir bien localisé le chemin du projet jusqu'au bout (myPersonnalPath\git\AGILE\AGILE).
 
-Une fois le code éxécuter vous pouvez trouvez les fichier XML pour charger une Map ou un Tour dans le fichier xmlFiles à la racine du projet.
+Pour lancer les tests, il faut utiliser la librairie JUnit4. Veillez à l'ajouter au projet dans l'IDE au moment de la compilation (même du main).
+
+Une fois le code éxécuté, les fichier XML pour charger des Map ou des tournées se trouvent dans le dossier xmlFiles à la racine du projet.
 
 Ce projet a été realisé par : 
 - Emilien MARION
