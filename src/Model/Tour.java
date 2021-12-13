@@ -231,7 +231,15 @@ public class Tour
         int indexBase = tableIndex.get(baseId); //index dans la matrice
         int indexTarget = tableIndex.get(target.getId()); //pareil
         //shortcut between base and target
-        Path shortcutPath = graph.getContent().get(indexBase).get(indexTarget).getAssociatedPath();
+        Vertice shortcutVertice=graph.getContent().get(indexBase).get(indexTarget);
+        if (shortcutVertice==null){
+            HashMap<String,Node> result=Algorithm.dijkstra(mapView.getMapData().getIntersections(), base);
+            for (String s:this.graph.getListePoint().keySet()){
+                graph.addVertice(Algorithm.getPath(result.get(s)).toVertice());
+            }
+            shortcutVertice=graph.getContent().get(indexBase).get(indexTarget);
+        }
+        Path shortcutPath = shortcutVertice.getAssociatedPath();
         pathPointsDef.remove(actualIndex-1);
         pathPointsDef.remove(actualIndex-1);
         pathPointsDef.add(actualIndex-1,shortcutPath);
@@ -424,11 +432,21 @@ public class Tour
         System.out.println(target);
         //recuperer le dernier point avant le depot
         Point lastest=pointsDef.get(pointsDef.size()-2);
+        System.out.println(lastest);
         HashMap<String, Integer> tableIndex=graph.getTableIndex();
         int indexLastest=tableIndex.get(lastest.getId()); //index dans la matrice des arcs du dernier sommet
         int indexTarget=tableIndex.get(target.getId()); //index dans la matrice des arcs de la cible
         //path entre le dernier et la target (on le prend dans la matrice)
-        Path pathBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget).getAssociatedPath();//<---
+        Vertice verticeBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget);
+        if (verticeBetweenTargetLastest==null){
+            HashMap<String,Node> result=Algorithm.dijkstra(mapView.getMapData().getIntersections(), lastest);
+            for (String s:this.graph.getListePoint().keySet()){
+                graph.addVertice(Algorithm.getPath(result.get(s)).toVertice());
+            }
+            System.out.println(graph.getContent());
+            verticeBetweenTargetLastest=graph.getContent().get(indexLastest).get(indexTarget);
+        }
+        Path pathBetweenTargetLastest=verticeBetweenTargetLastest.getAssociatedPath();//<---
         //verifier que l'horaire correspond cad si du dernier on peu aller a la target dans le temps imparti
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         float costTargetLastest=pathBetweenTargetLastest.getPath().getCost();
@@ -456,7 +474,15 @@ public class Tour
 
             int indexTargetBefore = tableIndex.get(idTargetBefore);
             int indexTargetAfter=tableIndex.get(targetAfter.getId());
-            Path pathBeforeAfter=graph.getContent().get(indexTargetBefore).get(indexTargetAfter).getAssociatedPath();
+            Vertice verticeBeforeAfter=graph.getContent().get(indexTargetBefore).get(indexTargetAfter);
+            if (verticeBeforeAfter==null){
+                HashMap<String,Node> result=Algorithm.dijkstra(mapView.getMapData().getIntersections(), targetBefore);
+                for (String s:this.graph.getListePoint().keySet()){
+                    graph.addVertice(Algorithm.getPath(result.get(s)).toVertice());
+                }
+                verticeBeforeAfter=graph.getContent().get(indexTargetBefore).get(indexTargetAfter);
+            }
+            Path pathBeforeAfter=verticeBeforeAfter.getAssociatedPath();
             float costBeforeAfter=pathBeforeAfter.getPath().getCost();
             System.out.println("costBeforeAfter = " + costBeforeAfter);
 
