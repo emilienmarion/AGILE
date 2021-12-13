@@ -3,7 +3,10 @@ Uber'IF est un projet étudiant qui se veut être une aide pour la gestion de li
 Uber'IF calculera le trajet optimal entre les points de retrait et les point de livrason de la tournée.
 Uber'IF permet à son utilisateur  de modifier les horaire de certains points de la tournée, de les supprimmer ou d'en rajouter.
 
-L'execution du code source se fait via un IDE (de préférence Intellij).
+L'éxécution du Code peut se faire via le .jar, il suffit se se placer dans le terminal dans le sous dossier  PLD_AGILE_jar et de taper la commande java -jar PLD_AGILE.jar
+
+
+Pour visualiser le code ou l'éxécuter à nouveau cela se fait via un IDE (de préférence Intellij).
 Pour éxécuter ce code source il vous faut compiler puis éxécuter la class main qui se trouve à cette emplacement: src/Controller/Main.java
 Attention lors de la compilation par l'IDE, veillez à avoir bien localisé le chemin du projet jusqu'au bout (myPersonnalPath\git\AGILE\AGILE).
 
