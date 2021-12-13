@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
 // Just to launch every test classes
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        LoadingMap.class
+        LoadingMap.class,
+        LoadingTour.class
         // write other class tests separated by ,
         })
 public class JUnit {}

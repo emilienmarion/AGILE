@@ -240,4 +240,12 @@ public class Frame {
     public Controller getController() {
         return this.controller;
     }
+
+    /**
+     * Getter
+     * @return the tour class
+     */
+    public Tour getTour() {
+        return tour;
+    }
 }
